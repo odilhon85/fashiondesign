@@ -9,6 +9,11 @@ dist-ssr/
 # Docs (local reference only)
 docs/
 
+# Game prototypes and test HTMLs (until ready to merge)
+games-prototype/
+*.test.html
+game-test-*.html
+
 # Logs
 logs
 *.log

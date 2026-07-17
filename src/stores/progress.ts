@@ -1,4 +1,11 @@
 import { defineStore } from 'pinia'
+import { useSessionStore } from './session'
+
+const PROGRESS_KEY_PREFIX = 'fashion_academy_progress_'
+
+function getProgressKey(username: string): string {
+  return PROGRESS_KEY_PREFIX + (username || '')
+}
 
 export interface StageProgress {
   unlocked: boolean
@@ -86,6 +93,12 @@ export const useProgressStore = defineStore('progress', {
       this.ensureStage(stageId)
       this.stages[stageId].quizCompleted = true
       this.persist()
+    },
+
+    recordQuizResult(stageId: string, score: number, passThreshold: number) {
+      if (score >= passThreshold) {
+        this.markQuizCompleted(stageId)
+      }
     },
 
     // Call after quiz completion to finalize stage if all lessons are read.
@@ -249,15 +262,19 @@ export const useProgressStore = defineStore('progress', {
     },
 
     reset() {
+      // Only clear in-memory state; do NOT persist here.
+      // Persist is called explicitly where needed (e.g., unlockStage, markLessonRead).
       this.stages = {}
       this.glossary = { termStats: {}, bestScorePercent: null }
-      this.persist()
     },
 
     persist() {
+      const session = useSessionStore()
+      const username = session.username || ''
+      if (!username) return // nothing to save without user
       try {
         localStorage.setItem(
-          'fashion_academy_progress',
+          getProgressKey(username),
           JSON.stringify({ stages: this.stages, glossary: this.glossary })
         )
       } catch (e) {
@@ -267,8 +284,11 @@ export const useProgressStore = defineStore('progress', {
 
     // Alias for App.vue onMounted call.
     hydrate() {
+      const session = useSessionStore()
+      const username = session.username || ''
+      if (!username) return
       try {
-        const raw = localStorage.getItem('fashion_academy_progress')
+        const raw = localStorage.getItem(getProgressKey(username))
         if (!raw) return
         const data = JSON.parse(raw)
         if (data.stages) this.stages = data.stages

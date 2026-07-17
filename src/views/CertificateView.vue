@@ -43,7 +43,7 @@ const session = useSessionStore()
 const progress = useProgressStore()
 
 const completedStages = computed(() => {
-  return Object.values(progress.stages).filter((s: { completedAt: string | null }) => s.completedAt).length
+  return Object.values(progress.stages).filter(s => !!s.completedAt).length
 })
 
 function goToMap() {

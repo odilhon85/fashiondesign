@@ -119,7 +119,7 @@ function isStageUnlocked(order: number) {
 
 function getStageStatus(stage: { id: string, order: number }) {
   if (progress.stages[stage.id]?.completedAt) return 'Tugatildi'
-  if (progress.stages[stage.id]?.quizPassed) return 'Test tugatildi'
+  if (progress.stages[stage.id]?.quizCompleted && !progress.stages[stage.id]?.completedAt) return 'Test tugatildi'
   if (progress.stages[stage.id]?.gameCompleted) return 'O\'ynalgan'
   if (progress.stages[stage.id]?.lessonsRead.length > 0) return 'Boshlandi'
   return 'Yangi'
@@ -127,7 +127,7 @@ function getStageStatus(stage: { id: string, order: number }) {
 
 function getStageStatusColor(stage: { id: string }) {
   if (progress.stages[stage.id]?.completedAt) return 'success'
-  if (progress.stages[stage.id]?.quizPassed) return 'info'
+  if (progress.stages[stage.id]?.quizCompleted && !progress.stages[stage.id]?.completedAt) return 'info'
   if (progress.stages[stage.id]?.gameCompleted) return 'warning'
   return 'primary'
 }

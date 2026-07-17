@@ -26,17 +26,36 @@ const stageTab = ref<'learn'|'play'|'test'>('learn')
 const openLessonId = ref<string | null>(null)
 const mobileMenuOpen = ref(false)
 
-const nameInput = ref(session.name || '')
+const nameInput = ref('')
+const lastUser = computed(() => session.getLastUser)
+const recentUsers = computed(() => session.getRecentUsers)
 
-function login() {
+function switchToUser(username: string) {
+  // First set the active user in session store.
+  session.loginOrCreate(username)
+  // Then reset and reload that user’s progress from localStorage.
+  progress.reset()
+  progress.hydrate()
+}
+
+function loginOrCreate() {
   const n = (nameInput.value || '').trim()
   if (!n) return
-  session.login(n)
+  switchToUser(n)
+  view.value = 'map'
+}
+
+function continueAsLastUser() {
+  const user = lastUser.value
+  if (!user) return
+  switchToUser(user)
   view.value = 'map'
 }
 
 function logout() {
   session.logout()
+  // Clear in-memory progress so it doesn’t leak between users.
+  progress.reset()
   view.value = 'login'
   currentStageId.value = null
   nameInput.value = ''
@@ -44,6 +63,10 @@ function logout() {
 
 function resetProgress() {
   if (!confirm("Butun progressni o'chirmoqchimisiz? Bu qaytarib bo'lmmaydi.")) return
+  const username = session.username || ''
+  if (username) {
+    localStorage.removeItem('fashion_academy_progress_' + username)
+  }
   progress.reset()
 }
 
@@ -177,9 +200,31 @@ const glossaryQuestions = ref<any[]>([])
             style="width:100%; height:120px; object-fit:cover; border-radius:999px; margin-bottom:14px; display:block; background:#000;"
           />
           <h1>Xush kelibsiz! 🌸</h1>
+
+          <!-- Recent users list -->
+          <div v-if="recentUsers.length" style="margin-bottom:12px;">
+            <p style="font-size:0.9rem;">Shu brauzerda oldin ishlatilgan:</p>
+            <div style="display:flex; flex-wrap:wrap; gap:6px; margin-top:4px;">
+              <button
+                v-for="user in recentUsers"
+                :key="user"
+                class="btn-secondary btn-sm"
+                @click="switchToUser(user); view='map'"
+              >
+                {{ user }}
+              </button>
+            </div>
+          </div>
+
+          <!-- Divider -->
+          <div v-if="recentUsers.length" style="font-size:0.8rem; color:var(--muted); margin-bottom:10px; text-align:center;">
+            yoki boshqa foydalanuvchi sifatida kirish
+          </div>
+
+          <!-- Register / login as another user -->
           <p>Ismingizni kiriting, boshlaymiz</p>
-          <input type="text" v-model="nameInput" placeholder="Ismingiz" @keyup.enter="login" autofocus>
-          <button class="btn-primary btn-block" @click="login">Boshlash</button>
+          <input type="text" v-model="nameInput" placeholder="Ismingiz" @keyup.enter="loginOrCreate" autofocus>
+          <button class="btn-primary btn-block" @click="loginOrCreate">Boshlash</button>
         </div>
       </div>
 
@@ -292,7 +337,7 @@ const glossaryQuestions = ref<any[]>([])
       </div>
     </main>
 
-    <div class="footer-note" v-if="view!=='login'">Moda Dizayni Akademiyasi — barcha progress faqat shu brauzerda, localStorage'da saqlanadi.</div>
+    <div class="footer-note" v-if="view!=='login'">Moda Dizayni Akademiyasi — har bir foydalanuvchining progressi shu brauzerda alohida saqlanadi (localStorage).</div>
   </div>
 </template>
 
