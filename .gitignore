@@ -1,3 +1,6 @@
+# Docs (local reference only)
+docs/
+
 # Logs
 logs
 *.log
