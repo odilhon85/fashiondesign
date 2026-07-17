@@ -1,0 +1,107 @@
+{
+  "id": "stage-1",
+  "order": 1,
+  "title": "Dizayn Nazariyasi va Sanoatga Kirish",
+  "description": "Fashion dizayneri qanday fikrlashi, g'oyani qayerdan topishi va sanoat qanday tuzilganini o'rganasiz.",
+  "sourceFile": "1-Bosqich_Dizayn_Nazariyasi_va_Sanoat.md",
+  "heroImage": "/assets/images/stage-1/hero.jpg",
+  "lessons": [
+    {
+      "id": "s1-l1",
+      "title": "Fashion dizayneri nima bilan shug'ullanadi?",
+      "image": "/assets/images/stage-1/process-4steps.jpg",
+      "body": "Dizaynerlik 4 bosqichdan iborat: Tadqiqot (Research), Kontseptsiya (Concept), Dizayn ishlab chiqish (Design Development) va Taqdimot (Presentation). Professional dizayner hech qachon o'zi uchun emas, aniq bir 'Target Customer' (maqsadli mijoz) uchun kiyim yaratadi — uning yoshi, turmush tarzi va byudjetini oldindan aniqlaydi.",
+      "exercise": "Xayoliy bitta mijoz yarating (yosh, kasb, turmush tarzi) va shu mijoz uchun 3 ta kiyim g'oyasini tasvirlab yozing.",
+      "terms": [
+        { "term": "Target Customer", "definition": "Dizayn mo'ljallangan aniq maqsadli mijoz — yoshi, turmush tarzi va byudjeti bilan tavsiflanadi." },
+        { "term": "Design Development", "definition": "G'oyani eskizdan real kiyimga aylantirish bosqichi." }
+      ]
+    },
+    {
+      "id": "s1-l2",
+      "title": "G'oya qayerdan keladi — Research jarayoni",
+      "image": "/assets/images/stage-1/primary-secondary-research.jpg",
+      "body": "Ikki tadqiqot turi bor: Birlamchi (Primary) — o'zingiz ko'rgan, chizgan, suratga olgan narsalar; Ikkilamchi (Secondary) — boshqalar yaratgan materiallar (kitob, jurnal, internet). Faqat ikkilamchi manbaga tayangan dizayn original hisoblanmaydi.",
+      "exercise": "10 daqiqa atrofga chiqing, sizni qiziqtirgan 5 ta shakl yoki teksturani suratga oling, so'ng biridan ilhomlanib kiyim eskizini chizing.",
+      "terms": [
+        { "term": "Primary Research", "definition": "Bevosita o'zingiz kuzatgan, chizgan yoki suratga olgan ilhom manbalari." },
+        { "term": "Secondary Research", "definition": "Boshqalar yaratgan, siz topib foydalangan materiallar (kitob, jurnal, internet)." }
+      ]
+    },
+    {
+      "id": "s1-l3",
+      "title": "Mood Board — g'oyani ko'rgazmali qilish",
+      "image": "/assets/images/stage-1/moodboard-4elements.jpg",
+      "body": "Professional mood board 4 elementdan iborat: rang palitrasi, tekstura/mato namunalari, shakl referanslari va kalit so'zlar. Mood board tayyor kiyim rasmlaridan emas, xom ilhom manbalaridan (tabiat, san'at, arxitektura) tuzilishi kerak.",
+      "exercise": "O'z mavzungiz uchun 4 elementli mood board tuzing — rang, tekstura, shakl, kalit so'zlar.",
+      "terms": [
+        { "term": "Mood Board", "definition": "Rang, tekstura, shakl va kalit so'zlarni birlashtirgan ilhom taxtasi." }
+      ]
+    },
+    {
+      "id": "s1-l4",
+      "title": "Design Story — hikoyani topish",
+      "image": "/assets/images/stage-1/design-story-formula.jpg",
+      "body": "Formula: [Ilhom manbai] + [Hissiyot/kayfiyat] + [Maqsadli mijoz] = Design Story. Har bir eskiz shu bitta jumlaga mos kelishi kerak.",
+      "exercise": "O'zingizning Design Story jumlangizni formulaga asoslanib yozing.",
+      "terms": [
+        { "term": "Design Story", "definition": "Kolleksiyaning ilhomi, kayfiyati va mijozini bitta jumlada birlashtiruvchi g'oya." }
+      ]
+    },
+    {
+      "id": "s1-l5",
+      "title": "Fashion sanoatining tuzilishi",
+      "image": "/assets/images/stage-1/industry-roles.jpg",
+      "body": "Sanoatda ko'p turli kasb bor: Fashion Designer, Technical Designer, Patternmaker, Textile Designer, Illustrator, Merchandiser, Stylist, Buyer. Chizish kuchli tomon bo'lmasa ham, boshqa yo'nalishlar mos kelishi mumkin.",
+      "exercise": "Yuqoridagi 8 kasbdan qaysi biri sizga eng qiziq tuyulganini va nima uchunligini yozing.",
+      "terms": [
+        { "term": "Technical Designer", "definition": "Eskizni aniq texnik chizmaga aylantiruvchi va fabrika bilan ishlaydigan mutaxassis." },
+        { "term": "Merchandiser", "definition": "Qaysi mahsulot qancha ishlab chiqarilishi va qayerda sotilishini rejalashtiruvchi mutaxassis." }
+      ]
+    },
+    {
+      "id": "s1-l6",
+      "title": "Trend qanday o'qiladi",
+      "image": "/assets/images/stage-1/trend-sources.jpg",
+      "body": "Trendlar ijtimoiy o'zgarish, iqtisodiy holat, texnologiya va san'atdan kelib chiqadi. Eng mashhur dizaynerlar trendga ergashmagan — ular yangi trend yaratgan.",
+      "exercise": "3 oy davomida atrofingizda ko'proq uchragan ranglar/uslublarni kuzatib, 'trend jurnali' yurita boshlang.",
+      "terms": [
+        { "term": "Trend Forecasting", "definition": "Kelajakdagi moda tendensiyalarini ijtimoiy, iqtisodiy va madaniy signallar asosida bashorat qilish." }
+      ]
+    },
+    {
+      "id": "s1-l7",
+      "title": "Portfolio bugundan boshlanadi",
+      "image": "/assets/images/stage-1/portfolio-rules.jpg",
+      "body": "3 qoida: har bir loyihani saqlang, sana qo'ying, izoh yozing. Maktablar tayyor 'chiroyli' ishdan ko'ra fikrlash jarayonini ko'rishni xohlaydi.",
+      "exercise": "Bugungi sanani qo'yib, birinchi portfolio sahifangizni boshlang.",
+      "terms": [
+        { "term": "Portfolio", "definition": "Dizaynerning eskizlari, g'oyalari va jarayonini to'plagan ishlar to'plami." }
+      ]
+    }
+  ],
+  "quiz": {
+    "passThreshold": 70,
+    "questions": [
+      { "id": "s1-q1", "type": "mcq", "question": "Dizaynerlik jarayonining birinchi bosqichi qaysi?", "options": ["Taqdimot", "Tadqiqot (Research)", "Tikish", "Sotish"], "answerIndex": 1 },
+      { "id": "s1-q2", "type": "mcq", "question": "'Target Customer' nimani anglatadi?", "options": ["Dizaynerning o'zi", "Kiyim tikadigan fabrika", "Kolleksiya mo'ljallangan aniq mijoz", "Do'kon egasi"], "answerIndex": 2 },
+      { "id": "s1-q3", "type": "true_false", "question": "Faqat ikkilamchi tadqiqotga tayangan dizayn eng original hisoblanadi.", "answer": false },
+      { "id": "s1-q4", "type": "mcq", "question": "Mood Board qaysi 4 elementdan iborat bo'lishi kerak?", "options": ["Narx, hajm, brend, model", "Rang, tekstura, shakl, kalit so'zlar", "Sana, joy, ism, imzo", "Faqat tayyor kiyim rasmlari"], "answerIndex": 1 },
+      { "id": "s1-q5", "type": "mcq", "question": "Eskizni aniq texnik chizmaga aylantiruvchi mutaxassis kim?", "options": ["Stylist", "Technical Designer", "Buyer", "Illustrator"], "answerIndex": 1 },
+      { "id": "s1-q6", "type": "true_false", "question": "Mashhur dizaynerlar har doim mavjud trendlarga ergashgan, yangi trend yaratmagan.", "answer": false }
+    ]
+  },
+  "game": {
+    "type": "matching",
+    "title": "Mijoz va Dizaynni Moslashtir",
+    "instructions": "Har bir mijoz profilini unga eng mos keladigan dizayn tavsifi bilan bog'lang.",
+    "config": {
+      "pairs": [
+        { "left": "22 yoshli faol talaba, arzon lekin sifatli kiyim izlaydi", "right": "Kundalik, qulay, trikotajdan tikilgan sport uslubidagi to'plam" },
+        { "left": "35 yoshli biznes-ayol, rasmiy uchrashuvlarga boradi", "right": "Struktura kostyum, neytral ranglar, minimal dizayn" },
+        { "left": "18 yoshli, kechki tadbirga liboс izlaydi", "right": "Yorqin rang, ipak yoki shifon, drape-li kechki libos" },
+        { "left": "45 yoshli, barqaror va sifatli kiyimga qiziqadi", "right": "Tabiiy matolar, uzoq xizmat qiluvchi klassik siluet" }
+      ]
+    }
+  }
+}

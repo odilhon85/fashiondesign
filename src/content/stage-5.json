@@ -1,0 +1,101 @@
+{
+  "id": "stage-5",
+  "order": 5,
+  "title": "Draping Asoslari",
+  "description": "Manekenda mato bilan to'g'ridan-to'g'ri ishlash — landmark chiziqlar, ease va true/design lines.",
+  "sourceFile": "5-Bosqich_Draping_Asoslari.md",
+  "heroImage": "/assets/images/stage-5/hero.jpg",
+  "lessons": [
+    {
+      "id": "s5-l1",
+      "title": "Draping va Pattern Making — hamkorlar",
+      "image": "/assets/images/stage-5/draping-vs-flat.jpg",
+      "body": "Pattern making — matematik, qog'ozda. Draping — mato bilan to'g'ridan-to'g'ri manekenda 'haykaltaroshlik'. Ikkalasi ham dizaynerga kerak, vaziyatga qarab tanlanadi.",
+      "exercise": "Qaysi shakllarni hisoblash osonroq, qaysilarini mato bilan 'topish' osonroq — ro'yxat tuzing.",
+      "terms": []
+    },
+    {
+      "id": "s5-l2",
+      "title": "Manekenni xaritalash — Landmark Lines",
+      "image": "/assets/images/stage-5/landmark-lines.jpg",
+      "body": "7 asosiy chiziq: Center Front, Center Back, Bust line, Waistline, Hip line, Shoulder line, Armhole. Bular draping jarayonida yo'qolib qolmaslik uchun 'xarita' vazifasini bajaradi.",
+      "exercise": "Qog'ozga inson siluetini chizib, 7 landmark chiziqni joylashtiring.",
+      "terms": [
+        { "term": "Landmark Lines", "definition": "Dress form ustida draping uchun belgilanadigan 7 asosiy referens chiziq." },
+        { "term": "Center Front / Center Back", "definition": "Tananing old va orqa markaziy vertikal chiziqlari." }
+      ]
+    },
+    {
+      "id": "s5-l3",
+      "title": "True Grain — mato tayyorlash",
+      "image": "/assets/images/stage-5/grain-types.jpg",
+      "body": "3 yo'nalish: Straight grain (tik tola, kam cho'ziluvchi), Cross grain (ko'ndalang), True bias (45 gradus, eng oquvchi). Draping uchun mato tolalari to'g'ri burchak hosil qilishi shart.",
+      "exercise": "Mato ipini chetidan tortib chiqarib, shu chiziq bo'ylab to'g'ri kesing.",
+      "terms": [
+        { "term": "Straight Grain", "definition": "Matoning tik, eng kam cho'ziluvchi tola yo'nalishi." },
+        { "term": "True Bias", "definition": "Matoning 45 gradus burchakdagi, eng ko'p cho'ziluvchi yo'nalishi." }
+      ]
+    },
+    {
+      "id": "s5-l4",
+      "title": "Bodice Draping jarayoni",
+      "image": "/assets/images/stage-5/bodice-draping-steps.jpg",
+      "body": "Mato kesish → grainline moslashtirish → ko'krak atrofida silliqlash (dart tabiiy hosil bo'ladi) → dartni pin qilish → chiziqlarni belgilash → manekendan yechib truing qilish.",
+      "exercise": "Jarayonni video orqali kuzatib, qadamlarni o'z so'zlaringiz bilan yozib chiqing.",
+      "terms": [
+        { "term": "Truing", "definition": "Qo'lda chizilgan noaniq chiziqlarni chizg'ich bilan aniq va simmetrik qilib qayta chizish jarayoni." }
+      ]
+    },
+    {
+      "id": "s5-l5",
+      "title": "Ease — nafas oladigan bo'shliq",
+      "image": "/assets/images/stage-5/ease-two-finger-test.jpg",
+      "body": "Wearing ease (asosiy, harakat uchun) va Design ease (uslub uchun qo'shimcha). Ikki barmoq usuli: mato va maneken orasiga ikki barmoq erkin kirsa — ease yetarli.",
+      "exercise": "Mato bo'lagini avval tortib, keyin bo'sh qoldirib mahkamlang va farqni his qiling.",
+      "terms": [
+        { "term": "Ease", "definition": "Kiyim va tana orasida qulaylik va harakat uchun qoldiriladigan bo'shliq." },
+        { "term": "Wearing Ease", "definition": "Har qanday kiyimda bo'lishi shart bo'lgan minimal bo'shliq." },
+        { "term": "Design Ease", "definition": "Dizaynerning uslubiga bog'liq qo'shimcha bo'shliq (masalan, oversized kiyimda)." }
+      ]
+    },
+    {
+      "id": "s5-l6",
+      "title": "True Lines vs Design Lines",
+      "image": "/assets/images/stage-5/true-vs-design-lines.jpg",
+      "body": "True Lines — tananing tuzilishidan kelib chiquvchi, o'zgarmas chiziqlar. Design Lines — dizaynerning ijodiy tanlovi (masalan, princess seam). Faqat Design Lines erkin o'zgartiriladi.",
+      "exercise": "Bitta kiyim rasmida qaysi chiziqlar True, qaysilari Design ekanini belgilang.",
+      "terms": [
+        { "term": "True Lines", "definition": "Tananing tuzilishidan kelib chiqadigan, o'zgarmas asosiy chiziqlar." },
+        { "term": "Design Lines", "definition": "Dizaynerning ijodiy tanlovi bilan qo'shiladigan qo'shimcha choklar." }
+      ]
+    }
+  ],
+  "quiz": {
+    "passThreshold": 70,
+    "questions": [
+      { "id": "s5-q1", "type": "mcq", "question": "Draping va pattern making o'rtasidagi munosabat qanday?", "options": ["Raqib usullar", "Bir-birini to'ldiruvchi usullar", "Draping eskirgan usul", "Ular bir xil narsa"], "answerIndex": 1 },
+      { "id": "s5-q2", "type": "mcq", "question": "Landmark Lines nima uchun kerak?", "options": ["Faqat bezak uchun", "Draping jarayonida yo'qolib qolmaslik uchun referens", "Rang tanlash uchun", "Narx hisoblash uchun"], "answerIndex": 1 },
+      { "id": "s5-q3", "type": "mcq", "question": "Eng ko'p cho'ziluvchi mato yo'nalishi qaysi?", "options": ["Straight grain", "Cross grain", "True bias", "Hech qaysi"], "answerIndex": 2 },
+      { "id": "s5-q4", "type": "true_false", "question": "Draping'da dart oldindan hisoblanadi, mato 'aytib bermaydi'.", "answer": false },
+      { "id": "s5-q5", "type": "mcq", "question": "Ease tekshirish uchun qanday usul ishlatiladi?", "options": ["Bir qo'l usuli", "Ikki barmoq usuli", "Ko'z bilan taxmin qilish", "Faqat o'lchov lentasi"], "answerIndex": 1 },
+      { "id": "s5-q6", "type": "true_false", "question": "Design Lines o'zgartirilmaydigan, qat'iy chiziqlar hisoblanadi.", "answer": false }
+    ]
+  },
+  "game": {
+    "type": "point_placement",
+    "title": "Landmark Nuqtalarini Belgila",
+    "instructions": "Statik dress-form rasmida 7 ta landmark nuqtani to'g'ri joyga bosing.",
+    "config": {
+      "points": [
+        { "id": "cf", "label": "Center Front" },
+        { "id": "cb", "label": "Center Back" },
+        { "id": "bust", "label": "Bust Line" },
+        { "id": "waist", "label": "Waistline" },
+        { "id": "hip", "label": "Hip Line" },
+        { "id": "shoulder", "label": "Shoulder Line" },
+        { "id": "armhole", "label": "Armhole" }
+      ],
+      "toleranceRadiusPx": 25
+    }
+  }
+}

@@ -1,0 +1,484 @@
+{
+  "terms": [
+    {
+      "term": "Target Customer",
+      "definition": "Dizayn mo'ljallangan aniq maqsadli mijoz — yoshi, turmush tarzi va byudjeti bilan tavsiflanadi.",
+      "stageId": "stage-1",
+      "stageOrder": 1,
+      "stageTitle": "Dizayn Nazariyasi va Sanoatga Kirish",
+      "lessonId": "s1-l1"
+    },
+    {
+      "term": "Design Development",
+      "definition": "G'oyani eskizdan real kiyimga aylantirish bosqichi.",
+      "stageId": "stage-1",
+      "stageOrder": 1,
+      "stageTitle": "Dizayn Nazariyasi va Sanoatga Kirish",
+      "lessonId": "s1-l1"
+    },
+    {
+      "term": "Primary Research",
+      "definition": "Bevosita o'zingiz kuzatgan, chizgan yoki suratga olgan ilhom manbalari.",
+      "stageId": "stage-1",
+      "stageOrder": 1,
+      "stageTitle": "Dizayn Nazariyasi va Sanoatga Kirish",
+      "lessonId": "s1-l2"
+    },
+    {
+      "term": "Secondary Research",
+      "definition": "Boshqalar yaratgan, siz topib foydalangan materiallar (kitob, jurnal, internet).",
+      "stageId": "stage-1",
+      "stageOrder": 1,
+      "stageTitle": "Dizayn Nazariyasi va Sanoatga Kirish",
+      "lessonId": "s1-l2"
+    },
+    {
+      "term": "Mood Board",
+      "definition": "Rang, tekstura, shakl va kalit so'zlarni birlashtirgan ilhom taxtasi.",
+      "stageId": "stage-1",
+      "stageOrder": 1,
+      "stageTitle": "Dizayn Nazariyasi va Sanoatga Kirish",
+      "lessonId": "s1-l3"
+    },
+    {
+      "term": "Design Story",
+      "definition": "Kolleksiyaning ilhomi, kayfiyati va mijozini bitta jumlada birlashtiruvchi g'oya.",
+      "stageId": "stage-1",
+      "stageOrder": 1,
+      "stageTitle": "Dizayn Nazariyasi va Sanoatga Kirish",
+      "lessonId": "s1-l4"
+    },
+    {
+      "term": "Technical Designer",
+      "definition": "Eskizni aniq texnik chizmaga aylantiruvchi va fabrika bilan ishlaydigan mutaxassis.",
+      "stageId": "stage-1",
+      "stageOrder": 1,
+      "stageTitle": "Dizayn Nazariyasi va Sanoatga Kirish",
+      "lessonId": "s1-l5"
+    },
+    {
+      "term": "Merchandiser",
+      "definition": "Qaysi mahsulot qancha ishlab chiqarilishi va qayerda sotilishini rejalashtiruvchi mutaxassis.",
+      "stageId": "stage-1",
+      "stageOrder": 1,
+      "stageTitle": "Dizayn Nazariyasi va Sanoatga Kirish",
+      "lessonId": "s1-l5"
+    },
+    {
+      "term": "Trend Forecasting",
+      "definition": "Kelajakdagi moda tendensiyalarini ijtimoiy, iqtisodiy va madaniy signallar asosida bashorat qilish.",
+      "stageId": "stage-1",
+      "stageOrder": 1,
+      "stageTitle": "Dizayn Nazariyasi va Sanoatga Kirish",
+      "lessonId": "s1-l6"
+    },
+    {
+      "term": "Portfolio",
+      "definition": "Dizaynerning eskizlari, g'oyalari va jarayonini to'plagan ishlar to'plami.",
+      "stageId": "stage-1",
+      "stageOrder": 1,
+      "stageTitle": "Dizayn Nazariyasi va Sanoatga Kirish",
+      "lessonId": "s1-l7"
+    },
+    {
+      "term": "Croquis",
+      "definition": "Fashion dizaynida ishlatiladigan, 9 bosh uzunligiga cho'zilgan soddalashtirilgan inson figurasi.",
+      "stageId": "stage-2",
+      "stageOrder": 2,
+      "stageTitle": "Croquis va Fashion Illustration",
+      "lessonId": "s2-l1"
+    },
+    {
+      "term": "Balance Line",
+      "definition": "Figuraning gravitatsiya markazini ko'rsatuvchi markaziy vertikal chiziq.",
+      "stageId": "stage-2",
+      "stageOrder": 2,
+      "stageTitle": "Croquis va Fashion Illustration",
+      "lessonId": "s2-l2"
+    },
+    {
+      "term": "Contrapposto",
+      "definition": "Figura bitta oyoqqa ko'proq og'irlik bergan tabiiy turish holati.",
+      "stageId": "stage-2",
+      "stageOrder": 2,
+      "stageTitle": "Croquis va Fashion Illustration",
+      "lessonId": "s2-l2"
+    },
+    {
+      "term": "Gesture Drawing",
+      "definition": "Figuraning harakati va kayfiyatini tez va erkin chiziqlar bilan ushlab qolish usuli.",
+      "stageId": "stage-2",
+      "stageOrder": 2,
+      "stageTitle": "Croquis va Fashion Illustration",
+      "lessonId": "s2-l3"
+    },
+    {
+      "term": "Ease",
+      "definition": "Kiyim va tana orasidagi, harakat uchun qoldiriladigan tabiiy bo'shliq.",
+      "stageId": "stage-2",
+      "stageOrder": 2,
+      "stageTitle": "Croquis va Fashion Illustration",
+      "lessonId": "s2-l6"
+    },
+    {
+      "term": "Tension fold",
+      "definition": "Mato tortilgan joyda (masalan, tirsak bukilganda) hosil bo'ladigan burma turi.",
+      "stageId": "stage-2",
+      "stageOrder": 2,
+      "stageTitle": "Croquis va Fashion Illustration",
+      "lessonId": "s2-l6"
+    },
+    {
+      "term": "Gravity fold",
+      "definition": "Erkin osilgan matoda tortishish kuchi tufayli hosil bo'ladigan burma turi.",
+      "stageId": "stage-2",
+      "stageOrder": 2,
+      "stageTitle": "Croquis va Fashion Illustration",
+      "lessonId": "s2-l6"
+    },
+    {
+      "term": "Simultaneous Contrast",
+      "definition": "Bir xil rangning atrofidagi fonga qarab boshqacha qabul qilinishi hodisasi.",
+      "stageId": "stage-3",
+      "stageOrder": 3,
+      "stageTitle": "Rang Nazariyasi — Chuqur Daraja",
+      "lessonId": "s3-l1"
+    },
+    {
+      "term": "Optik Aralashtirish",
+      "definition": "Ranglarni fizik aralashtirmasdan, yonma-yon joylashtirib ko'zga aralash qildirish usuli.",
+      "stageId": "stage-3",
+      "stageOrder": 3,
+      "stageTitle": "Rang Nazariyasi — Chuqur Daraja",
+      "lessonId": "s3-l3"
+    },
+    {
+      "term": "Vibrating Boundary",
+      "definition": "To'yingan qarama-qarshi ranglar chegarasida yuzaga keladigan optik 'titrash' effekti.",
+      "stageId": "stage-3",
+      "stageOrder": 3,
+      "stageTitle": "Rang Nazariyasi — Chuqur Daraja",
+      "lessonId": "s3-l4"
+    },
+    {
+      "term": "Rang Harorati",
+      "definition": "Rangning issiq (sariqqa moyil) yoki sovuq (ko'kka moyil) tomonga moyilligi.",
+      "stageId": "stage-3",
+      "stageOrder": 3,
+      "stageTitle": "Rang Nazariyasi — Chuqur Daraja",
+      "lessonId": "s3-l5"
+    },
+    {
+      "term": "60-30-10 Qoidasi",
+      "definition": "Palette qurishda hero, supporting va accent ranglar nisbatini belgilaydigan qoida.",
+      "stageId": "stage-3",
+      "stageOrder": 3,
+      "stageTitle": "Rang Nazariyasi — Chuqur Daraja",
+      "lessonId": "s3-l6"
+    },
+    {
+      "term": "Hip Curve",
+      "definition": "Chanoq va yon chiziqlarning yumshoq egri chizig'ini chizish uchun maxsus chizg'ich.",
+      "stageId": "stage-4",
+      "stageOrder": 4,
+      "stageTitle": "Pattern Making Asoslari",
+      "lessonId": "s4-l1"
+    },
+    {
+      "term": "French Curve",
+      "definition": "Armhole va yoqa kabi kichik egri chiziqlarni chizish uchun maxsus chizg'ich.",
+      "stageId": "stage-4",
+      "stageOrder": 4,
+      "stageTitle": "Pattern Making Asoslari",
+      "lessonId": "s4-l1"
+    },
+    {
+      "term": "Sloper (Block)",
+      "definition": "Aniq tana o'lchamlariga mos, bezaksiz, bazaviy lekalo.",
+      "stageId": "stage-4",
+      "stageOrder": 4,
+      "stageTitle": "Pattern Making Asoslari",
+      "lessonId": "s4-l2"
+    },
+    {
+      "term": "Pattern Manipulation",
+      "definition": "Sloperni o'zgartirish orqali yangi dizaynlar yaratish jarayoni.",
+      "stageId": "stage-4",
+      "stageOrder": 4,
+      "stageTitle": "Pattern Making Asoslari",
+      "lessonId": "s4-l2"
+    },
+    {
+      "term": "Dart",
+      "definition": "Matoning ortiqcha qismini uchburchak shaklida yig'ib, uni tananing egri shakliga moslashtiruvchi qirqim.",
+      "stageId": "stage-4",
+      "stageOrder": 4,
+      "stageTitle": "Pattern Making Asoslari",
+      "lessonId": "s4-l3"
+    },
+    {
+      "term": "Dart Manipulation (Pivot Method)",
+      "definition": "Dartni bir joydan boshqa joyga ko'chirish texnikasi.",
+      "stageId": "stage-4",
+      "stageOrder": 4,
+      "stageTitle": "Pattern Making Asoslari",
+      "lessonId": "s4-l3"
+    },
+    {
+      "term": "Grainline",
+      "definition": "Lekaloda matoning tik tolasi yo'nalishini ko'rsatuvchi chiziq.",
+      "stageId": "stage-4",
+      "stageOrder": 4,
+      "stageTitle": "Pattern Making Asoslari",
+      "lessonId": "s4-l4"
+    },
+    {
+      "term": "Bias Cut",
+      "definition": "Matoni 45 gradus burchak ostida kesish texnikasi, tanaga yopishuvchi drape beradi.",
+      "stageId": "stage-4",
+      "stageOrder": 4,
+      "stageTitle": "Pattern Making Asoslari",
+      "lessonId": "s4-l4"
+    },
+    {
+      "term": "Seam Allowance",
+      "definition": "Tikish uchun lekalo chetiga qo'shiladigan qo'shimcha mato zaxirasi.",
+      "stageId": "stage-4",
+      "stageOrder": 4,
+      "stageTitle": "Pattern Making Asoslari",
+      "lessonId": "s4-l5"
+    },
+    {
+      "term": "Notch",
+      "definition": "Lekalo qismlarining qanday birlashishini ko'rsatuvchi kichik belgi kesikcha.",
+      "stageId": "stage-4",
+      "stageOrder": 4,
+      "stageTitle": "Pattern Making Asoslari",
+      "lessonId": "s4-l5"
+    },
+    {
+      "term": "Landmark Lines",
+      "definition": "Dress form ustida draping uchun belgilanadigan 7 asosiy referens chiziq.",
+      "stageId": "stage-5",
+      "stageOrder": 5,
+      "stageTitle": "Draping Asoslari",
+      "lessonId": "s5-l2"
+    },
+    {
+      "term": "Center Front / Center Back",
+      "definition": "Tananing old va orqa markaziy vertikal chiziqlari.",
+      "stageId": "stage-5",
+      "stageOrder": 5,
+      "stageTitle": "Draping Asoslari",
+      "lessonId": "s5-l2"
+    },
+    {
+      "term": "Straight Grain",
+      "definition": "Matoning tik, eng kam cho'ziluvchi tola yo'nalishi.",
+      "stageId": "stage-5",
+      "stageOrder": 5,
+      "stageTitle": "Draping Asoslari",
+      "lessonId": "s5-l3"
+    },
+    {
+      "term": "True Bias",
+      "definition": "Matoning 45 gradus burchakdagi, eng ko'p cho'ziluvchi yo'nalishi.",
+      "stageId": "stage-5",
+      "stageOrder": 5,
+      "stageTitle": "Draping Asoslari",
+      "lessonId": "s5-l3"
+    },
+    {
+      "term": "Wearing Ease",
+      "definition": "Har qanday kiyimda bo'lishi shart bo'lgan minimal bo'shliq.",
+      "stageId": "stage-5",
+      "stageOrder": 5,
+      "stageTitle": "Draping Asoslari",
+      "lessonId": "s5-l5"
+    },
+    {
+      "term": "Design Ease",
+      "definition": "Dizaynerning uslubiga bog'liq qo'shimcha bo'shliq (masalan, oversized kiyimda).",
+      "stageId": "stage-5",
+      "stageOrder": 5,
+      "stageTitle": "Draping Asoslari",
+      "lessonId": "s5-l5"
+    },
+    {
+      "term": "True Lines",
+      "definition": "Tananing tuzilishidan kelib chiqadigan, o'zgarmas asosiy chiziqlar.",
+      "stageId": "stage-5",
+      "stageOrder": 5,
+      "stageTitle": "Draping Asoslari",
+      "lessonId": "s5-l6"
+    },
+    {
+      "term": "Design Lines",
+      "definition": "Dizaynerning ijodiy tanlovi bilan qo'shiladigan qo'shimcha choklar.",
+      "stageId": "stage-5",
+      "stageOrder": 5,
+      "stageTitle": "Draping Asoslari",
+      "lessonId": "s5-l6"
+    },
+    {
+      "term": "Haute Couture",
+      "definition": "Fransiyada qattiq nazorat qilinadigan, individual mijozga moslashtirilgan yuqori sifatli tikuv darajasi.",
+      "stageId": "stage-6",
+      "stageOrder": 6,
+      "stageTitle": "Couture va Pattern Magic",
+      "lessonId": "s6-l1"
+    },
+    {
+      "term": "Underlining",
+      "definition": "Asosiy mato bilan birga ishlaydigan, shaklni mustahkamlovchi ichki qatlam.",
+      "stageId": "stage-6",
+      "stageOrder": 6,
+      "stageTitle": "Couture va Pattern Magic",
+      "lessonId": "s6-l2"
+    },
+    {
+      "term": "Interfacing",
+      "definition": "Yoqa, manjet kabi qismlarga qattiqlik beruvchi qo'shimcha qatlam.",
+      "stageId": "stage-6",
+      "stageOrder": 6,
+      "stageTitle": "Couture va Pattern Magic",
+      "lessonId": "s6-l2"
+    },
+    {
+      "term": "Boning",
+      "definition": "Kiyimga tananing shaklini ushlab turish xususiyatini beruvchi ingichka qattiq tayoqchalar.",
+      "stageId": "stage-6",
+      "stageOrder": 6,
+      "stageTitle": "Couture va Pattern Magic",
+      "lessonId": "s6-l2"
+    },
+    {
+      "term": "Catch Stitch",
+      "definition": "Hem (etak) larni tashqi tomondan ko'rinmas holda mahkamlovchi qo'l stежogi.",
+      "stageId": "stage-6",
+      "stageOrder": 6,
+      "stageTitle": "Couture va Pattern Magic",
+      "lessonId": "s6-l3"
+    },
+    {
+      "term": "Slash-and-Spread",
+      "definition": "Lekaloni chiziqlar bo'ylab qirqib, orasiga bo'shliq qo'shish orqali hajm yaratish texnikasi.",
+      "stageId": "stage-6",
+      "stageOrder": 6,
+      "stageTitle": "Couture va Pattern Magic",
+      "lessonId": "s6-l5"
+    },
+    {
+      "term": "Motif",
+      "definition": "Takrorlanuvchi naqshning eng kichik, asosiy vizual elementi.",
+      "stageId": "stage-7",
+      "stageOrder": 7,
+      "stageTitle": "Tekstil Dizayni va Naqsh Yaratish",
+      "lessonId": "s7-l1"
+    },
+    {
+      "term": "Repeat",
+      "definition": "Motifning matoning butun yuzasida tizimli takrorlanish tartibi.",
+      "stageId": "stage-7",
+      "stageOrder": 7,
+      "stageTitle": "Tekstil Dizayni va Naqsh Yaratish",
+      "lessonId": "s7-l2"
+    },
+    {
+      "term": "Half-drop Repeat",
+      "definition": "Har ikkinchi ustun yarim motif balandligiga pastga surilgan, eng ko'p ishlatiladigan repeat turi.",
+      "stageId": "stage-7",
+      "stageOrder": 7,
+      "stageTitle": "Tekstil Dizayni va Naqsh Yaratish",
+      "lessonId": "s7-l2"
+    },
+    {
+      "term": "Seamless Repeat",
+      "definition": "Chekkalari bir-biriga mukammal mos keladigan, 'chokssiz' ko'rinadigan naqsh takrorlanishi.",
+      "stageId": "stage-7",
+      "stageOrder": 7,
+      "stageTitle": "Tekstil Dizayni va Naqsh Yaratish",
+      "lessonId": "s7-l3"
+    },
+    {
+      "term": "Scale",
+      "definition": "Naqsh motivining kattaligi va bu kattalikning kiyimga ta'siri.",
+      "stageId": "stage-7",
+      "stageOrder": 7,
+      "stageTitle": "Tekstil Dizayni va Naqsh Yaratish",
+      "lessonId": "s7-l4"
+    },
+    {
+      "term": "Colorway",
+      "definition": "Bitta naqsh dizaynining turli rang kombinatsiyasidagi versiyasi.",
+      "stageId": "stage-7",
+      "stageOrder": 7,
+      "stageTitle": "Tekstil Dizayni va Naqsh Yaratish",
+      "lessonId": "s7-l5"
+    },
+    {
+      "term": "Main Print",
+      "definition": "Kolleksiyaning eng diqqat tortuvchi, asosiy naqsh dizayni.",
+      "stageId": "stage-7",
+      "stageOrder": 7,
+      "stageTitle": "Tekstil Dizayni va Naqsh Yaratish",
+      "lessonId": "s7-l7"
+    },
+    {
+      "term": "Blender",
+      "definition": "Boshqa naqshlar orasida 'dam olish joyi' vazifasini bajaruvchi kichik, deyarli bir tekis naqsh.",
+      "stageId": "stage-7",
+      "stageOrder": 7,
+      "stageTitle": "Tekstil Dizayni va Naqsh Yaratish",
+      "lessonId": "s7-l7"
+    },
+    {
+      "term": "Licensing",
+      "definition": "Dizayner yoki brendning o'z nomini boshqa kompaniyaga foyda evaziga 'ijaraga berishi'.",
+      "stageId": "stage-8",
+      "stageOrder": 8,
+      "stageTitle": "Sanoat va Biznes Tushunchasi",
+      "lessonId": "s8-l2"
+    },
+    {
+      "term": "Market Tier",
+      "definition": "Fashion sanoatidagi narx-sifat qatlami (couture'dan fast fashion'gacha).",
+      "stageId": "stage-8",
+      "stageOrder": 8,
+      "stageTitle": "Sanoat va Biznes Tushunchasi",
+      "lessonId": "s8-l3"
+    },
+    {
+      "term": "Fast Fashion",
+      "definition": "Trendlarni juda qisqa muddatda, arzon narxda ommaviy sotuvga chiqaruvchi ishlab chiqarish modeli.",
+      "stageId": "stage-8",
+      "stageOrder": 8,
+      "stageTitle": "Sanoat va Biznes Tushunchasi",
+      "lessonId": "s8-l4"
+    },
+    {
+      "term": "Wholesale Price",
+      "definition": "Ishlab chiqaruvchidan do'konga sotiladigan ulgurji narx, odatda tannarxning 2 barobari.",
+      "stageId": "stage-8",
+      "stageOrder": 8,
+      "stageTitle": "Sanoat va Biznes Tushunchasi",
+      "lessonId": "s8-l5"
+    },
+    {
+      "term": "Retail Price",
+      "definition": "Do'kondan mijozga sotiladigan yakuniy chakana narx.",
+      "stageId": "stage-8",
+      "stageOrder": 8,
+      "stageTitle": "Sanoat va Biznes Tushunchasi",
+      "lessonId": "s8-l5"
+    },
+    {
+      "term": "Direct-to-Consumer (D2C)",
+      "definition": "Do'kon/wholesale orqali emas, to'g'ridan-to'g'ri mijozga sotish modeli.",
+      "stageId": "stage-8",
+      "stageOrder": 8,
+      "stageTitle": "Sanoat va Biznes Tushunchasi",
+      "lessonId": "s8-l6"
+    }
+  ]
+}

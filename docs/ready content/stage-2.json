@@ -1,0 +1,107 @@
+{
+  "id": "stage-2",
+  "order": 2,
+  "title": "Croquis va Fashion Illustration",
+  "description": "9-bosh croquis proporsiyalari, gesture drawing va kiyimni mato turiga qarab chizishni o'rganasiz.",
+  "sourceFile": "2-Bosqich_Croquis_va_Fashion_Illustration.md",
+  "heroImage": "assets/images/stage-2/hero.svg",
+  "lessons": [
+    {
+      "id": "s2-l1",
+      "title": "Nega real tana emas, croquis chiziladi?",
+      "image": "assets/images/stage-2/9head-proportion-grid.svg",
+      "body": "Sanoat standarti — 9-bosh croquis: 1-bosh, 2-ko'krak, 3-bel (eng tor), 4-chanoq (eng keng), 5-o'rta son, 6-tizza, 7-boldir o'rtasi, 8-to'piq, 9-poyafzal tagi. Bu real emas, kiyimni eng yaxshi ko'rsatish uchun cho'zilgan proporsiya.",
+      "exercise": "9-bosh grid chizing va har bir chiziqni yuqoridagi jadval bo'yicha belgilang.",
+      "terms": [
+        { "term": "Croquis", "definition": "Fashion dizaynida ishlatiladigan, 9 bosh uzunligiga cho'zilgan soddalashtirilgan inson figurasi." }
+      ]
+    },
+    {
+      "id": "s2-l2",
+      "title": "Balance Line — gravitatsiya markazi",
+      "image": "assets/images/stage-2/balance-line.svg",
+      "body": "Markaziy vertikal chiziq (Central Balance Line) figuraning og'irlik markazini ko'rsatadi. Agar figura bitta oyoqqa ko'proq tayansa (contrapposto), chiziq aynan tayanch oyoq to'piig'iga tegishi kerak, aks holda figura 'yiqilayotgandek' ko'rinadi.",
+      "exercise": "Avval Balance Line'ni biroz egri torting, keyin shu chiziqqa mos figura quring.",
+      "terms": [
+        { "term": "Balance Line", "definition": "Figuraning gravitatsiya markazini ko'rsatuvchi markaziy vertikal chiziq." },
+        { "term": "Contrapposto", "definition": "Figura bitta oyoqqa ko'proq og'irlik bergan tabiiy turish holati." }
+      ]
+    },
+    {
+      "id": "s2-l3",
+      "title": "Gesture Drawing — jon beruvchi chiziqlar",
+      "image": "assets/images/stage-2/gesture-vs-detail.svg",
+      "body": "Aniqlikdan oldin, 10-15 soniyada figuraning umumiy harakati va kayfiyatini ushlab qoluvchi tez chiziqlar (gesture) chiziladi. Aniqlik emas, energiya muhim.",
+      "exercise": "30 soniyadan 10 ta gesture croquis chizing, so'ng eng yoqqan 3 tasiga 5 daqiqadan berib to'liq croquisga aylantiring.",
+      "terms": [
+        { "term": "Gesture Drawing", "definition": "Figuraning harakati va kayfiyatini tez va erkin chiziqlar bilan ushlab qolish usuli." }
+      ]
+    },
+    {
+      "id": "s2-l4",
+      "title": "5 xil poza",
+      "image": "assets/images/stage-2/five-poses.svg",
+      "body": "Portfolio uchun kamida 5 poza kerak: frontal, 3/4 burchak, profil, harakatdagi poza, o'tirgan holat. Har biri turli maqsadga xizmat qiladi.",
+      "exercise": "Har bir poza turi uchun alohida sahifa ajratib, haftasiga bittadan mashq qiling.",
+      "terms": []
+    },
+    {
+      "id": "s2-l5",
+      "title": "Yuz, qo'l va oyoqni soddalashtirish",
+      "image": "assets/images/stage-2/face-hand-simplified.svg",
+      "body": "Yuz tuxumsimon shakl + 4 qismga bo'linadi, ko'zlar aniq gorizontal chiziq o'rtasida joylashadi. Qo'l avval 'qo'lqop' shakli sifatida, keyin barmoqlarga ajratib chiziladi.",
+      "exercise": "5 ta soddalashtirilgan yuz va 5 ta 'qo'lqop' shaklidan boshlangan qo'l chizing.",
+      "terms": []
+    },
+    {
+      "id": "s2-l6",
+      "title": "Fold va Drape — kiyimga hajm berish",
+      "image": "assets/images/stage-2/fold-types.svg",
+      "body": "3 burma turi: Tension folds (tortilgan joylarda), Gravity folds (erkin osilgan matoda), Compression folds (kamar/bog'lash joyida). Har biri boshqacha chiziladi.",
+      "exercise": "Haqiqiy mato bo'lagini tortib/bukib, hosil bo'lgan burmalarni kuzatib chizing.",
+      "terms": [
+        { "term": "Ease", "definition": "Kiyim va tana orasidagi, harakat uchun qoldiriladigan tabiiy bo'shliq." },
+        { "term": "Tension fold", "definition": "Mato tortilgan joyda (masalan, tirsak bukilganda) hosil bo'ladigan burma turi." },
+        { "term": "Gravity fold", "definition": "Erkin osilgan matoda tortishish kuchi tufayli hosil bo'ladigan burma turi." }
+      ]
+    },
+    {
+      "id": "s2-l7",
+      "title": "Mato turini chizishda ko'rsatish",
+      "image": "assets/images/stage-2/fabric-rendering.svg",
+      "body": "Qattiq mato (denim) — kam va keskin chiziqlar; yumshoq mato (shifon) — ko'p va yumshoq to'lqinsimon chiziqlar; trikotaj — silliq kontur; charm — yorqin highlight nuqtalar.",
+      "exercise": "Bitta ko'ylak shaklini 4 marta, har safar boshqa mato turi sifatida qayta chizing.",
+      "terms": []
+    }
+  ],
+  "quiz": {
+    "passThreshold": 70,
+    "questions": [
+      { "id": "s2-q1", "type": "mcq", "question": "Sanoat standarti croquis necha bosh uzunligida chiziladi?", "options": ["7 bosh", "8 bosh", "9 bosh", "10 bosh"], "answerIndex": 2 },
+      { "id": "s2-q2", "type": "mcq", "question": "Balance Line nimani ko'rsatadi?", "options": ["Kiyim rangini", "Figuraning gravitatsiya markazini", "Mato turini", "Yoqa shaklini"], "answerIndex": 1 },
+      { "id": "s2-q3", "type": "true_false", "question": "Gesture drawing'da aniqlik energiyadan muhimroq.", "answer": false },
+      { "id": "s2-q4", "type": "mcq", "question": "Portfolio uchun kamida nechta poza turi tavsiya etiladi?", "options": ["1", "3", "5", "10"], "answerIndex": 2 },
+      { "id": "s2-q5", "type": "mcq", "question": "Erkin osilgan yubka etagida qaysi burma turi hosil bo'ladi?", "options": ["Tension fold", "Gravity fold", "Compression fold", "Hech qaysi"], "answerIndex": 1 },
+      { "id": "s2-q6", "type": "true_false", "question": "Barcha mato turlari croquisda bir xil chiziq uslubi bilan ko'rsatiladi.", "answer": false }
+    ]
+  },
+  "game": {
+    "type": "drag_build",
+    "title": "Croquis Quruvchi",
+    "instructions": "Tana qismlarini to'g'ri tartibda 9-bosh gridga joylashtiring.",
+    "config": {
+      "gridUnits": 9,
+      "pieces": [
+        { "id": "head", "label": "Bosh", "correctUnit": 1 },
+        { "id": "chest", "label": "Ko'krak chizig'i", "correctUnit": 2 },
+        { "id": "waist", "label": "Bel (eng tor)", "correctUnit": 3 },
+        { "id": "hip", "label": "Chanoq (eng keng)", "correctUnit": 4 },
+        { "id": "midthigh", "label": "O'rta son", "correctUnit": 5 },
+        { "id": "knee", "label": "Tizza", "correctUnit": 6 },
+        { "id": "calf", "label": "Boldir o'rtasi", "correctUnit": 7 },
+        { "id": "ankle", "label": "To'piq", "correctUnit": 8 },
+        { "id": "floor", "label": "Poyafzal tagi", "correctUnit": 9 }
+      ]
+    }
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "id": "stage-7",
+  "order": 7,
+  "title": "Tekstil Dizayni va Naqsh Yaratish",
+  "description": "Motif, repeat turlari va an'anaviy naqshlarni zamonaviylashtirish jarayonini o'rganasiz.",
+  "sourceFile": "7-Bosqich_Tekstil_Dizayni.md",
+  "heroImage": "/assets/images/stage-7/hero.jpg",
+  "lessons": [
+    {
+      "id": "s7-l1",
+      "title": "Motif — naqshning eng kichik birligi",
+      "image": "/assets/images/stage-7/motif-concept.jpg",
+      "body": "Motif — tanlangan kichik tasvir (gul, geometrik shakl). Naqsh esa motifning tizimli takrorlanishi. Bitta gul chizish badiiy ish, uni 'uzluksiz' takrorlash — tekstil dizayni ilmi.",
+      "exercise": "Sodda bitta motif chizing va uni 'asosiy motif' sifatida saqlang.",
+      "terms": [
+        { "term": "Motif", "definition": "Takrorlanuvchi naqshning eng kichik, asosiy vizual elementi." }
+      ]
+    },
+    {
+      "id": "s7-l2",
+      "title": "Repeat turlari",
+      "image": "/assets/images/stage-7/repeat-types.jpg",
+      "body": "Block repeat (to'g'ri grid), Half-drop (eng ko'p ishlatiladigan, tabiiy ko'rinish), Brick, Mirror, Ogee. Half-drop ko'zga eng tabiiy ko'rinadi, chunki qattiq vertikal/gorizontal chiziqlarni yashiradi.",
+      "exercise": "Bitta motifni block va half-drop tartibida joylashtirib solishtiring.",
+      "terms": [
+        { "term": "Repeat", "definition": "Motifning matoning butun yuzasida tizimli takrorlanish tartibi." },
+        { "term": "Half-drop Repeat", "definition": "Har ikkinchi ustun yarim motif balandligiga pastga surilgan, eng ko'p ishlatiladigan repeat turi." }
+      ]
+    },
+    {
+      "id": "s7-l3",
+      "title": "Seamless Repeat siri",
+      "image": "/assets/images/stage-7/seamless-flip-shift.jpg",
+      "body": "Motif kvadrat markazida emas, to'rtta burchakka bo'lib joylashtiriladi, so'ng burchaklar markazga 'flip-and-shift' qilinadi — natijada chekkalar bir-biriga mukammal mos keladi.",
+      "exercise": "Motifni bitta burchakka joylashtirib, 4 nusxasini 2x2 tartibida qo'ying, chekkalar qanday birlashishini kuzating.",
+      "terms": [
+        { "term": "Seamless Repeat", "definition": "Chekkalari bir-biriga mukammal mos keladigan, 'chokssiz' ko'rinadigan naqsh takrorlanishi." }
+      ]
+    },
+    {
+      "id": "s7-l4",
+      "title": "Scale (Masshtab)",
+      "image": "/assets/images/stage-7/scale-comparison.jpg",
+      "body": "Kichik masshtab — nozik, ko'p kiyimga mos; katta masshtab — jasur, sodda siluetlarga mos (kichik konstruksiyada motif 'kesilib' qolishi mumkin).",
+      "exercise": "Bitta motifni 3 xil o'lchamda chizing va turli kiyim turiga 'kiydirib ko'ring'.",
+      "terms": [
+        { "term": "Scale", "definition": "Naqsh motivining kattaligi va bu kattalikning kiyimga ta'siri." }
+      ]
+    },
+    {
+      "id": "s7-l5",
+      "title": "Rang ajratish (Colorway)",
+      "image": "/assets/images/stage-7/colorway-variants.jpg",
+      "body": "Bitta naqsh dizayni bir nechta rang variantida (colorway) taqdim etiladi — issiq, sovuq, neytral, jasur versiyalar. Bu vaqtni tejaydi va turli mijoz didiga xizmat qiladi.",
+      "exercise": "O'z naqshingiz uchun 3-4 xil colorway yarating (3-bosqich rang bilimlaridan foydalanib).",
+      "terms": [
+        { "term": "Colorway", "definition": "Bitta naqsh dizaynining turli rang kombinatsiyasidagi versiyasi." }
+      ]
+    },
+    {
+      "id": "s7-l6",
+      "title": "An'anaviy naqshlarni zamonaviylashtirish",
+      "image": "/assets/images/stage-7/traditional-to-modern.jpg",
+      "body": "4 qadam: kuzatish/tanlash → soddalashtirish → masshtab/rang o'zgartirish → yangi repeat tizimiga joylashtirish. Asl naqshning madaniy ma'nosini hurmat qilish muhim.",
+      "exercise": "Bitta o'zbek an'anaviy naqsh elementini (masalan, bodom) tanlab, uni zamonaviy repeat naqshga aylantiring.",
+      "terms": []
+    },
+    {
+      "id": "s7-l7",
+      "title": "Coordinating Prints",
+      "image": "/assets/images/stage-7/main-coordinate-blender.jpg",
+      "body": "Main print (asosiy, diqqat tortuvchi), Coordinate print (bir xil palitrada ikkinchi darajali), Blender (kichik, deyarli bir tekis 'dam olish' naqshi).",
+      "exercise": "Main printingiz uchun coordinate va blender naqshlarini qo'shimcha yarating.",
+      "terms": [
+        { "term": "Main Print", "definition": "Kolleksiyaning eng diqqat tortuvchi, asosiy naqsh dizayni." },
+        { "term": "Blender", "definition": "Boshqa naqshlar orasida 'dam olish joyi' vazifasini bajaruvchi kichik, deyarli bir tekis naqsh." }
+      ]
+    }
+  ],
+  "quiz": {
+    "passThreshold": 70,
+    "questions": [
+      { "id": "s7-q1", "type": "mcq", "question": "Motif nima?", "options": ["Naqshning eng kichik, asosiy elementi", "Matoning nomi", "Rang palitrasi", "Kiyim siluetining nomi"], "answerIndex": 0 },
+      { "id": "s7-q2", "type": "mcq", "question": "Eng ko'p ishlatiladigan repeat turi qaysi?", "options": ["Block repeat", "Half-drop repeat", "Ogee repeat", "Brick repeat"], "answerIndex": 1 },
+      { "id": "s7-q3", "type": "true_false", "question": "Seamless repeat uchun motif har doim kvadratning markazida joylashtiriladi.", "answer": false },
+      { "id": "s7-q4", "type": "mcq", "question": "Katta masshtabdagi naqsh qanday siluetga ko'proq mos keladi?", "options": ["Ko'p choki bor murakkab kiyim", "Sodda, keng siluetli kiyim", "Faqat aksessuarlarga", "Hech qaysi biriga mos kelmaydi"], "answerIndex": 1 },
+      { "id": "s7-q5", "type": "mcq", "question": "Colorway nima?", "options": ["Naqshning turli rang versiyasi", "Matoning turi", "Repeat turi", "Motif nomi"], "answerIndex": 0 },
+      { "id": "s7-q6", "type": "mcq", "question": "Blender naqshning vazifasi nima?", "options": ["Eng diqqat tortuvchi bo'lish", "Boshqa naqshlar orasida 'dam olish joyi' berish", "Faqat aksessuarda ishlatilish", "Rangni yo'qotish"], "answerIndex": 1 }
+    ]
+  },
+  "game": {
+    "type": "tile_matching",
+    "title": "Repeat Naqsh Boshqotirmasi",
+    "instructions": "Motif kartochkalarini gridga sudrab, half-drop repeat tartibida to'g'ri joylashtiring — chekkalar 'mos kelganda' yashil rangga aylanadi.",
+    "config": {
+      "gridCols": 4,
+      "gridRows": 4,
+      "repeatType": "half_drop",
+      "motifId": "user_or_default_motif"
+    }
+  }
+}

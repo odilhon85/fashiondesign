@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Moda Dizayni Akademiyasi</title>
+<script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+<style>
+  :root{
+    --bg: #faf6f1;
+    --paper: #ffffff;
+    --ink: #2b2420;
+    --muted: #7a6f65;
+    --accent: #b5651d;
+    --accent-soft: #e9c9a8;
+    --good: #4a7c59;
+    --bad: #b23b3b;
+    --line: #e6ddd2;
+    --radius: 14px;
+    --shadow: 0 2px 10px rgba(43,36,32,0.07);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height:1.55;
+  }
+  #app{min-height:100vh; display:flex; flex-direction:column;}
+  .topbar{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:14px 20px; background: var(--paper); border-bottom:1px solid var(--line);
+    position:sticky; top:0; z-index:10;
+  }
+  .brand{font-weight:700; font-size:1.15rem; color:var(--accent); cursor:pointer;}
+  .brand span{color:var(--ink); font-weight:400; font-size:0.85rem; display:block;}
+  .user-chip{
+    display:flex; align-items:center; gap:10px; font-size:0.9rem; color:var(--muted);
+  }
+  .user-chip b{color:var(--ink);}
+  .progress-pill{
+    background:var(--accent-soft); color:var(--accent); border-radius:20px;
+    padding:4px 12px; font-size:0.8rem; font-weight:600;
+  }
+  main{flex:1; padding: 24px 16px 60px; max-width:1000px; margin:0 auto; width:100%;}
+  .center-screen{
+    min-height:80vh; display:flex; align-items:center; justify-content:center;
+  }
+  .card{
+    background:var(--paper); border-radius:var(--radius); box-shadow:var(--shadow);
+    padding:24px; border:1px solid var(--line);
+  }
+  .login-card{max-width:400px; width:100%; text-align:center;}
+  .login-card h1{margin-top:0; font-size:1.4rem;}
+  .login-card p{color:var(--muted); margin-bottom:20px;}
+  input[type=text], input[type=number]{
+    width:100%; padding:12px 14px; border-radius:10px; border:1.5px solid var(--line);
+    font-size:1rem; margin-bottom:14px; background:#fff; color:var(--ink);
+  }
+  input:focus{outline:2px solid var(--accent-soft); border-color:var(--accent);}
+  button{
+    font-family:inherit; cursor:pointer; border:none; border-radius:10px;
+    padding:11px 20px; font-size:0.95rem; font-weight:600; transition:transform .08s ease, opacity .15s ease;
+  }
+  button:active{transform:scale(0.97);}
+  .btn-primary{background:var(--accent); color:#fff;}
+  .btn-primary:hover{opacity:0.92;}
+  .btn-secondary{background:var(--accent-soft); color:var(--accent);}
+  .btn-ghost{background:transparent; color:var(--muted); border:1.5px solid var(--line);}
+  .btn-block{width:100%;}
+  .btn-sm{padding:7px 14px; font-size:0.85rem;}
+  button:disabled{opacity:0.45; cursor:not-allowed;}
+
+  h2.page-title{margin-bottom:4px;}
+  .subtitle{color:var(--muted); margin-top:0; margin-bottom:24px;}
+
+  .stage-grid{
+    display:grid; grid-template-columns:repeat(auto-fill, minmax(220px,1fr)); gap:16px;
+  }
+  .stage-card{
+    background:var(--paper); border-radius:var(--radius); box-shadow:var(--shadow);
+    border:1px solid var(--line); padding:18px; cursor:pointer; position:relative;
+    transition:transform .12s ease, box-shadow .12s ease;
+  }
+  .stage-card:hover{transform:translateY(-3px); box-shadow:0 6px 18px rgba(43,36,32,0.1);}
+  .stage-card.locked{opacity:0.55; cursor:not-allowed;}
+  .stage-card.locked:hover{transform:none;}
+  .stage-num{
+    width:34px; height:34px; border-radius:50%; background:var(--accent-soft); color:var(--accent);
+    display:flex; align-items:center; justify-content:center; font-weight:700; margin-bottom:10px;
+  }
+  .stage-card.done .stage-num{background:var(--good); color:#fff;}
+  .stage-title{font-weight:700; margin-bottom:6px; font-size:1.02rem;}
+  .stage-desc{color:var(--muted); font-size:0.87rem; margin-bottom:10px;}
+  .lock-icon{position:absolute; top:16px; right:16px; font-size:1.1rem; color:var(--muted);}
+  .mini-bar{height:6px; background:var(--line); border-radius:4px; overflow:hidden; margin-top:8px;}
+  .mini-bar-fill{height:100%; background:var(--accent); border-radius:4px; transition:width .3s ease;}
+
+  .tabs{display:flex; gap:8px; margin-bottom:20px; border-bottom:1px solid var(--line); flex-wrap:wrap;}
+  .tab{
+    padding:10px 16px; cursor:pointer; color:var(--muted); font-weight:600; font-size:0.92rem;
+    border-bottom:3px solid transparent; margin-bottom:-1px;
+  }
+  .tab.active{color:var(--accent); border-color:var(--accent);}
+  .tab.locked-tab{opacity:0.4; cursor:not-allowed;}
+
+  .lesson-item{
+    background:var(--paper); border:1px solid var(--line); border-radius:12px; margin-bottom:10px; overflow:hidden;
+  }
+  .lesson-head{
+    padding:14px 16px; display:flex; align-items:center; justify-content:space-between; cursor:pointer;
+  }
+  .lesson-head-left{display:flex; align-items:center; gap:10px;}
+  .lesson-check{
+    width:22px; height:22px; border-radius:50%; border:2px solid var(--line); flex-shrink:0;
+    display:flex; align-items:center; justify-content:center; font-size:0.75rem; color:#fff;
+  }
+  .lesson-check.read{background:var(--good); border-color:var(--good);}
+  .lesson-body{padding:0 16px 18px; border-top:1px solid var(--line);}
+  .lesson-image-placeholder{
+    background: linear-gradient(135deg, var(--accent-soft), #f3e2cc);
+    border-radius:10px; height:140px; display:flex; align-items:center; justify-content:center;
+    color:var(--accent); font-size:0.85rem; margin:14px 0; text-align:center; padding:10px;
+  }
+  .exercise-box{
+    background:#fbf3e9; border-left:4px solid var(--accent); padding:12px 14px; border-radius:8px; margin-top:12px; font-size:0.9rem;
+  }
+  .exercise-box b{color:var(--accent);}
+  .term-chip{
+    display:inline-block; background:var(--accent-soft); color:var(--accent); border-radius:8px;
+    padding:6px 10px; font-size:0.82rem; margin:4px 6px 0 0;
+  }
+
+  .quiz-question{background:var(--paper); border:1px solid var(--line); border-radius:12px; padding:18px; margin-bottom:14px;}
+  .quiz-option{
+    display:block; width:100%; text-align:left; padding:12px 14px; margin-top:8px; border-radius:10px;
+    border:1.5px solid var(--line); background:#fff; cursor:pointer; font-size:0.94rem;
+  }
+  .quiz-option:hover{border-color:var(--accent-soft);}
+  .quiz-option.selected{border-color:var(--accent); background:#fdf2e7;}
+  .quiz-option.correct{border-color:var(--good); background:#eaf5ec;}
+  .quiz-option.incorrect{border-color:var(--bad); background:#fbeaea;}
+  .quiz-result-banner{padding:16px; border-radius:12px; text-align:center; margin-bottom:18px; font-weight:700;}
+  .quiz-result-banner.pass{background:#eaf5ec; color:var(--good);}
+  .quiz-result-banner.fail{background:#fbeaea; color:var(--bad);}
+
+  .game-shell{background:var(--paper); border:1px solid var(--line); border-radius:14px; padding:20px;}
+  .game-instructions{color:var(--muted); margin-bottom:18px; font-size:0.92rem;}
+  .match-row{display:flex; gap:10px; align-items:center; margin-bottom:10px; flex-wrap:wrap;}
+  .match-pill{
+    flex:1; min-width:180px; padding:12px 14px; border-radius:10px; border:1.5px solid var(--line);
+    background:#fff; cursor:pointer; font-size:0.88rem;
+  }
+  .match-pill.selected{border-color:var(--accent);}
+  .match-pill.matched{background:#eaf5ec; border-color:var(--good); cursor:default; opacity:0.8;}
+  .order-list{list-style:none; padding:0; margin:0;}
+  .order-item{
+    display:flex; align-items:center; justify-content:space-between; background:#fff; border:1.5px solid var(--line);
+    border-radius:10px; padding:12px 14px; margin-bottom:8px;
+  }
+  .order-item.correct{border-color:var(--good); background:#eaf5ec;}
+  .order-item.incorrect{border-color:var(--bad); background:#fbeaea;}
+  .order-controls button{padding:4px 10px; font-size:0.8rem; margin-left:4px;}
+  .swatch-row{display:flex; gap:20px; justify-content:center; margin:20px 0; flex-wrap:wrap;}
+  .swatch-box{
+    width:120px; height:120px; display:flex; align-items:center; justify-content:center; border-radius:12px;
+  }
+  .swatch-inner{width:56px; height:56px; border-radius:8px;}
+  .brand-step{margin-bottom:16px;}
+  .brand-step label{display:block; font-weight:600; margin-bottom:6px; font-size:0.9rem;}
+  .choice-row{display:flex; gap:8px; flex-wrap:wrap;}
+  .choice-btn{padding:9px 14px; border-radius:20px; border:1.5px solid var(--line); background:#fff; cursor:pointer; font-size:0.85rem;}
+  .choice-btn.chosen{background:var(--accent); color:#fff; border-color:var(--accent);}
+  .result-card{background:#fbf3e9; border-radius:12px; padding:18px; margin-top:16px;}
+  .result-card .row{display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px dashed var(--line); font-size:0.92rem;}
+  .result-card .row:last-child{border-bottom:none; font-weight:700;}
+
+  .slider-wrap{margin:20px 0;}
+  input[type=range]{width:100%;}
+  .spread-diagram{display:flex; justify-content:center; padding:20px 0;}
+
+  .pattern-pick-row{display:flex; gap:16px; justify-content:center; flex-wrap:wrap; margin:16px 0;}
+  .pattern-option{
+    border:2px solid var(--line); border-radius:12px; padding:10px; cursor:pointer; background:#fff; text-align:center;
+  }
+  .pattern-option.selected{border-color:var(--accent);}
+  .pattern-option.correct{border-color:var(--good);}
+  .pattern-option.incorrect{border-color:var(--bad);}
+  .pattern-option span{display:block; margin-top:6px; font-size:0.8rem; color:var(--muted);}
+
+  .backbar{margin-bottom:16px;}
+  .footer-note{text-align:center; color:var(--muted); font-size:0.8rem; padding:20px;}
+  .glossary-list{display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:10px;}
+  .glossary-term-card{background:#fff; border:1px solid var(--line); border-radius:10px; padding:12px 14px;}
+  .glossary-term-card b{color:var(--accent); display:block; margin-bottom:4px; font-size:0.92rem;}
+  .glossary-term-card span{font-size:0.85rem; color:var(--muted);}
+
+  .certificate{
+    text-align:center; padding:40px 30px; background:linear-gradient(160deg,#fff,#fbf1e4);
+    border:2px solid var(--accent-soft); border-radius:18px;
+  }
+  .certificate h1{color:var(--accent); font-size:1.6rem; margin-bottom:6px;}
+  .certificate .name{font-size:1.9rem; font-weight:800; margin:14px 0; color:var(--ink);}
+  .certificate .stamp{font-size:2.4rem; margin:10px 0;}
+
+  @media (max-width:600px){
+    main{padding:16px 10px 50px;}
+    .tabs{gap:2px;}
+    .tab{padding:8px 10px; font-size:0.85rem;}
+  }
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<script>
+/* ====================== EMBEDDED CONTENT DATA ====================== */
+const STAGES = [{"id": "stage-1", "order": 1, "title": "Dizayn Nazariyasi va Sanoatga Kirish", "description": "Fashion dizayneri qanday fikrlashi, g'oyani qayerdan topishi va sanoat qanday tuzilganini o'rganasiz.", "sourceFile": "1-Bosqich_Dizayn_Nazariyasi_va_Sanoat.md", "heroImage": "assets/images/stage-1/hero.svg", "lessons": [{"id": "s1-l1", "title": "Fashion dizayneri nima bilan shug'ullanadi?", "image": "assets/images/stage-1/process-4steps.svg", "body": "Dizaynerlik 4 bosqichdan iborat: Tadqiqot (Research), Kontseptsiya (Concept), Dizayn ishlab chiqish (Design Development) va Taqdimot (Presentation). Professional dizayner hech qachon o'zi uchun emas, aniq bir 'Target Customer' (maqsadli mijoz) uchun kiyim yaratadi — uning yoshi, turmush tarzi va byudjetini oldindan aniqlaydi.", "exercise": "Xayoliy bitta mijoz yarating (yosh, kasb, turmush tarzi) va shu mijoz uchun 3 ta kiyim g'oyasini tasvirlab yozing.", "terms": [{"term": "Target Customer", "definition": "Dizayn mo'ljallangan aniq maqsadli mijoz — yoshi, turmush tarzi va byudjeti bilan tavsiflanadi."}, {"term": "Design Development", "definition": "G'oyani eskizdan real kiyimga aylantirish bosqichi."}]}, {"id": "s1-l2", "title": "G'oya qayerdan keladi — Research jarayoni", "image": "assets/images/stage-1/primary-secondary-research.svg", "body": "Ikki tadqiqot turi bor: Birlamchi (Primary) — o'zingiz ko'rgan, chizgan, suratga olgan narsalar; Ikkilamchi (Secondary) — boshqalar yaratgan materiallar (kitob, jurnal, internet). Faqat ikkilamchi manbaga tayangan dizayn original hisoblanmaydi.", "exercise": "10 daqiqa atrofga chiqing, sizni qiziqtirgan 5 ta shakl yoki teksturani suratga oling, so'ng biridan ilhomlanib kiyim eskizini chizing.", "terms": [{"term": "Primary Research", "definition": "Bevosita o'zingiz kuzatgan, chizgan yoki suratga olgan ilhom manbalari."}, {"term": "Secondary Research", "definition": "Boshqalar yaratgan, siz topib foydalangan materiallar (kitob, jurnal, internet)."}]}, {"id": "s1-l3", "title": "Mood Board — g'oyani ko'rgazmali qilish", "image": "assets/images/stage-1/moodboard-4elements.svg", "body": "Professional mood board 4 elementdan iborat: rang palitrasi, tekstura/mato namunalari, shakl referanslari va kalit so'zlar. Mood board tayyor kiyim rasmlaridan emas, xom ilhom manbalaridan (tabiat, san'at, arxitektura) tuzilishi kerak.", "exercise": "O'z mavzungiz uchun 4 elementli mood board tuzing — rang, tekstura, shakl, kalit so'zlar.", "terms": [{"term": "Mood Board", "definition": "Rang, tekstura, shakl va kalit so'zlarni birlashtirgan ilhom taxtasi."}]}, {"id": "s1-l4", "title": "Design Story — hikoyani topish", "image": "assets/images/stage-1/design-story-formula.svg", "body": "Formula: [Ilhom manbai] + [Hissiyot/kayfiyat] + [Maqsadli mijoz] = Design Story. Har bir eskiz shu bitta jumlaga mos kelishi kerak.", "exercise": "O'zingizning Design Story jumlangizni formulaga asoslanib yozing.", "terms": [{"term": "Design Story", "definition": "Kolleksiyaning ilhomi, kayfiyati va mijozini bitta jumlada birlashtiruvchi g'oya."}]}, {"id": "s1-l5", "title": "Fashion sanoatining tuzilishi", "image": "assets/images/stage-1/industry-roles.svg", "body": "Sanoatda ko'p turli kasb bor: Fashion Designer, Technical Designer, Patternmaker, Textile Designer, Illustrator, Merchandiser, Stylist, Buyer. Chizish kuchli tomon bo'lmasa ham, boshqa yo'nalishlar mos kelishi mumkin.", "exercise": "Yuqoridagi 8 kasbdan qaysi biri sizga eng qiziq tuyulganini va nima uchunligini yozing.", "terms": [{"term": "Technical Designer", "definition": "Eskizni aniq texnik chizmaga aylantiruvchi va fabrika bilan ishlaydigan mutaxassis."}, {"term": "Merchandiser", "definition": "Qaysi mahsulot qancha ishlab chiqarilishi va qayerda sotilishini rejalashtiruvchi mutaxassis."}]}, {"id": "s1-l6", "title": "Trend qanday o'qiladi", "image": "assets/images/stage-1/trend-sources.svg", "body": "Trendlar ijtimoiy o'zgarish, iqtisodiy holat, texnologiya va san'atdan kelib chiqadi. Eng mashhur dizaynerlar trendga ergashmagan — ular yangi trend yaratgan.", "exercise": "3 oy davomida atrofingizda ko'proq uchragan ranglar/uslublarni kuzatib, 'trend jurnali' yurita boshlang.", "terms": [{"term": "Trend Forecasting", "definition": "Kelajakdagi moda tendensiyalarini ijtimoiy, iqtisodiy va madaniy signallar asosida bashorat qilish."}]}, {"id": "s1-l7", "title": "Portfolio bugundan boshlanadi", "image": "assets/images/stage-1/portfolio-rules.svg", "body": "3 qoida: har bir loyihani saqlang, sana qo'ying, izoh yozing. Maktablar tayyor 'chiroyli' ishdan ko'ra fikrlash jarayonini ko'rishni xohlaydi.", "exercise": "Bugungi sanani qo'yib, birinchi portfolio sahifangizni boshlang.", "terms": [{"term": "Portfolio", "definition": "Dizaynerning eskizlari, g'oyalari va jarayonini to'plagan ishlar to'plami."}]}], "quiz": {"passThreshold": 70, "questions": [{"id": "s1-q1", "type": "mcq", "question": "Dizaynerlik jarayonining birinchi bosqichi qaysi?", "options": ["Taqdimot", "Tadqiqot (Research)", "Tikish", "Sotish"], "answerIndex": 1}, {"id": "s1-q2", "type": "mcq", "question": "'Target Customer' nimani anglatadi?", "options": ["Dizaynerning o'zi", "Kiyim tikadigan fabrika", "Kolleksiya mo'ljallangan aniq mijoz", "Do'kon egasi"], "answerIndex": 2}, {"id": "s1-q3", "type": "true_false", "question": "Faqat ikkilamchi tadqiqotga tayangan dizayn eng original hisoblanadi.", "answer": false}, {"id": "s1-q4", "type": "mcq", "question": "Mood Board qaysi 4 elementdan iborat bo'lishi kerak?", "options": ["Narx, hajm, brend, model", "Rang, tekstura, shakl, kalit so'zlar", "Sana, joy, ism, imzo", "Faqat tayyor kiyim rasmlari"], "answerIndex": 1}, {"id": "s1-q5", "type": "mcq", "question": "Eskizni aniq texnik chizmaga aylantiruvchi mutaxassis kim?", "options": ["Stylist", "Technical Designer", "Buyer", "Illustrator"], "answerIndex": 1}, {"id": "s1-q6", "type": "true_false", "question": "Mashhur dizaynerlar har doim mavjud trendlarga ergashgan, yangi trend yaratmagan.", "answer": false}]}, "game": {"type": "matching", "title": "Mijoz va Dizaynni Moslashtir", "instructions": "Har bir mijoz profilini unga eng mos keladigan dizayn tavsifi bilan bog'lang.", "config": {"pairs": [{"left": "22 yoshli faol talaba, arzon lekin sifatli kiyim izlaydi", "right": "Kundalik, qulay, trikotajdan tikilgan sport uslubidagi to'plam"}, {"left": "35 yoshli biznes-ayol, rasmiy uchrashuvlarga boradi", "right": "Struktura kostyum, neytral ranglar, minimal dizayn"}, {"left": "18 yoshli, kechki tadbirga liboс izlaydi", "right": "Yorqin rang, ipak yoki shifon, drape-li kechki libos"}, {"left": "45 yoshli, barqaror va sifatli kiyimga qiziqadi", "right": "Tabiiy matolar, uzoq xizmat qiluvchi klassik siluet"}]}}}, {"id": "stage-2", "order": 2, "title": "Croquis va Fashion Illustration", "description": "9-bosh croquis proporsiyalari, gesture drawing va kiyimni mato turiga qarab chizishni o'rganasiz.", "sourceFile": "2-Bosqich_Croquis_va_Fashion_Illustration.md", "heroImage": "assets/images/stage-2/hero.svg", "lessons": [{"id": "s2-l1", "title": "Nega real tana emas, croquis chiziladi?", "image": "assets/images/stage-2/9head-proportion-grid.svg", "body": "Sanoat standarti — 9-bosh croquis: 1-bosh, 2-ko'krak, 3-bel (eng tor), 4-chanoq (eng keng), 5-o'rta son, 6-tizza, 7-boldir o'rtasi, 8-to'piq, 9-poyafzal tagi. Bu real emas, kiyimni eng yaxshi ko'rsatish uchun cho'zilgan proporsiya.", "exercise": "9-bosh grid chizing va har bir chiziqni yuqoridagi jadval bo'yicha belgilang.", "terms": [{"term": "Croquis", "definition": "Fashion dizaynida ishlatiladigan, 9 bosh uzunligiga cho'zilgan soddalashtirilgan inson figurasi."}]}, {"id": "s2-l2", "title": "Balance Line — gravitatsiya markazi", "image": "assets/images/stage-2/balance-line.svg", "body": "Markaziy vertikal chiziq (Central Balance Line) figuraning og'irlik markazini ko'rsatadi. Agar figura bitta oyoqqa ko'proq tayansa (contrapposto), chiziq aynan tayanch oyoq to'piig'iga tegishi kerak, aks holda figura 'yiqilayotgandek' ko'rinadi.", "exercise": "Avval Balance Line'ni biroz egri torting, keyin shu chiziqqa mos figura quring.", "terms": [{"term": "Balance Line", "definition": "Figuraning gravitatsiya markazini ko'rsatuvchi markaziy vertikal chiziq."}, {"term": "Contrapposto", "definition": "Figura bitta oyoqqa ko'proq og'irlik bergan tabiiy turish holati."}]}, {"id": "s2-l3", "title": "Gesture Drawing — jon beruvchi chiziqlar", "image": "assets/images/stage-2/gesture-vs-detail.svg", "body": "Aniqlikdan oldin, 10-15 soniyada figuraning umumiy harakati va kayfiyatini ushlab qoluvchi tez chiziqlar (gesture) chiziladi. Aniqlik emas, energiya muhim.", "exercise": "30 soniyadan 10 ta gesture croquis chizing, so'ng eng yoqqan 3 tasiga 5 daqiqadan berib to'liq croquisga aylantiring.", "terms": [{"term": "Gesture Drawing", "definition": "Figuraning harakati va kayfiyatini tez va erkin chiziqlar bilan ushlab qolish usuli."}]}, {"id": "s2-l4", "title": "5 xil poza", "image": "assets/images/stage-2/five-poses.svg", "body": "Portfolio uchun kamida 5 poza kerak: frontal, 3/4 burchak, profil, harakatdagi poza, o'tirgan holat. Har biri turli maqsadga xizmat qiladi.", "exercise": "Har bir poza turi uchun alohida sahifa ajratib, haftasiga bittadan mashq qiling.", "terms": []}, {"id": "s2-l5", "title": "Yuz, qo'l va oyoqni soddalashtirish", "image": "assets/images/stage-2/face-hand-simplified.svg", "body": "Yuz tuxumsimon shakl + 4 qismga bo'linadi, ko'zlar aniq gorizontal chiziq o'rtasida joylashadi. Qo'l avval 'qo'lqop' shakli sifatida, keyin barmoqlarga ajratib chiziladi.", "exercise": "5 ta soddalashtirilgan yuz va 5 ta 'qo'lqop' shaklidan boshlangan qo'l chizing.", "terms": []}, {"id": "s2-l6", "title": "Fold va Drape — kiyimga hajm berish", "image": "assets/images/stage-2/fold-types.svg", "body": "3 burma turi: Tension folds (tortilgan joylarda), Gravity folds (erkin osilgan matoda), Compression folds (kamar/bog'lash joyida). Har biri boshqacha chiziladi.", "exercise": "Haqiqiy mato bo'lagini tortib/bukib, hosil bo'lgan burmalarni kuzatib chizing.", "terms": [{"term": "Ease", "definition": "Kiyim va tana orasidagi, harakat uchun qoldiriladigan tabiiy bo'shliq."}, {"term": "Tension fold", "definition": "Mato tortilgan joyda (masalan, tirsak bukilganda) hosil bo'ladigan burma turi."}, {"term": "Gravity fold", "definition": "Erkin osilgan matoda tortishish kuchi tufayli hosil bo'ladigan burma turi."}]}, {"id": "s2-l7", "title": "Mato turini chizishda ko'rsatish", "image": "assets/images/stage-2/fabric-rendering.svg", "body": "Qattiq mato (denim) — kam va keskin chiziqlar; yumshoq mato (shifon) — ko'p va yumshoq to'lqinsimon chiziqlar; trikotaj — silliq kontur; charm — yorqin highlight nuqtalar.", "exercise": "Bitta ko'ylak shaklini 4 marta, har safar boshqa mato turi sifatida qayta chizing.", "terms": []}], "quiz": {"passThreshold": 70, "questions": [{"id": "s2-q1", "type": "mcq", "question": "Sanoat standarti croquis necha bosh uzunligida chiziladi?", "options": ["7 bosh", "8 bosh", "9 bosh", "10 bosh"], "answerIndex": 2}, {"id": "s2-q2", "type": "mcq", "question": "Balance Line nimani ko'rsatadi?", "options": ["Kiyim rangini", "Figuraning gravitatsiya markazini", "Mato turini", "Yoqa shaklini"], "answerIndex": 1}, {"id": "s2-q3", "type": "true_false", "question": "Gesture drawing'da aniqlik energiyadan muhimroq.", "answer": false}, {"id": "s2-q4", "type": "mcq", "question": "Portfolio uchun kamida nechta poza turi tavsiya etiladi?", "options": ["1", "3", "5", "10"], "answerIndex": 2}, {"id": "s2-q5", "type": "mcq", "question": "Erkin osilgan yubka etagida qaysi burma turi hosil bo'ladi?", "options": ["Tension fold", "Gravity fold", "Compression fold", "Hech qaysi"], "answerIndex": 1}, {"id": "s2-q6", "type": "true_false", "question": "Barcha mato turlari croquisda bir xil chiziq uslubi bilan ko'rsatiladi.", "answer": false}]}, "game": {"type": "drag_build", "title": "Croquis Quruvchi", "instructions": "Tana qismlarini to'g'ri tartibda 9-bosh gridga joylashtiring.", "config": {"gridUnits": 9, "pieces": [{"id": "head", "label": "Bosh", "correctUnit": 1}, {"id": "chest", "label": "Ko'krak chizig'i", "correctUnit": 2}, {"id": "waist", "label": "Bel (eng tor)", "correctUnit": 3}, {"id": "hip", "label": "Chanoq (eng keng)", "correctUnit": 4}, {"id": "midthigh", "label": "O'rta son", "correctUnit": 5}, {"id": "knee", "label": "Tizza", "correctUnit": 6}, {"id": "calf", "label": "Boldir o'rtasi", "correctUnit": 7}, {"id": "ankle", "label": "To'piq", "correctUnit": 8}, {"id": "floor", "label": "Poyafzal tagi", "correctUnit": 9}]}}}, {"id": "stage-3", "order": 3, "title": "Rang Nazariyasi — Chuqur Daraja", "description": "Rangning nisbiyligi, simultaneous contrast va issiq/sovuq tushunchalarini o'rganasiz.", "sourceFile": "3-Bosqich_Rang_Nazariyasi.md", "heroImage": "assets/images/stage-3/hero.svg", "lessons": [{"id": "s3-l1", "title": "Rang mutlaq emas — nisbiy", "image": "assets/images/stage-3/simultaneous-contrast.svg", "body": "Bir xil rang turli fonda boshqacha ko'rinadi. Kulrang kvadrat qora fonda ochroq, oq fonda to'qroq ko'rinadi — garchi rangning o'zi bir xil bo'lsa ham.", "exercise": "Bir xil rangdagi 2 ta kvadratni bittasini qora, bittasini oq fon ustiga qo'yib solishtiring.", "terms": [{"term": "Simultaneous Contrast", "definition": "Bir xil rangning atrofidagi fonga qarab boshqacha qabul qilinishi hodisasi."}]}, {"id": "s3-l2", "title": "Bitta rang, ikki taassurot", "image": "assets/images/stage-3/context-effect.svg", "body": "Xuddi shu rang, o'xshash fonga qo'yilsa 'yashiradi', keskin farqli fonga qo'yilsa 'baland ovozda' ajralib turadi. Rang tanlash hech qachon alohida emas, kontekstda qilinadi.", "exercise": "Bitta kiyim eskizini 3 xil fon/aksessuar rangi bilan qayta chizing va taassurotni solishtiring.", "terms": []}, {"id": "s3-l3", "title": "Optik aralashtirish", "image": "assets/images/stage-3/optical-mixing.svg", "body": "Fizik aralashtirish (bo'yoqlarni qo'shish) va optik aralashtirish (ranglarni yonma-yon joylashtirib, ko'zga 'aralash' qildirish) farqlanadi. Melanj matolar aynan optik aralashtirish misoli.", "exercise": "Ikki rangli mayda mato bo'laklarini shaxmat tartibida yopishtirib, yaqin va uzoqdan solishtiring.", "terms": [{"term": "Optik Aralashtirish", "definition": "Ranglarni fizik aralashtirmasdan, yonma-yon joylashtirib ko'zga aralash qildirish usuli."}]}, {"id": "s3-l4", "title": "Vibratsiya effekti", "image": "assets/images/stage-3/vibrating-boundary.svg", "body": "Ba'zi to'yingan rang juftliklari (qizil-ko'k, yashil-binafsha) yonma-yon qo'yilganda chegara 'titrayotgandek' ko'rinadi. Bu effekt ataylab yoki oldini olib ishlatiladi.", "exercise": "To'yingan qizil va yashilni yonma-yon qo'ying, so'ng orasiga oq chiziq qo'shib farqni kuzating.", "terms": [{"term": "Vibrating Boundary", "definition": "To'yingan qarama-qarshi ranglar chegarasida yuzaga keladigan optik 'titrash' effekti."}]}, {"id": "s3-l5", "title": "Issiq va sovuq — chuqur daraja", "image": "assets/images/stage-3/warm-cool-within-hue.svg", "body": "Har bir rangning o'zida ham issiq va sovuq versiyalari bor (masalan, sariqqa moyil qizil vs ko'kka moyil qizil). Mavzuga mos harorat tanlash muhim.", "exercise": "Bir nechta turli qizil namunani issiqdan sovuqqa tartiblang.", "terms": [{"term": "Rang Harorati", "definition": "Rangning issiq (sariqqa moyil) yoki sovuq (ko'kka moyil) tomonga moyilligi."}]}, {"id": "s3-l6", "title": "Fashion palette qurish", "image": "assets/images/stage-3/60-30-10-rule.svg", "body": "60-30-10 qoidasi: hero rang (60%), supporting ranglar (30%), accent rang (10%). Palette qurishda ranglar vibratsiya qilmasligini, hero rang turli fonda o'zligini saqlashini tekshirish kerak.", "exercise": "Design Story'ingiz uchun 5 ranglik palette tuzing va 60-30-10 qoidasini qo'llang.", "terms": [{"term": "60-30-10 Qoidasi", "definition": "Palette qurishda hero, supporting va accent ranglar nisbatini belgilaydigan qoida."}]}], "quiz": {"passThreshold": 70, "questions": [{"id": "s3-q1", "type": "true_false", "question": "Bir xil rang har doim, qaysi fonda bo'lishidan qat'i nazar, bir xil ko'rinadi.", "answer": false}, {"id": "s3-q2", "type": "mcq", "question": "Simultaneous Contrast nima?", "options": ["Rangning fonga qarab boshqacha ko'rinishi", "Ikki matoni aralashtirish", "Rangni qorong'ida ko'rish", "Bir xil rangni ikki marta bo'yash"], "answerIndex": 0}, {"id": "s3-q3", "type": "mcq", "question": "Melanj mato qaysi tushunchaga misol bo'ladi?", "options": ["Vibrating boundary", "Optik aralashtirish", "Rang harorati", "60-30-10 qoidasi"], "answerIndex": 1}, {"id": "s3-q4", "type": "mcq", "question": "60-30-10 qoidasida 60% qaysi rangga tegishli?", "options": ["Accent", "Supporting", "Hero", "Neytral"], "answerIndex": 2}, {"id": "s3-q5", "type": "true_false", "question": "Har bir rangning o'zida issiq va sovuq versiyalari mavjud.", "answer": true}, {"id": "s3-q6", "type": "mcq", "question": "Vibrating boundary effektini yumshatish uchun nima qo'shish mumkin?", "options": ["Yana bir to'yingan rang", "Neytral (oq/qora) chiziq", "Hech narsa qo'shib bo'lmaydi", "Faqat yorug'lik o'zgartiriladi"], "answerIndex": 1}]}, "game": {"type": "perception_challenge", "title": "Rang Illyuziyasi Sinovi", "instructions": "Har bir savolda bir xil rangdagi ikki kvadrat turli fonda ko'rsatiladi — ular sizga bir xil ko'rinadimi yoki boshqacha?", "config": {"rounds": [{"color": "#8a8a8a", "backgroundA": "#1a1a1a", "backgroundB": "#f2f2f2", "correctAnswer": "different_perception_same_color"}, {"color": "#b5651d", "backgroundA": "#2e1500", "backgroundB": "#ffe4c4", "correctAnswer": "different_perception_same_color"}], "scoringNote": "To'g'ri javob: ikkalasi ham AYNAN bir xil rang, lekin fon ta'sirida boshqacha ko'rinadi."}}}, {"id": "stage-4", "order": 4, "title": "Pattern Making Asoslari", "description": "Sloper, dart manipulation va grainline kabi lekalo yasash tushunchalarini o'rganasiz.", "sourceFile": "4-Bosqich_Pattern_Making_Asoslari.md", "heroImage": "assets/images/stage-4/hero.svg", "lessons": [{"id": "s4-l1", "title": "Kerakli asboblar", "image": "assets/images/stage-4/tools.svg", "body": "Pattern paper, L-square, hip curve, french curve, o'lchov lentasi, notcher, awl. Boshlang'ich alternativalar: katta likop (hip curve o'rniga), kichik doira (armhole o'rniga).", "exercise": "O'zingizda mavjud bo'lgan alternativ asboblar ro'yxatini tuzing.", "terms": [{"term": "Hip Curve", "definition": "Chanoq va yon chiziqlarning yumshoq egri chizig'ini chizish uchun maxsus chizg'ich."}, {"term": "French Curve", "definition": "Armhole va yoqa kabi kichik egri chiziqlarni chizish uchun maxsus chizg'ich."}]}, {"id": "s4-l2", "title": "Sloper — hamma narsaning asosi", "image": "assets/images/stage-4/sloper-types.svg", "body": "Sloper — aniq tana o'lchamlariga mos, bezaksiz bazaviy lekalo. 4 asosiy turi: bodice, skirt, sleeve, pants. Bir marta yaratilib, har doim qayta ishlatiladi.", "exercise": "O'z asosiy tana o'lchamlaringizni (bel, chanoq, ko'krak) o'lchab yozib qo'ying.", "terms": [{"term": "Sloper (Block)", "definition": "Aniq tana o'lchamlariga mos, bezaksiz, bazaviy lekalo."}, {"term": "Pattern Manipulation", "definition": "Sloperni o'zgartirish orqali yangi dizaynlar yaratish jarayoni."}]}, {"id": "s4-l3", "title": "Dart — tekis matoni tanaga moslashtirish", "image": "assets/images/stage-4/dart-concept.svg", "body": "Dart — matoning ortiqcha qismini uchburchak shaklida 'yig'ib', tekis matoni tananing egri shakliga moslashtiradi. Dart turli joyga (yelka, yon, markaz) ko'chirilishi mumkin — natija bir xil, ko'rinish boshqacha.", "exercise": "Pivot method mashqini bajaring: bodice sloperda dartni yon tomondan yelkaga ko'chiring.", "terms": [{"term": "Dart", "definition": "Matoning ortiqcha qismini uchburchak shaklida yig'ib, uni tananing egri shakliga moslashtiruvchi qirqim."}, {"term": "Dart Manipulation (Pivot Method)", "definition": "Dartni bir joydan boshqa joyga ko'chirish texnikasi."}]}, {"id": "s4-l4", "title": "Grainline va Bias Cut", "image": "assets/images/stage-4/grainline-bias.svg", "body": "Grainline — matoning tik tolasiga parallel joylashtiriladigan chiziq. Noto'g'ri grainline kiyimni egilib qoladi. 45 gradusga burilgan grainline — bias cut, tanaga yopishuvchi drape beradi.", "exercise": "Mato bo'lagini tik va 45 gradusda tortib, elastiklik farqini his qiling.", "terms": [{"term": "Grainline", "definition": "Lekaloda matoning tik tolasi yo'nalishini ko'rsatuvchi chiziq."}, {"term": "Bias Cut", "definition": "Matoni 45 gradus burchak ostida kesish texnikasi, tanaga yopishuvchi drape beradi."}]}, {"id": "s4-l5", "title": "Seam Allowance va Notch", "image": "assets/images/stage-4/seam-allowance-notch.svg", "body": "Seam allowance — tikish uchun qoldiriladigan qo'shimcha mato zaxirasi (1-1.5 sm), faqat yakuniy lekaloga qo'shiladi. Notch — qismlarning qanday birlashishini ko'rsatuvchi kesikcha belgilar.", "exercise": "Oddiy lekalo chetiga seam allowance chizing va notch belgilarini qo'ying.", "terms": [{"term": "Seam Allowance", "definition": "Tikish uchun lekalo chetiga qo'shiladigan qo'shimcha mato zaxirasi."}, {"term": "Notch", "definition": "Lekalo qismlarining qanday birlashishini ko'rsatuvchi kichik belgi kesikcha."}]}, {"id": "s4-l6", "title": "Armstrong vs Aldrich — ikki maktab", "image": "assets/images/stage-4/us-vs-uk-system.svg", "body": "Armstrong (Amerika, dyuym, dart manipulation'ga urg'u) va Aldrich (Britaniya, metrik, standart jadvallar). O'zbekistonda metrik tizim qulayroq boshlanish nuqtasi.", "exercise": "Ikkala tizimda bir xil o'lcham qanday ifodalanishini solishtiring (masalan, 60 sm vs 24 dyuym).", "terms": []}, {"id": "s4-l7", "title": "Birinchi loyiha — To'g'ri Yubka", "image": "assets/images/stage-4/straight-skirt-steps.svg", "body": "Kerakli o'lchamlar: bel, chanoq, bel-chanoq masofasi, uzunlik. Jarayon: to'rtburchak asos, dart bilan bel-chanoq farqini yig'ish, hip curve bilan yon chiziq, grainline belgilash.", "exercise": "O'z o'lchamlaringiz bilan oddiy to'g'ri yubka lekalosini chizishga harakat qiling.", "terms": []}], "quiz": {"passThreshold": 70, "questions": [{"id": "s4-q1", "type": "mcq", "question": "Sloper nima?", "options": ["Tayyor kiyim", "Bezaksiz, bazaviy lekalo", "Mato turi", "Rang palitrasi"], "answerIndex": 1}, {"id": "s4-q2", "type": "mcq", "question": "Dart nima uchun kerak?", "options": ["Matoni bezash uchun", "Tekis matoni tananing egri shakliga moslashtirish uchun", "Rangni o'zgartirish uchun", "Narxni pasaytirish uchun"], "answerIndex": 1}, {"id": "s4-q3", "type": "true_false", "question": "Dart faqat bitta joyda — yon tomonda — bo'lishi mumkin, boshqa joyga ko'chirib bo'lmaydi.", "answer": false}, {"id": "s4-q4", "type": "mcq", "question": "Bias cut qanday hosil qilinadi?", "options": ["Grainline'ni 45 gradusga burish orqali", "Dartni yopish orqali", "Seam allowance qo'shish orqali", "Notch qo'yish orqali"], "answerIndex": 0}, {"id": "s4-q5", "type": "mcq", "question": "Seam allowance qachon qo'shiladi?", "options": ["Sloperning o'ziga", "Faqat yakuniy, ishlab chiqarishga tayyor lekaloga", "Hech qachon kerak emas", "Faqat rang tanlashda"], "answerIndex": 1}, {"id": "s4-q6", "type": "true_false", "question": "Aldrich tizimi asosan metrik (santimetr) o'lchov tizimidan foydalanadi.", "answer": true}]}, "game": {"type": "rotate_puzzle", "title": "Dart Pivot Puzzle", "instructions": "Yon tomondagi dartni yeliadan yopib, uni yelka nuqtasiga 'ko'chiring' — bodice shakli o'zgarmasligini kuzating.", "config": {"startDartPosition": "side", "targetDartPosition": "shoulder", "pivotPoint": "bust_point", "steps": ["Yangi dart nuqtasidan ko'krak nuqtasigacha chiziq torting", "Chiziq bo'ylab qirqing (ko'krak nuqtasida to'liq ajratmang)", "Original (yon) dartni yoping", "Yangi (yelka) dart avtomatik ochilishini kuzating"]}}}, {"id": "stage-5", "order": 5, "title": "Draping Asoslari", "description": "Manekenda mato bilan to'g'ridan-to'g'ri ishlash — landmark chiziqlar, ease va true/design lines.", "sourceFile": "5-Bosqich_Draping_Asoslari.md", "heroImage": "assets/images/stage-5/hero.svg", "lessons": [{"id": "s5-l1", "title": "Draping va Pattern Making — hamkorlar", "image": "assets/images/stage-5/draping-vs-flat.svg", "body": "Pattern making — matematik, qog'ozda. Draping — mato bilan to'g'ridan-to'g'ri manekenda 'haykaltaroshlik'. Ikkalasi ham dizaynerga kerak, vaziyatga qarab tanlanadi.", "exercise": "Qaysi shakllarni hisoblash osonroq, qaysilarini mato bilan 'topish' osonroq — ro'yxat tuzing.", "terms": []}, {"id": "s5-l2", "title": "Manekenni xaritalash — Landmark Lines", "image": "assets/images/stage-5/landmark-lines.svg", "body": "7 asosiy chiziq: Center Front, Center Back, Bust line, Waistline, Hip line, Shoulder line, Armhole. Bular draping jarayonida yo'qolib qolmaslik uchun 'xarita' vazifasini bajaradi.", "exercise": "Qog'ozga inson siluetini chizib, 7 landmark chiziqni joylashtiring.", "terms": [{"term": "Landmark Lines", "definition": "Dress form ustida draping uchun belgilanadigan 7 asosiy referens chiziq."}, {"term": "Center Front / Center Back", "definition": "Tananing old va orqa markaziy vertikal chiziqlari."}]}, {"id": "s5-l3", "title": "True Grain — mato tayyorlash", "image": "assets/images/stage-5/grain-types.svg", "body": "3 yo'nalish: Straight grain (tik tola, kam cho'ziluvchi), Cross grain (ko'ndalang), True bias (45 gradus, eng oquvchi). Draping uchun mato tolalari to'g'ri burchak hosil qilishi shart.", "exercise": "Mato ipini chetidan tortib chiqarib, shu chiziq bo'ylab to'g'ri kesing.", "terms": [{"term": "Straight Grain", "definition": "Matoning tik, eng kam cho'ziluvchi tola yo'nalishi."}, {"term": "True Bias", "definition": "Matoning 45 gradus burchakdagi, eng ko'p cho'ziluvchi yo'nalishi."}]}, {"id": "s5-l4", "title": "Bodice Draping jarayoni", "image": "assets/images/stage-5/bodice-draping-steps.svg", "body": "Mato kesish → grainline moslashtirish → ko'krak atrofida silliqlash (dart tabiiy hosil bo'ladi) → dartni pin qilish → chiziqlarni belgilash → manekendan yechib truing qilish.", "exercise": "Jarayonni video orqali kuzatib, qadamlarni o'z so'zlaringiz bilan yozib chiqing.", "terms": [{"term": "Truing", "definition": "Qo'lda chizilgan noaniq chiziqlarni chizg'ich bilan aniq va simmetrik qilib qayta chizish jarayoni."}]}, {"id": "s5-l5", "title": "Ease — nafas oladigan bo'shliq", "image": "assets/images/stage-5/ease-two-finger-test.svg", "body": "Wearing ease (asosiy, harakat uchun) va Design ease (uslub uchun qo'shimcha). Ikki barmoq usuli: mato va maneken orasiga ikki barmoq erkin kirsa — ease yetarli.", "exercise": "Mato bo'lagini avval tortib, keyin bo'sh qoldirib mahkamlang va farqni his qiling.", "terms": [{"term": "Ease", "definition": "Kiyim va tana orasida qulaylik va harakat uchun qoldiriladigan bo'shliq."}, {"term": "Wearing Ease", "definition": "Har qanday kiyimda bo'lishi shart bo'lgan minimal bo'shliq."}, {"term": "Design Ease", "definition": "Dizaynerning uslubiga bog'liq qo'shimcha bo'shliq (masalan, oversized kiyimda)."}]}, {"id": "s5-l6", "title": "True Lines vs Design Lines", "image": "assets/images/stage-5/true-vs-design-lines.svg", "body": "True Lines — tananing tuzilishidan kelib chiquvchi, o'zgarmas chiziqlar. Design Lines — dizaynerning ijodiy tanlovi (masalan, princess seam). Faqat Design Lines erkin o'zgartiriladi.", "exercise": "Bitta kiyim rasmida qaysi chiziqlar True, qaysilari Design ekanini belgilang.", "terms": [{"term": "True Lines", "definition": "Tananing tuzilishidan kelib chiqadigan, o'zgarmas asosiy chiziqlar."}, {"term": "Design Lines", "definition": "Dizaynerning ijodiy tanlovi bilan qo'shiladigan qo'shimcha choklar."}]}], "quiz": {"passThreshold": 70, "questions": [{"id": "s5-q1", "type": "mcq", "question": "Draping va pattern making o'rtasidagi munosabat qanday?", "options": ["Raqib usullar", "Bir-birini to'ldiruvchi usullar", "Draping eskirgan usul", "Ular bir xil narsa"], "answerIndex": 1}, {"id": "s5-q2", "type": "mcq", "question": "Landmark Lines nima uchun kerak?", "options": ["Faqat bezak uchun", "Draping jarayonida yo'qolib qolmaslik uchun referens", "Rang tanlash uchun", "Narx hisoblash uchun"], "answerIndex": 1}, {"id": "s5-q3", "type": "mcq", "question": "Eng ko'p cho'ziluvchi mato yo'nalishi qaysi?", "options": ["Straight grain", "Cross grain", "True bias", "Hech qaysi"], "answerIndex": 2}, {"id": "s5-q4", "type": "true_false", "question": "Draping'da dart oldindan hisoblanadi, mato 'aytib bermaydi'.", "answer": false}, {"id": "s5-q5", "type": "mcq", "question": "Ease tekshirish uchun qanday usul ishlatiladi?", "options": ["Bir qo'l usuli", "Ikki barmoq usuli", "Ko'z bilan taxmin qilish", "Faqat o'lchov lentasi"], "answerIndex": 1}, {"id": "s5-q6", "type": "true_false", "question": "Design Lines o'zgartirilmaydigan, qat'iy chiziqlar hisoblanadi.", "answer": false}]}, "game": {"type": "point_placement", "title": "Landmark Nuqtalarini Belgila", "instructions": "Statik dress-form rasmida 7 ta landmark nuqtani to'g'ri joyga bosing.", "config": {"points": [{"id": "cf", "label": "Center Front"}, {"id": "cb", "label": "Center Back"}, {"id": "bust", "label": "Bust Line"}, {"id": "waist", "label": "Waistline"}, {"id": "hip", "label": "Hip Line"}, {"id": "shoulder", "label": "Shoulder Line"}, {"id": "armhole", "label": "Armhole"}], "toleranceRadiusPx": 25}}}, {"id": "stage-6", "order": 6, "title": "Couture va Pattern Magic", "description": "Couture qo'l texnikalari va Nakamichi uslubidagi ijodiy, geometrik pattern cutting.", "sourceFile": "6-Bosqich_Couture_va_Pattern_Magic.md", "heroImage": "assets/images/stage-6/hero.svg", "lessons": [{"id": "s6-l1", "title": "Couture nima?", "image": "assets/images/stage-6/couture-vs-rtw.svg", "body": "Couture — sifat va texnika darajasi: qo'lda tikuv, mijozga individual moslashtirish, murakkab ichki tuzilma. Ready-to-wear'dan farqi — sekinlik va aniqlik hisobiga sifat.", "exercise": "O'zingiz ko'rgan kiyimlarda qaysi belgilar 'couture darajasi'ni ko'rsatishi mumkinligini yozing.", "terms": [{"term": "Haute Couture", "definition": "Fransiyada qattiq nazorat qilinadigan, individual mijozga moslashtirilgan yuqori sifatli tikuv darajasi."}]}, {"id": "s6-l2", "title": "Underlining va Interfacing", "image": "assets/images/stage-6/underlining-interfacing.svg", "body": "Underlining — asosiy mato bilan bitta qatlam sifatida ishlaydigan 'skelet'. Interfacing — faqat ma'lum qismlarga (yoqa, manjet) qattiqlik beruvchi qatlam. Lining (astar) esa faqat qulaylik uchun alohida ichki qatlam.", "exercise": "Ikki mato bo'lagini (biriga interfacing/karton qo'shib) egib, farqni solishtiring.", "terms": [{"term": "Underlining", "definition": "Asosiy mato bilan birga ishlaydigan, shaklni mustahkamlovchi ichki qatlam."}, {"term": "Interfacing", "definition": "Yoqa, manjet kabi qismlarga qattiqlik beruvchi qo'shimcha qatlam."}, {"term": "Boning", "definition": "Kiyimga tananing shaklini ushlab turish xususiyatini beruvchi ingichka qattiq tayoqchalar."}]}, {"id": "s6-l3", "title": "Qo'l tikuvi nima uchun kerak?", "image": "assets/images/stage-6/hand-stitches.svg", "body": "Pick stitch, catch stitch, slip stitch — bular mashina bera olmaydigan, ko'rinmas va nafis natijalar beradi.", "exercise": "Mato bo'lagida oddiy hemni avval mashinada, keyin qo'lda catch stitch bilan tikib solishtiring.", "terms": [{"term": "Catch Stitch", "definition": "Hem (etak) larni tashqi tomondan ko'rinmas holda mahkamlovchi qo'l stежogi."}]}, {"id": "s6-l4", "title": "Pattern Magic — dart dizayn elementiga aylanadi", "image": "assets/images/stage-6/dart-as-design.svg", "body": "Nakamichi savoli: agar dart yopilishi shart bo'lmasa-chi? Agar uni ataylab ochiq qoldirib, undan yangi hajm yaratsak-chi? Dart endi 'muammo' emas, dizaynning o'zi.", "exercise": "O'zingiz ko'rgan kiyimda dart o'rniga qo'llanilgan g'ayrioddiy hajm yechimini toping (agar bo'lsa).", "terms": []}, {"id": "s6-l5", "title": "Slash-and-Spread texnikasi", "image": "assets/images/stage-6/slash-and-spread.svg", "body": "Sloperga chiziqlar (slash line) chiziladi → shu chiziqlar bo'ylab qirqiladi (sharnir sifatida bir chetini ulangan qoldirib) → orasi 'yoyiladi' (spread) → natijada tekis lekalo 3D hajm olish potensialiga ega bo'ladi.", "exercise": "Sloperning bir qismiga parallel chiziqlar torting, qirqing va bo'shliq qo'shib 'yoying' — natijani kuzating.", "terms": [{"term": "Slash-and-Spread", "definition": "Lekaloni chiziqlar bo'ylab qirqib, orasiga bo'shliq qo'shish orqali hajm yaratish texnikasi."}]}, {"id": "s6-l6", "title": "Konus geometriyasi", "image": "assets/images/stage-6/cone-geometry.svg", "body": "Doiradan bitta sektor kesib olinsa, qolgan qism o'z-o'zidan konusga 'yopiladi'. Kichik sektor — yassi keng konus; katta sektor — tor baland konus. Bell yenglar shu mantiqda quriladi.", "exercise": "Qog'oz doiradan turli o'lchamdagi sektorlar kesib, hosil bo'lgan konuslarni solishtiring.", "terms": []}, {"id": "s6-l7", "title": "3D-dan 2D-ga fikrlash", "image": "assets/images/stage-6/3d-to-2d-thinking.svg", "body": "An'anaviy yo'nalish: o'lcham → lekalo → kiyim. Nakamichi teskari yo'l taklif qiladi: avval erkin eksperiment (buklash, burish), keyin natijani tanaga moslashtirish.", "exercise": "Qog'oz varag'ini rejasiz buklab-burishtirib, hosil bo'lgan shaklni tananing qaysi qismiga mos kelishi mumkinligini o'ylab ko'ring.", "terms": []}], "quiz": {"passThreshold": 70, "questions": [{"id": "s6-q1", "type": "mcq", "question": "Underlining va Lining o'rtasidagi asosiy farq nima?", "options": ["Ular bir xil narsa", "Underlining asosiy mato bilan birga ishlaydi, lining alohida osiladi", "Lining faqat rangli bo'ladi", "Underlining faqat kechki liboslarda ishlatiladi"], "answerIndex": 1}, {"id": "s6-q2", "type": "mcq", "question": "Boning nima uchun ishlatiladi?", "options": ["Rang berish uchun", "Tananing shaklini ushlab turish uchun", "Matoni yumshatish uchun", "Narxni oshirish uchun"], "answerIndex": 1}, {"id": "s6-q3", "type": "true_false", "question": "Qo'l tikuvi hech qachon mashina tikuvidan sifatliroq natija bermaydi.", "answer": false}, {"id": "s6-q4", "type": "mcq", "question": "Pattern Magic uslubida dart nima hisoblanadi?", "options": ["Faqat texnik muammo", "Dizaynning o'zi bo'lishi mumkin", "Har doim yopilishi shart", "Hech qanday ahamiyati yo'q"], "answerIndex": 1}, {"id": "s6-q5", "type": "mcq", "question": "Slash-and-spread texnikasi natijasida nima hosil bo'ladi?", "options": ["Tekis, o'zgarmagan lekalo", "Hajm/drape potensialiga ega yangi shakl", "Faqat rang o'zgarishi", "Faqat narx o'zgarishi"], "answerIndex": 1}, {"id": "s6-q6", "type": "true_false", "question": "Doiradan katta sektor kesilsa, tor va baland konus hosil bo'ladi.", "answer": true}]}, "game": {"type": "interactive_diagram", "title": "Slash-and-Spread Simulyatori", "instructions": "Chizilgan slash chiziqlarini bosing, so'ng ularni sudrab 'yoying' — natijada shakl qanday o'zgarishini kuzating.", "config": {"baseShape": "bodice_panel", "slashLines": 4, "maxSpreadCm": 5}}}, {"id": "stage-7", "order": 7, "title": "Tekstil Dizayni va Naqsh Yaratish", "description": "Motif, repeat turlari va an'anaviy naqshlarni zamonaviylashtirish jarayonini o'rganasiz.", "sourceFile": "7-Bosqich_Tekstil_Dizayni.md", "heroImage": "assets/images/stage-7/hero.svg", "lessons": [{"id": "s7-l1", "title": "Motif — naqshning eng kichik birligi", "image": "assets/images/stage-7/motif-concept.svg", "body": "Motif — tanlangan kichik tasvir (gul, geometrik shakl). Naqsh esa motifning tizimli takrorlanishi. Bitta gul chizish badiiy ish, uni 'uzluksiz' takrorlash — tekstil dizayni ilmi.", "exercise": "Sodda bitta motif chizing va uni 'asosiy motif' sifatida saqlang.", "terms": [{"term": "Motif", "definition": "Takrorlanuvchi naqshning eng kichik, asosiy vizual elementi."}]}, {"id": "s7-l2", "title": "Repeat turlari", "image": "assets/images/stage-7/repeat-types.svg", "body": "Block repeat (to'g'ri grid), Half-drop (eng ko'p ishlatiladigan, tabiiy ko'rinish), Brick, Mirror, Ogee. Half-drop ko'zga eng tabiiy ko'rinadi, chunki qattiq vertikal/gorizontal chiziqlarni yashiradi.", "exercise": "Bitta motifni block va half-drop tartibida joylashtirib solishtiring.", "terms": [{"term": "Repeat", "definition": "Motifning matoning butun yuzasida tizimli takrorlanish tartibi."}, {"term": "Half-drop Repeat", "definition": "Har ikkinchi ustun yarim motif balandligiga pastga surilgan, eng ko'p ishlatiladigan repeat turi."}]}, {"id": "s7-l3", "title": "Seamless Repeat siri", "image": "assets/images/stage-7/seamless-flip-shift.svg", "body": "Motif kvadrat markazida emas, to'rtta burchakka bo'lib joylashtiriladi, so'ng burchaklar markazga 'flip-and-shift' qilinadi — natijada chekkalar bir-biriga mukammal mos keladi.", "exercise": "Motifni bitta burchakka joylashtirib, 4 nusxasini 2x2 tartibida qo'yib, chekkalar qanday birlashishini kuzating.", "terms": [{"term": "Seamless Repeat", "definition": "Chekkalari bir-biriga mukammal mos keladigan, 'chokssiz' ko'rinadigan naqsh takrorlanishi."}]}, {"id": "s7-l4", "title": "Scale (Masshtab)", "image": "assets/images/stage-7/scale-comparison.svg", "body": "Kichik masshtab — nozik, ko'p kiyimga mos; katta masshtab — jasur, sodda siluetlarga mos (kichik konstruksiyada motif 'kesilib' qolishi mumkin).", "exercise": "Bitta motifni 3 xil o'lchamda chizing va turli kiyim turiga 'kiydirib ko'ring'.", "terms": [{"term": "Scale", "definition": "Naqsh motivining kattaligi va bu kattalikning kiyimga ta'siri."}]}, {"id": "s7-l5", "title": "Rang ajratish (Colorway)", "image": "assets/images/stage-7/colorway-variants.svg", "body": "Bitta naqsh dizayni bir nechta rang variantida (colorway) taqdim etiladi — issiq, sovuq, neytral, jasur versiyalar. Bu vaqtni tejaydi va turli mijoz didiga xizmat qiladi.", "exercise": "O'z naqshingiz uchun 3-4 xil colorway yarating (3-bosqich rang bilimlaridan foydalanib).", "terms": [{"term": "Colorway", "definition": "Bitta naqsh dizaynining turli rang kombinatsiyasidagi versiyasi."}]}, {"id": "s7-l6", "title": "An'anaviy naqshlarni zamonaviylashtirish", "image": "assets/images/stage-7/traditional-to-modern.svg", "body": "4 qadam: kuzatish/tanlash → soddalashtirish → masshtab/rang o'zgartirish → yangi repeat tizimiga joylashtirish. Asl naqshning madaniy ma'nosini hurmat qilish muhim.", "exercise": "Bitta o'zbek an'anaviy naqsh elementini (masalan, bodom) tanlab, uni zamonaviy repeat naqshga aylantiring.", "terms": []}, {"id": "s7-l7", "title": "Coordinating Prints", "image": "assets/images/stage-7/main-coordinate-blender.svg", "body": "Main print (asosiy, diqqat tortuvchi), Coordinate print (bir xil palitrada ikkinchi darajali), Blender (kichik, deyarli bir tekis 'dam olish' naqshi).", "exercise": "Main printingiz uchun coordinate va blender naqshlarini qo'shimcha yarating.", "terms": [{"term": "Main Print", "definition": "Kolleksiyaning eng diqqat tortuvchi, asosiy naqsh dizayni."}, {"term": "Blender", "definition": "Boshqa naqshlar orasida 'dam olish joyi' vazifasini bajaruvchi kichik, deyarli bir tekis naqsh."}]}], "quiz": {"passThreshold": 70, "questions": [{"id": "s7-q1", "type": "mcq", "question": "Motif nima?", "options": ["Naqshning eng kichik, asosiy elementi", "Matoning nomi", "Rang palitrasi", "Kiyim siluetining nomi"], "answerIndex": 0}, {"id": "s7-q2", "type": "mcq", "question": "Eng ko'p ishlatiladigan repeat turi qaysi?", "options": ["Block repeat", "Half-drop repeat", "Ogee repeat", "Brick repeat"], "answerIndex": 1}, {"id": "s7-q3", "type": "true_false", "question": "Seamless repeat uchun motif har doim kvadratning markazida joylashtiriladi.", "answer": false}, {"id": "s7-q4", "type": "mcq", "question": "Katta masshtabdagi naqsh qanday siluetga ko'proq mos keladi?", "options": ["Ko'p choki bor murakkab kiyim", "Sodda, keng siluetli kiyim", "Faqat aksessuarlarga", "Hech qaysi biriga mos kelmaydi"], "answerIndex": 1}, {"id": "s7-q5", "type": "mcq", "question": "Colorway nima?", "options": ["Naqshning turli rang versiyasi", "Matoning turi", "Repeat turi", "Motif nomi"], "answerIndex": 0}, {"id": "s7-q6", "type": "mcq", "question": "Blender naqshning vazifasi nima?", "options": ["Eng diqqat tortuvchi bo'lish", "Boshqa naqshlar orasida 'dam olish joyi' berish", "Faqat aksessuarda ishlatilish", "Rangni yo'qotish"], "answerIndex": 1}]}, "game": {"type": "tile_matching", "title": "Repeat Naqsh Boshqotirmasi", "instructions": "Motif kartochkalarini gridga sudrab, half-drop repeat tartibida to'g'ri joylashtiring — chekkalar 'mos kelganda' yashil rangga aylanadi.", "config": {"gridCols": 4, "gridRows": 4, "repeatType": "half_drop", "motifId": "user_or_default_motif"}}}, {"id": "stage-8", "order": 8, "title": "Sanoat va Biznes Tushunchasi", "description": "Brend qurish, licensing, narx darajalari va o'z mini-brend rejangizni tuzishni o'rganasiz.", "sourceFile": "8-Bosqich_Sanoat_va_Biznes.md", "heroImage": "assets/images/stage-8/hero.svg", "lessons": [{"id": "s8-l1", "title": "Designer'dan Brand'ga", "image": "assets/images/stage-8/designer-to-brand.svg", "body": "Eski model: dizayner — ijodiy san'atkor. Yangi model: dizayner nomi — brend, savdo ko'rsatkichlari bilan o'lchanadi. Zamonaviy muvaffaqiyat uchun brend qurish mahorati ham kerak.", "exercise": "3 ta tanigan brendni sanab, ular 'dizayner' emas 'brend' sifatida qanday ishlashini yozing.", "terms": []}, {"id": "s8-l2", "title": "Licensing (Litsenziyalash)", "image": "assets/images/stage-8/licensing-pros-cons.svg", "body": "Dizayner nomini boshqa kompaniyaga 'ijaraga berish'. Ijobiy: daromad va tanilish oshadi. Xavfli: sifat nazorati yo'qolib, haddan tashqari ko'p litsenziya brend obro'sini yo'qotishi mumkin.", "exercise": "Licensing'ning bitta ijobiy va bitta xavfli tomonini o'z so'zingiz bilan tushuntiring.", "terms": [{"term": "Licensing", "definition": "Dizayner yoki brendning o'z nomini boshqa kompaniyaga foyda evaziga 'ijaraga berishi'."}]}, {"id": "s8-l3", "title": "Narx darajalari (Market Tiers)", "image": "assets/images/stage-8/market-tiers.svg", "body": "Haute Couture → Designer/Luxury → Bridge → Contemporary → Mass Market/Fast Fashion. Har bir daraja boshqa mato, ishlab chiqarish va maqsadli mijozni talab qiladi.", "exercise": "O'zingiz qaysi narx darajasida ishlashni xohlashingizni tanlang va sababini yozing.", "terms": [{"term": "Market Tier", "definition": "Fashion sanoatidagi narx-sifat qatlami (couture'dan fast fashion'gacha)."}]}, {"id": "s8-l4", "title": "Fast Fashion inqilobi", "image": "assets/images/stage-8/fast-fashion-vs-traditional.svg", "body": "An'anaviy: yiliga 2 kolleksiya, oylab reja. Fast fashion: trendlarni bir necha haftada ommaviy sotuvga chiqaradi. Kichik brendlar tezlikda emas, sifat/hikoya orqali raqobatlashadi.", "exercise": "Fast fashion bilan raqobatlasha olmaydigan, lekin kichik brend qila oladigan 2 narsani yozing.", "terms": [{"term": "Fast Fashion", "definition": "Trendlarni juda qisqa muddatda, arzon narxda ommaviy sotuvga chiqaruvchi ishlab chiqarish modeli."}]}, {"id": "s8-l5", "title": "Narx qanday hisoblanadi", "image": "assets/images/stage-8/pricing-formula.svg", "body": "Tannarx (mato+tikuv+material) → Wholesale (Tannarx x2) → Retail (Wholesale x2). Misol: 50,000 so'm tannarx → 100,000 wholesale → 200,000 retail.", "exercise": "O'z g'oyangizdagi bitta kiyim uchun taxminiy tannarxni hisoblab, wholesale va retail narxni toping.", "terms": [{"term": "Wholesale Price", "definition": "Ishlab chiqaruvchidan do'konga sotiladigan ulgurji narx, odatda tannarxning 2 barobari."}, {"term": "Retail Price", "definition": "Do'kondan mijozga sotiladigan yakuniy chakana narx."}]}, {"id": "s8-l6", "title": "To'g'ridan-to'g'ri sotish", "image": "assets/images/stage-8/direct-to-consumer.svg", "body": "Ijtimoiy tarmoq orqali to'g'ridan-to'g'ri sotish — wholesale bosqichini chetlab o'tadi, ham mijozga arzonroq, ham dizaynerga foydaliroq bo'lishi mumkin.", "exercise": "Qaysi platforma orqali o'z ishlaringizni ko'rsatishni xohlaysiz — sabab bilan yozing.", "terms": [{"term": "Direct-to-Consumer (D2C)", "definition": "Do'kon/wholesale orqali emas, to'g'ridan-to'g'ri mijozga sotish modeli."}]}, {"id": "s8-l7", "title": "Brend hikoyasi", "image": "assets/images/stage-8/brand-story-questions.svg", "body": "Brend nima uchun mavjud, kimga xizmat qiladi, nimaga qarshi turadi, mijoz o'zini qanday his qilishi kerak — bu savollar butun brend uchun 'Design Story'ning kengaytmasi.", "exercise": "4 ta savolga o'z brendingiz uchun javob yozing.", "terms": []}, {"id": "s8-l8", "title": "Mini Brend Rejasi — yakuniy loyiha", "image": "assets/images/stage-8/mini-brand-plan-template.svg", "body": "8 qadamli shablon: brend nomi, hikoya, target customer, market tier, farqlanish strategiyasi, mini-kolleksiya, narx hisobi, sotish kanali. Bu — real kichik brend boshlashning birinchi qadamlari.", "exercise": "To'liq Mini Brend Rejasini to'ldiring — bu butun 8 bosqichlik sayohatning yakuniy loyihasi.", "terms": []}], "quiz": {"passThreshold": 70, "questions": [{"id": "s8-q1", "type": "mcq", "question": "Zamonaviy fashion sanoatida muvaffaqiyat asosan nima bilan o'lchanadi?", "options": ["Faqat ijodiy obro' bilan", "Savdo ko'rsatkichlari va brend tanilishi bilan", "Faqat qo'l mahorati bilan", "Faqat narx bilan"], "answerIndex": 1}, {"id": "s8-q2", "type": "mcq", "question": "Licensing nima?", "options": ["Kiyim tikish texnikasi", "Brend nomini boshqa kompaniyaga 'ijaraga berish'", "Rang tanlash usuli", "Mato turi"], "answerIndex": 1}, {"id": "s8-q3", "type": "true_false", "question": "Haddan tashqari ko'p litsenziyalash brend obro'siga hech qanday ta'sir qilmaydi.", "answer": false}, {"id": "s8-q4", "type": "mcq", "question": "Wholesale narx odatda qanday hisoblanadi?", "options": ["Tannarx x2", "Tannarx x10", "Tannarxdan past", "Tasodifiy raqam"], "answerIndex": 0}, {"id": "s8-q5", "type": "mcq", "question": "Kichik brendlar fast fashion bilan asosan nima orqali raqobatlashadi?", "options": ["Tezlik va arzon narx orqali", "Sifat, hikoya va noyoblik orqali", "Faqat reklama orqali", "Raqobatlasha olmaydi"], "answerIndex": 1}, {"id": "s8-q6", "type": "true_false", "question": "Direct-to-Consumer model wholesale bosqichini chetlab o'tadi.", "answer": true}]}, "game": {"type": "brand_simulator", "title": "Mini Brend Quruvchi", "instructions": "Bosqichma-bosqich o'z mini-brendingiz uchun qaror qabul qiling — yakunda tannarx/wholesale/retail narxlar avtomatik hisoblanadi.", "config": {"steps": [{"key": "brandName", "prompt": "Brend nomini kiriting"}, {"key": "marketTier", "prompt": "Narx darajasini tanlang", "options": ["Contemporary", "Bridge", "Designer/Luxury"]}, {"key": "differentiation", "prompt": "Fast fashion'dan qanday farqlanasiz?", "options": ["Hunarmandchilik sifati", "Milliy naqshlar", "Barqarorlik (sustainability)"]}, {"key": "costOfGoods", "prompt": "Bitta mahsulot tannarxini kiriting (so'mda)", "inputType": "number"}], "calculatedFields": {"wholesale": "costOfGoods * 2", "retail": "costOfGoods * 4"}}}}];
+const TERMS = [{"term": "Target Customer", "definition": "Dizayn mo'ljallangan aniq maqsadli mijoz — yoshi, turmush tarzi va byudjeti bilan tavsiflanadi.", "stageId": "stage-1", "stageOrder": 1, "stageTitle": "Dizayn Nazariyasi va Sanoatga Kirish", "lessonId": "s1-l1"}, {"term": "Design Development", "definition": "G'oyani eskizdan real kiyimga aylantirish bosqichi.", "stageId": "stage-1", "stageOrder": 1, "stageTitle": "Dizayn Nazariyasi va Sanoatga Kirish", "lessonId": "s1-l1"}, {"term": "Primary Research", "definition": "Bevosita o'zingiz kuzatgan, chizgan yoki suratga olgan ilhom manbalari.", "stageId": "stage-1", "stageOrder": 1, "stageTitle": "Dizayn Nazariyasi va Sanoatga Kirish", "lessonId": "s1-l2"}, {"term": "Secondary Research", "definition": "Boshqalar yaratgan, siz topib foydalangan materiallar (kitob, jurnal, internet).", "stageId": "stage-1", "stageOrder": 1, "stageTitle": "Dizayn Nazariyasi va Sanoatga Kirish", "lessonId": "s1-l2"}, {"term": "Mood Board", "definition": "Rang, tekstura, shakl va kalit so'zlarni birlashtirgan ilhom taxtasi.", "stageId": "stage-1", "stageOrder": 1, "stageTitle": "Dizayn Nazariyasi va Sanoatga Kirish", "lessonId": "s1-l3"}, {"term": "Design Story", "definition": "Kolleksiyaning ilhomi, kayfiyati va mijozini bitta jumlada birlashtiruvchi g'oya.", "stageId": "stage-1", "stageOrder": 1, "stageTitle": "Dizayn Nazariyasi va Sanoatga Kirish", "lessonId": "s1-l4"}, {"term": "Technical Designer", "definition": "Eskizni aniq texnik chizmaga aylantiruvchi va fabrika bilan ishlaydigan mutaxassis.", "stageId": "stage-1", "stageOrder": 1, "stageTitle": "Dizayn Nazariyasi va Sanoatga Kirish", "lessonId": "s1-l5"}, {"term": "Merchandiser", "definition": "Qaysi mahsulot qancha ishlab chiqarilishi va qayerda sotilishini rejalashtiruvchi mutaxassis.", "stageId": "stage-1", "stageOrder": 1, "stageTitle": "Dizayn Nazariyasi va Sanoatga Kirish", "lessonId": "s1-l5"}, {"term": "Trend Forecasting", "definition": "Kelajakdagi moda tendensiyalarini ijtimoiy, iqtisodiy va madaniy signallar asosida bashorat qilish.", "stageId": "stage-1", "stageOrder": 1, "stageTitle": "Dizayn Nazariyasi va Sanoatga Kirish", "lessonId": "s1-l6"}, {"term": "Portfolio", "definition": "Dizaynerning eskizlari, g'oyalari va jarayonini to'plagan ishlar to'plami.", "stageId": "stage-1", "stageOrder": 1, "stageTitle": "Dizayn Nazariyasi va Sanoatga Kirish", "lessonId": "s1-l7"}, {"term": "Croquis", "definition": "Fashion dizaynida ishlatiladigan, 9 bosh uzunligiga cho'zilgan soddalashtirilgan inson figurasi.", "stageId": "stage-2", "stageOrder": 2, "stageTitle": "Croquis va Fashion Illustration", "lessonId": "s2-l1"}, {"term": "Balance Line", "definition": "Figuraning gravitatsiya markazini ko'rsatuvchi markaziy vertikal chiziq.", "stageId": "stage-2", "stageOrder": 2, "stageTitle": "Croquis va Fashion Illustration", "lessonId": "s2-l2"}, {"term": "Contrapposto", "definition": "Figura bitta oyoqqa ko'proq og'irlik bergan tabiiy turish holati.", "stageId": "stage-2", "stageOrder": 2, "stageTitle": "Croquis va Fashion Illustration", "lessonId": "s2-l2"}, {"term": "Gesture Drawing", "definition": "Figuraning harakati va kayfiyatini tez va erkin chiziqlar bilan ushlab qolish usuli.", "stageId": "stage-2", "stageOrder": 2, "stageTitle": "Croquis va Fashion Illustration", "lessonId": "s2-l3"}, {"term": "Ease", "definition": "Kiyim va tana orasidagi, harakat uchun qoldiriladigan tabiiy bo'shliq.", "stageId": "stage-2", "stageOrder": 2, "stageTitle": "Croquis va Fashion Illustration", "lessonId": "s2-l6"}, {"term": "Tension fold", "definition": "Mato tortilgan joyda (masalan, tirsak bukilganda) hosil bo'ladigan burma turi.", "stageId": "stage-2", "stageOrder": 2, "stageTitle": "Croquis va Fashion Illustration", "lessonId": "s2-l6"}, {"term": "Gravity fold", "definition": "Erkin osilgan matoda tortishish kuchi tufayli hosil bo'ladigan burma turi.", "stageId": "stage-2", "stageOrder": 2, "stageTitle": "Croquis va Fashion Illustration", "lessonId": "s2-l6"}, {"term": "Simultaneous Contrast", "definition": "Bir xil rangning atrofidagi fonga qarab boshqacha qabul qilinishi hodisasi.", "stageId": "stage-3", "stageOrder": 3, "stageTitle": "Rang Nazariyasi — Chuqur Daraja", "lessonId": "s3-l1"}, {"term": "Optik Aralashtirish", "definition": "Ranglarni fizik aralashtirmasdan, yonma-yon joylashtirib ko'zga aralash qildirish usuli.", "stageId": "stage-3", "stageOrder": 3, "stageTitle": "Rang Nazariyasi — Chuqur Daraja", "lessonId": "s3-l3"}, {"term": "Vibrating Boundary", "definition": "To'yingan qarama-qarshi ranglar chegarasida yuzaga keladigan optik 'titrash' effekti.", "stageId": "stage-3", "stageOrder": 3, "stageTitle": "Rang Nazariyasi — Chuqur Daraja", "lessonId": "s3-l4"}, {"term": "Rang Harorati", "definition": "Rangning issiq (sariqqa moyil) yoki sovuq (ko'kka moyil) tomonga moyilligi.", "stageId": "stage-3", "stageOrder": 3, "stageTitle": "Rang Nazariyasi — Chuqur Daraja", "lessonId": "s3-l5"}, {"term": "60-30-10 Qoidasi", "definition": "Palette qurishda hero, supporting va accent ranglar nisbatini belgilaydigan qoida.", "stageId": "stage-3", "stageOrder": 3, "stageTitle": "Rang Nazariyasi — Chuqur Daraja", "lessonId": "s3-l6"}, {"term": "Hip Curve", "definition": "Chanoq va yon chiziqlarning yumshoq egri chizig'ini chizish uchun maxsus chizg'ich.", "stageId": "stage-4", "stageOrder": 4, "stageTitle": "Pattern Making Asoslari", "lessonId": "s4-l1"}, {"term": "French Curve", "definition": "Armhole va yoqa kabi kichik egri chiziqlarni chizish uchun maxsus chizg'ich.", "stageId": "stage-4", "stageOrder": 4, "stageTitle": "Pattern Making Asoslari", "lessonId": "s4-l1"}, {"term": "Sloper (Block)", "definition": "Aniq tana o'lchamlariga mos, bezaksiz, bazaviy lekalo.", "stageId": "stage-4", "stageOrder": 4, "stageTitle": "Pattern Making Asoslari", "lessonId": "s4-l2"}, {"term": "Pattern Manipulation", "definition": "Sloperni o'zgartirish orqali yangi dizaynlar yaratish jarayoni.", "stageId": "stage-4", "stageOrder": 4, "stageTitle": "Pattern Making Asoslari", "lessonId": "s4-l2"}, {"term": "Dart", "definition": "Matoning ortiqcha qismini uchburchak shaklida yig'ib, uni tananing egri shakliga moslashtiruvchi qirqim.", "stageId": "stage-4", "stageOrder": 4, "stageTitle": "Pattern Making Asoslari", "lessonId": "s4-l3"}, {"term": "Dart Manipulation (Pivot Method)", "definition": "Dartni bir joydan boshqa joyga ko'chirish texnikasi.", "stageId": "stage-4", "stageOrder": 4, "stageTitle": "Pattern Making Asoslari", "lessonId": "s4-l3"}, {"term": "Grainline", "definition": "Lekaloda matoning tik tolasi yo'nalishini ko'rsatuvchi chiziq.", "stageId": "stage-4", "stageOrder": 4, "stageTitle": "Pattern Making Asoslari", "lessonId": "s4-l4"}, {"term": "Bias Cut", "definition": "Matoni 45 gradus burchak ostida kesish texnikasi, tanaga yopishuvchi drape beradi.", "stageId": "stage-4", "stageOrder": 4, "stageTitle": "Pattern Making Asoslari", "lessonId": "s4-l4"}, {"term": "Seam Allowance", "definition": "Tikish uchun lekalo chetiga qo'shiladigan qo'shimcha mato zaxirasi.", "stageId": "stage-4", "stageOrder": 4, "stageTitle": "Pattern Making Asoslari", "lessonId": "s4-l5"}, {"term": "Notch", "definition": "Lekalo qismlarining qanday birlashishini ko'rsatuvchi kichik belgi kesikcha.", "stageId": "stage-4", "stageOrder": 4, "stageTitle": "Pattern Making Asoslari", "lessonId": "s4-l5"}, {"term": "Landmark Lines", "definition": "Dress form ustida draping uchun belgilanadigan 7 asosiy referens chiziq.", "stageId": "stage-5", "stageOrder": 5, "stageTitle": "Draping Asoslari", "lessonId": "s5-l2"}, {"term": "Center Front / Center Back", "definition": "Tananing old va orqa markaziy vertikal chiziqlari.", "stageId": "stage-5", "stageOrder": 5, "stageTitle": "Draping Asoslari", "lessonId": "s5-l2"}, {"term": "Straight Grain", "definition": "Matoning tik, eng kam cho'ziluvchi tola yo'nalishi.", "stageId": "stage-5", "stageOrder": 5, "stageTitle": "Draping Asoslari", "lessonId": "s5-l3"}, {"term": "True Bias", "definition": "Matoning 45 gradus burchakdagi, eng ko'p cho'ziluvchi yo'nalishi.", "stageId": "stage-5", "stageOrder": 5, "stageTitle": "Draping Asoslari", "lessonId": "s5-l3"}, {"term": "Truing", "definition": "Qo'lda chizilgan noaniq chiziqlarni chizg'ich bilan aniq va simmetrik qilib qayta chizish jarayoni.", "stageId": "stage-5", "stageOrder": 5, "stageTitle": "Draping Asoslari", "lessonId": "s5-l4"}, {"term": "Ease", "definition": "Kiyim va tana orasida qulaylik va harakat uchun qoldiriladigan bo'shliq.", "stageId": "stage-5", "stageOrder": 5, "stageTitle": "Draping Asoslari", "lessonId": "s5-l5"}, {"term": "Wearing Ease", "definition": "Har qanday kiyimda bo'lishi shart bo'lgan minimal bo'shliq.", "stageId": "stage-5", "stageOrder": 5, "stageTitle": "Draping Asoslari", "lessonId": "s5-l5"}, {"term": "Design Ease", "definition": "Dizaynerning uslubiga bog'liq qo'shimcha bo'shliq (masalan, oversized kiyimda).", "stageId": "stage-5", "stageOrder": 5, "stageTitle": "Draping Asoslari", "lessonId": "s5-l5"}, {"term": "True Lines", "definition": "Tananing tuzilishidan kelib chiqadigan, o'zgarmas asosiy chiziqlar.", "stageId": "stage-5", "stageOrder": 5, "stageTitle": "Draping Asoslari", "lessonId": "s5-l6"}, {"term": "Design Lines", "definition": "Dizaynerning ijodiy tanlovi bilan qo'shiladigan qo'shimcha choklar.", "stageId": "stage-5", "stageOrder": 5, "stageTitle": "Draping Asoslari", "lessonId": "s5-l6"}, {"term": "Haute Couture", "definition": "Fransiyada qattiq nazorat qilinadigan, individual mijozga moslashtirilgan yuqori sifatli tikuv darajasi.", "stageId": "stage-6", "stageOrder": 6, "stageTitle": "Couture va Pattern Magic", "lessonId": "s6-l1"}, {"term": "Underlining", "definition": "Asosiy mato bilan birga ishlaydigan, shaklni mustahkamlovchi ichki qatlam.", "stageId": "stage-6", "stageOrder": 6, "stageTitle": "Couture va Pattern Magic", "lessonId": "s6-l2"}, {"term": "Interfacing", "definition": "Yoqa, manjet kabi qismlarga qattiqlik beruvchi qo'shimcha qatlam.", "stageId": "stage-6", "stageOrder": 6, "stageTitle": "Couture va Pattern Magic", "lessonId": "s6-l2"}, {"term": "Boning", "definition": "Kiyimga tananing shaklini ushlab turish xususiyatini beruvchi ingichka qattiq tayoqchalar.", "stageId": "stage-6", "stageOrder": 6, "stageTitle": "Couture va Pattern Magic", "lessonId": "s6-l2"}, {"term": "Catch Stitch", "definition": "Hem (etak) larni tashqi tomondan ko'rinmas holda mahkamlovchi qo'l stежogi.", "stageId": "stage-6", "stageOrder": 6, "stageTitle": "Couture va Pattern Magic", "lessonId": "s6-l3"}, {"term": "Slash-and-Spread", "definition": "Lekaloni chiziqlar bo'ylab qirqib, orasiga bo'shliq qo'shish orqali hajm yaratish texnikasi.", "stageId": "stage-6", "stageOrder": 6, "stageTitle": "Couture va Pattern Magic", "lessonId": "s6-l5"}, {"term": "Motif", "definition": "Takrorlanuvchi naqshning eng kichik, asosiy vizual elementi.", "stageId": "stage-7", "stageOrder": 7, "stageTitle": "Tekstil Dizayni va Naqsh Yaratish", "lessonId": "s7-l1"}, {"term": "Repeat", "definition": "Motifning matoning butun yuzasida tizimli takrorlanish tartibi.", "stageId": "stage-7", "stageOrder": 7, "stageTitle": "Tekstil Dizayni va Naqsh Yaratish", "lessonId": "s7-l2"}, {"term": "Half-drop Repeat", "definition": "Har ikkinchi ustun yarim motif balandligiga pastga surilgan, eng ko'p ishlatiladigan repeat turi.", "stageId": "stage-7", "stageOrder": 7, "stageTitle": "Tekstil Dizayni va Naqsh Yaratish", "lessonId": "s7-l2"}, {"term": "Seamless Repeat", "definition": "Chekkalari bir-biriga mukammal mos keladigan, 'chokssiz' ko'rinadigan naqsh takrorlanishi.", "stageId": "stage-7", "stageOrder": 7, "stageTitle": "Tekstil Dizayni va Naqsh Yaratish", "lessonId": "s7-l3"}, {"term": "Scale", "definition": "Naqsh motivining kattaligi va bu kattalikning kiyimga ta'siri.", "stageId": "stage-7", "stageOrder": 7, "stageTitle": "Tekstil Dizayni va Naqsh Yaratish", "lessonId": "s7-l4"}, {"term": "Colorway", "definition": "Bitta naqsh dizaynining turli rang kombinatsiyasidagi versiyasi.", "stageId": "stage-7", "stageOrder": 7, "stageTitle": "Tekstil Dizayni va Naqsh Yaratish", "lessonId": "s7-l5"}, {"term": "Main Print", "definition": "Kolleksiyaning eng diqqat tortuvchi, asosiy naqsh dizayni.", "stageId": "stage-7", "stageOrder": 7, "stageTitle": "Tekstil Dizayni va Naqsh Yaratish", "lessonId": "s7-l7"}, {"term": "Blender", "definition": "Boshqa naqshlar orasida 'dam olish joyi' vazifasini bajaruvchi kichik, deyarli bir tekis naqsh.", "stageId": "stage-7", "stageOrder": 7, "stageTitle": "Tekstil Dizayni va Naqsh Yaratish", "lessonId": "s7-l7"}, {"term": "Licensing", "definition": "Dizayner yoki brendning o'z nomini boshqa kompaniyaga foyda evaziga 'ijaraga berishi'.", "stageId": "stage-8", "stageOrder": 8, "stageTitle": "Sanoat va Biznes Tushunchasi", "lessonId": "s8-l2"}, {"term": "Market Tier", "definition": "Fashion sanoatidagi narx-sifat qatlami (couture'dan fast fashion'gacha).", "stageId": "stage-8", "stageOrder": 8, "stageTitle": "Sanoat va Biznes Tushunchasi", "lessonId": "s8-l3"}, {"term": "Fast Fashion", "definition": "Trendlarni juda qisqa muddatda, arzon narxda ommaviy sotuvga chiqaruvchi ishlab chiqarish modeli.", "stageId": "stage-8", "stageOrder": 8, "stageTitle": "Sanoat va Biznes Tushunchasi", "lessonId": "s8-l4"}, {"term": "Wholesale Price", "definition": "Ishlab chiqaruvchidan do'konga sotiladigan ulgurji narx, odatda tannarxning 2 barobari.", "stageId": "stage-8", "stageOrder": 8, "stageTitle": "Sanoat va Biznes Tushunchasi", "lessonId": "s8-l5"}, {"term": "Retail Price", "definition": "Do'kondan mijozga sotiladigan yakuniy chakana narx.", "stageId": "stage-8", "stageOrder": 8, "stageTitle": "Sanoat va Biznes Tushunchasi", "lessonId": "s8-l5"}, {"term": "Direct-to-Consumer (D2C)", "definition": "Do'kon/wholesale orqali emas, to'g'ridan-to'g'ri mijozga sotish modeli.", "stageId": "stage-8", "stageOrder": 8, "stageTitle": "Sanoat va Biznes Tushunchasi", "lessonId": "s8-l6"}];
+
+/* ===================================================================== */
+
+const SESSION_KEY = 'fashion_app_session';
+const PROGRESS_KEY = 'fashion_app_progress';
+const SCHEMA_VERSION = 1;
+
+function emptyStageProgress(){
+  return { lessonsRead: [], gameCompleted:false, gameBestScore:null, quizBestScore:null, quizPassed:false, completedAt:null };
+}
+
+function loadSession(){
+  try{
+    const raw = localStorage.getItem(SESSION_KEY);
+    if(!raw) return null;
+    return JSON.parse(raw);
+  }catch(e){ return null; }
+}
+function saveSession(s){ localStorage.setItem(SESSION_KEY, JSON.stringify(s)); }
+function clearSession(){ localStorage.removeItem(SESSION_KEY); }
+
+function loadProgress(){
+  try{
+    const raw = localStorage.getItem(PROGRESS_KEY);
+    if(!raw) return null;
+    const parsed = JSON.parse(raw);
+    if(parsed.version !== SCHEMA_VERSION) return null;
+    return parsed;
+  }catch(e){ return null; }
+}
+function saveProgress(p){
+  p.updatedAt = new Date().toISOString();
+  localStorage.setItem(PROGRESS_KEY, JSON.stringify(p));
+}
+function freshProgress(){
+  return {
+    version: SCHEMA_VERSION,
+    currentStageId: 'stage-1',
+    stages: {},
+    glossary: { termStats:{}, bestScorePercent:null },
+    updatedAt: null
+  };
+}
+
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+function pick(arr,n){ return shuffle(arr).slice(0,n); }
+
+const { createApp, reactive, computed, onMounted, ref } = Vue;
+
+/* ---------------------- Reusable: Quiz Runner ---------------------- */
+const QuizRunner = {
+  props: ['questions','passThreshold'],
+  emits: ['finished'],
+  setup(props, { emit }){
+    const answers = reactive({});
+    const submitted = ref(false);
+    const score = ref(0);
+
+    function select(qid, idx){
+      if(submitted.value) return;
+      answers[qid] = idx;
+    }
+    function selectBool(qid, val){
+      if(submitted.value) return;
+      answers[qid] = val;
+    }
+    function submit(){
+      let correct = 0;
+      props.questions.forEach(q=>{
+        if(q.type==='mcq'){
+          if(answers[q.id]===q.answerIndex) correct++;
+        } else if(q.type==='true_false'){
+          if(answers[q.id]===q.answer) correct++;
+        }
+      });
+      score.value = Math.round((correct/props.questions.length)*100);
+      submitted.value = true;
+      emit('finished', score.value);
+    }
+    function retry(){
+      Object.keys(answers).forEach(k=>delete answers[k]);
+      submitted.value = false;
+      score.value = 0;
+    }
+    const allAnswered = computed(()=> props.questions.every(q=> answers[q.id]!==undefined));
+    const passed = computed(()=> score.value >= props.passThreshold);
+
+    return { answers, submitted, score, select, selectBool, submit, retry, allAnswered, passed };
+  },
+  template: `
+    <div>
+      <div v-if="submitted" :class="['quiz-result-banner', passed ? 'pass':'fail']">
+        Natija: {{ score }}% — {{ passed ? "O'tdingiz! 🎉" : "O'tmadingiz, qayta urinib ko'ring" }}
+        <div style="font-weight:400; font-size:0.85rem; margin-top:4px;">O'tish balli: {{ passThreshold }}%</div>
+      </div>
+      <div v-for="q in questions" :key="q.id" class="quiz-question">
+        <div style="font-weight:600; margin-bottom:6px;">{{ q.question }}</div>
+        <template v-if="q.type==='mcq'">
+          <div v-for="(opt,idx) in q.options" :key="idx"
+               class="quiz-option"
+               :class="{
+                 selected: answers[q.id]===idx && !submitted,
+                 correct: submitted && idx===q.answerIndex,
+                 incorrect: submitted && answers[q.id]===idx && idx!==q.answerIndex
+               }"
+               @click="select(q.id, idx)">
+            {{ opt }}
+          </div>
+        </template>
+        <template v-else-if="q.type==='true_false'">
+          <div class="quiz-option"
+               :class="{selected: answers[q.id]===true && !submitted, correct: submitted && q.answer===true, incorrect: submitted && answers[q.id]===true && q.answer!==true}"
+               @click="selectBool(q.id, true)">To'g'ri</div>
+          <div class="quiz-option"
+               :class="{selected: answers[q.id]===false && !submitted, correct: submitted && q.answer===false, incorrect: submitted && answers[q.id]===false && q.answer!==false}"
+               @click="selectBool(q.id, false)">Noto'g'ri</div>
+        </template>
+      </div>
+      <button v-if="!submitted" class="btn-primary btn-block" :disabled="!allAnswered" @click="submit">Tekshirish</button>
+      <button v-else class="btn-secondary btn-block" @click="retry">Qayta urinish</button>
+    </div>
+  `
+};
+
+/* ---------------------- Game: Matching ---------------------- */
+const MatchingGame = {
+  props:['config'],
+  emits:['finished'],
+  setup(props,{emit}){
+    const pairs = props.config.pairs.map((p,i)=>({ id:i, left:p.left, right:p.right }));
+    const leftItems = ref(shuffle(pairs));
+    const rightItems = ref(shuffle(pairs));
+    const selectedLeft = ref(null);
+    const matched = ref(new Set());
+    const wrongFlash = ref(null);
+
+    function clickLeft(item){
+      if(matched.value.has(item.id)) return;
+      selectedLeft.value = item;
+    }
+    function clickRight(item){
+      if(matched.value.has(item.id)) return;
+      if(!selectedLeft.value) return;
+      if(selectedLeft.value.id === item.id){
+        matched.value.add(item.id);
+        matched.value = new Set(matched.value);
+        selectedLeft.value = null;
+        if(matched.value.size === pairs.length){
+          emit('finished', 100);
+        }
+      } else {
+        wrongFlash.value = item.id;
+        setTimeout(()=>{ wrongFlash.value=null; }, 500);
+        selectedLeft.value = null;
+      }
+    }
+    const done = computed(()=> matched.value.size === pairs.length);
+    return { leftItems, rightItems, selectedLeft, matched, clickLeft, clickRight, done, wrongFlash };
+  },
+  template: `
+    <div>
+      <div v-for="l in leftItems" :key="'l'+l.id" class="match-row">
+        <div class="match-pill" :class="{selected: selectedLeft && selectedLeft.id===l.id, matched: matched.has(l.id)}" @click="clickLeft(l)">{{ l.left }}</div>
+      </div>
+      <div style="height:14px;"></div>
+      <div v-for="r in rightItems" :key="'r'+r.id" class="match-row">
+        <div class="match-pill" :class="{matched: matched.has(r.id)}" @click="clickRight(r)" style="background: rgb(253 244 232);">{{ r.right }}</div>
+      </div>
+      <div v-if="done" style="text-align:center; margin-top:14px; color:var(--good); font-weight:700;">Barcha juftlar topildi! 🎉</div>
+    </div>
+  `
+};
+
+/* ---------------------- Game: Ordering (croquis build / dart pivot steps) ---------------------- */
+const OrderingGame = {
+  props:['config','kind'],
+  emits:['finished'],
+  setup(props,{emit}){
+    let items;
+    if(props.kind === 'drag_build'){
+      items = props.config.pieces.map(p=>({ id:p.id, label:p.label, correct:p.correctUnit }));
+      items = shuffle(items).map((it,i)=>({...it, chosen: null}));
+    } else {
+      items = props.config.steps.map((s,i)=>({ id:i, label:s, correct:i+1 }));
+      items = shuffle(items).map((it,i)=>({...it, chosen:null}));
+    }
+    const list = ref(items);
+    const submitted = ref(false);
+    const isDragBuild = props.kind === 'drag_build';
+
+    function move(idx, dir){
+      const newIdx = idx+dir;
+      if(newIdx<0 || newIdx>=list.value.length) return;
+      const arr = list.value.slice();
+      [arr[idx], arr[newIdx]] = [arr[newIdx], arr[idx]];
+      list.value = arr;
+    }
+    function assignUnit(item, unit){
+      item.chosen = unit;
+    }
+    function submit(){ submitted.value = true;
+      const correctCount = list.value.filter((it,i)=> isDragBuild ? it.chosen===it.correct : i+1===it.correct).length;
+      const score = Math.round((correctCount/list.value.length)*100);
+      emit('finished', score);
+    }
+    function retry(){
+      submitted.value = false;
+      list.value = shuffle(list.value).map(it=>({...it, chosen:null}));
+    }
+    const allAssigned = computed(()=> !isDragBuild || list.value.every(it=>it.chosen!==null));
+
+    return { list, submitted, move, assignUnit, submit, retry, isDragBuild, allAssigned };
+  },
+  template: `
+    <div>
+      <template v-if="isDragBuild">
+        <div v-for="it in list" :key="it.id" class="order-item" :class="{correct: submitted && it.chosen===it.correct, incorrect: submitted && it.chosen!==it.correct}">
+          <span>{{ it.label }}</span>
+          <select :disabled="submitted" @change="assignUnit(it, Number($event.target.value))" style="padding:6px; border-radius:6px;">
+            <option value="" selected disabled>Unit?</option>
+            <option v-for="n in 9" :value="n" :key="n">{{ n }}</option>
+          </select>
+        </div>
+      </template>
+      <template v-else>
+        <p style="color:var(--muted); font-size:0.88rem;">To'g'ri tartibda joylashtirish uchun ↑ ↓ tugmalaridan foydalaning.</p>
+        <ol class="order-list">
+          <li v-for="(it,idx) in list" :key="it.id" class="order-item" :class="{correct: submitted && idx+1===it.correct, incorrect: submitted && idx+1!==it.correct}">
+            <span>{{ it.label }}</span>
+            <span class="order-controls" v-if="!submitted">
+              <button class="btn-ghost btn-sm" @click="move(idx,-1)">↑</button>
+              <button class="btn-ghost btn-sm" @click="move(idx,1)">↓</button>
+            </span>
+          </li>
+        </ol>
+      </template>
+      <button v-if="!submitted" class="btn-primary btn-block" :disabled="!allAssigned" @click="submit">Tekshirish</button>
+      <button v-else class="btn-secondary btn-block" @click="retry">Qayta urinish</button>
+    </div>
+  `
+};
+
+/* ---------------------- Game: Perception Challenge (color) ---------------------- */
+const PerceptionGame = {
+  props:['config'],
+  emits:['finished'],
+  setup(props,{emit}){
+    const rounds = props.config.rounds;
+    const idx = ref(0);
+    const correctCount = ref(0);
+    const answered = ref(false);
+    const lastCorrect = ref(null);
+    const done = ref(false);
+
+    function answer(sameColor){
+      // correct answer is always "yes, same color, but perception differs"
+      answered.value = true;
+      const isRight = sameColor === true;
+      lastCorrect.value = isRight;
+      if(isRight) correctCount.value++;
+    }
+    function next(){
+      if(idx.value+1 < rounds.length){
+        idx.value++; answered.value=false; lastCorrect.value=null;
+      } else {
+        done.value = true;
+        const score = Math.round((correctCount.value/rounds.length)*100);
+        emit('finished', score);
+      }
+    }
+    const current = computed(()=> rounds[idx.value]);
+    return { rounds, idx, current, answered, lastCorrect, answer, next, done, correctCount };
+  },
+  template: `
+    <div style="text-align:center;">
+      <div v-if="!done">
+        <p style="color:var(--muted);">Savol {{ idx+1 }} / {{ rounds.length }}</p>
+        <div class="swatch-row">
+          <div class="swatch-box" :style="{background: current.backgroundA}">
+            <div class="swatch-inner" :style="{background: current.color}"></div>
+          </div>
+          <div class="swatch-box" :style="{background: current.backgroundB}">
+            <div class="swatch-inner" :style="{background: current.color}"></div>
+          </div>
+        </div>
+        <p><b>Savol:</b> Bu ikkala kvadratcha aynan bir xil rangdami (garchi ko'zga boshqacha ko'rinsa ham)?</p>
+        <div v-if="!answered" style="display:flex; gap:12px; justify-content:center;">
+          <button class="btn-primary" @click="answer(true)">Ha, bir xil rang</button>
+          <button class="btn-ghost" @click="answer(false)">Yo'q, boshqa rang</button>
+        </div>
+        <div v-else>
+          <p :style="{color: lastCorrect ? 'var(--good)' : 'var(--bad)'}">
+            {{ lastCorrect ? "To'g'ri! Ikkalasi ham bir xil rang — fon uni boshqacha ko'rsatadi." : "Noto'g'ri — aslida ikkalasi ham AYNAN bir xil rang, faqat fon ta'sirida boshqacha ko'rinadi." }}
+          </p>
+          <button class="btn-secondary" @click="next">{{ idx+1 < rounds.length ? 'Keyingisi' : 'Yakunlash' }}</button>
+        </div>
+      </div>
+      <div v-else style="color:var(--good); font-weight:700;">Sinov tugadi! To'g'ri javoblar: {{ correctCount }} / {{ rounds.length }}</div>
+    </div>
+  `
+};
+
+/* ---------------------- Game: Slider Spread (slash-and-spread) ---------------------- */
+const SliderSpreadGame = {
+  props:['config'],
+  emits:['finished'],
+  setup(props,{emit}){
+    const spread = ref(0);
+    const max = props.config.maxSpreadCm || 5;
+    const finished = ref(false);
+    function complete(){
+      finished.value = true;
+      emit('finished', 100);
+    }
+    const gapPx = computed(()=> 10 + spread.value*14);
+    return { spread, max, complete, finished, gapPx };
+  },
+  template: `
+    <div style="text-align:center;">
+      <p class="game-instructions">Slaydderni suring va tekis lekalo qanday qilib hajm olishini kuzating.</p>
+      <div class="spread-diagram">
+        <svg width="320" height="180" viewBox="0 0 320 180">
+          <rect x="20" y="20" :width="60" height="140" fill="#e9c9a8" stroke="#b5651d" stroke-width="2"/>
+          <rect :x="80+gapPx" y="20" width="60" height="140" fill="#e9c9a8" stroke="#b5651d" stroke-width="2"/>
+          <rect :x="140+gapPx*2" y="20" width="60" height="140" fill="#e9c9a8" stroke="#b5651d" stroke-width="2"/>
+          <path :d="'M 80 20 Q ' + (80+gapPx/2) + ' 0 ' + (80+gapPx) + ' 20'" fill="none" stroke="#b23b3b" stroke-width="2" v-if="spread>0"/>
+          <path :d="'M 140+' + gapPx + ' 20 Q ' + (140+gapPx*1.5) + ' 0 ' + (140+gapPx*2) + ' 20'" fill="none" stroke="#b23b3b" stroke-width="2" v-if="spread>0"/>
+        </svg>
+      </div>
+      <div class="slider-wrap">
+        <input type="range" min="0" :max="max" step="0.5" v-model.number="spread" :disabled="finished">
+        <p>Yoyilgan bo'shliq: {{ spread }} sm</p>
+      </div>
+      <button v-if="!finished" class="btn-primary" :disabled="spread < max/2" @click="complete">Natijani saqlash</button>
+      <div v-else style="color:var(--good); font-weight:700;">Ajoyib! Hajm qanday paydo bo'lishini ko'rdingiz. 🎉</div>
+    </div>
+  `
+};
+
+/* ---------------------- Game: Pattern Pick (repeat type) ---------------------- */
+function repeatDots(type){
+  // returns list of {x,y} for a small preview grid, based on repeat type
+  const pts = [];
+  const positions = type==='half_drop'
+    ? [[10,10],[10,40],[10,70],[40,25],[40,55],[40,85],[70,10],[70,40],[70,70]]
+    : [[10,10],[10,40],[10,70],[40,10],[40,40],[40,70],[70,10],[70,40],[70,70]];
+  return positions;
+}
+const PatternPickGame = {
+  props:['config'],
+  emits:['finished'],
+  setup(props,{emit}){
+    const options = [
+      { id:'block', label:'Block Repeat', dots: repeatDots('block') },
+      { id:'half_drop', label:'Half-Drop Repeat', dots: repeatDots('half_drop') }
+    ];
+    const selected = ref(null);
+    const submitted = ref(false);
+    function choose(opt){
+      if(submitted.value) return;
+      selected.value = opt.id;
+    }
+    function submit(){
+      submitted.value = true;
+      const correct = selected.value === (props.config.repeatType || 'half_drop');
+      emit('finished', correct ? 100 : 40);
+    }
+    return { options, selected, submitted, choose, submit, target: props.config.repeatType };
+  },
+  template: `
+    <div style="text-align:center;">
+      <p class="game-instructions">Quyidagi ikkita naqsh tartibidan qaysi biri "Half-Drop Repeat" ekanini toping.</p>
+      <div class="pattern-pick-row">
+        <div v-for="opt in options" :key="opt.id" class="pattern-option"
+             :class="{selected: selected===opt.id && !submitted, correct: submitted && opt.id==='half_drop', incorrect: submitted && selected===opt.id && opt.id!=='half_drop'}"
+             @click="choose(opt)">
+          <svg width="90" height="100" viewBox="0 0 90 100">
+            <circle v-for="(p,i) in opt.dots" :key="i" :cx="p[0]" :cy="p[1]" r="6" fill="#b5651d"/>
+          </svg>
+          <span>{{ opt.label }}</span>
+        </div>
+      </div>
+      <button v-if="!submitted" class="btn-primary" :disabled="!selected" @click="submit">Tekshirish</button>
+      <div v-else style="margin-top:10px; font-weight:700;" :style="{color: selected==='half_drop' ? 'var(--good)':'var(--bad)'}">
+        {{ selected==='half_drop' ? "To'g'ri!" : "Noto'g'ri — to'g'ri javob Half-Drop Repeat edi." }}
+      </div>
+    </div>
+  `
+};
+
+/* ---------------------- Game: Brand Simulator ---------------------- */
+const BrandSimulatorGame = {
+  props:['config'],
+  emits:['finished'],
+  setup(props,{emit}){
+    const form = reactive({ brandName:'', marketTier:null, differentiation:null, costOfGoods:null });
+    const done = ref(false);
+    function chooseTier(t){ form.marketTier = t; }
+    function chooseDiff(d){ form.differentiation = d; }
+    const wholesale = computed(()=> form.costOfGoods ? Math.round(form.costOfGoods*2) : 0);
+    const retail = computed(()=> form.costOfGoods ? Math.round(form.costOfGoods*4) : 0);
+    const canSubmit = computed(()=> form.brandName && form.marketTier && form.differentiation && form.costOfGoods > 0);
+    function submit(){
+      done.value = true;
+      emit('finished', 100);
+    }
+    return { form, chooseTier, chooseDiff, wholesale, retail, canSubmit, submit, done, options: props.config.steps };
+  },
+  template: `
+    <div>
+      <div class="brand-step">
+        <label>Brend nomini kiriting</label>
+        <input type="text" v-model="form.brandName" :disabled="done" placeholder="Masalan: Bahor Studio">
+      </div>
+      <div class="brand-step">
+        <label>Narx darajasini tanlang</label>
+        <div class="choice-row">
+          <button v-for="t in ['Contemporary','Bridge','Designer/Luxury']" :key="t" class="choice-btn" :class="{chosen: form.marketTier===t}" :disabled="done" @click="chooseTier(t)">{{ t }}</button>
+        </div>
+      </div>
+      <div class="brand-step">
+        <label>Fast fashion'dan qanday farqlanasiz?</label>
+        <div class="choice-row">
+          <button v-for="d in ['Hunarmandchilik sifati','Milliy naqshlar','Barqarorlik']" :key="d" class="choice-btn" :class="{chosen: form.differentiation===d}" :disabled="done" @click="chooseDiff(d)">{{ d }}</button>
+        </div>
+      </div>
+      <div class="brand-step">
+        <label>Bitta mahsulot tannarxi (so'mda)</label>
+        <input type="number" v-model.number="form.costOfGoods" :disabled="done" placeholder="Masalan: 50000">
+      </div>
+      <div class="result-card" v-if="form.costOfGoods > 0">
+        <div class="row"><span>Tannarx</span><span>{{ form.costOfGoods.toLocaleString() }} so'm</span></div>
+        <div class="row"><span>Wholesale narx (x2)</span><span>{{ wholesale.toLocaleString() }} so'm</span></div>
+        <div class="row"><span>Retail narx (x4)</span><span>{{ retail.toLocaleString() }} so'm</span></div>
+      </div>
+      <button v-if="!done" class="btn-primary btn-block" style="margin-top:16px;" :disabled="!canSubmit" @click="submit">Brend rejasini yakunlash</button>
+      <div v-else style="text-align:center; margin-top:14px; color:var(--good); font-weight:700;">"{{ form.brandName }}" brendi rejasi tayyor! 🎉</div>
+    </div>
+  `
+};
+
+/* ---------------------- Game Runner switch ---------------------- */
+const GameRunner = {
+  props:['game'],
+  emits:['finished'],
+  components:{ MatchingGame, OrderingGame, PerceptionGame, SliderSpreadGame, PatternPickGame, BrandSimulatorGame },
+  template: `
+    <div class="game-shell">
+      <h3 style="margin-top:0;">{{ game.title }}</h3>
+      <p class="game-instructions">{{ game.instructions }}</p>
+      <MatchingGame v-if="game.type==='matching'" :config="game.config" @finished="$emit('finished',$event)" />
+      <OrderingGame v-else-if="game.type==='drag_build'" :config="game.config" kind="drag_build" @finished="$emit('finished',$event)" />
+      <OrderingGame v-else-if="game.type==='rotate_puzzle'" :config="game.config" kind="steps" @finished="$emit('finished',$event)" />
+      <PerceptionGame v-else-if="game.type==='perception_challenge'" :config="game.config" @finished="$emit('finished',$event)" />
+      <SliderSpreadGame v-else-if="game.type==='interactive_diagram'" :config="game.config" @finished="$emit('finished',$event)" />
+      <PatternPickGame v-else-if="game.type==='tile_matching'" :config="game.config" @finished="$emit('finished',$event)" />
+      <BrandSimulatorGame v-else-if="game.type==='brand_simulator'" :config="game.config" @finished="$emit('finished',$event)" />
+      <MatchingGame v-else-if="game.type==='point_placement'"
+        :config="{pairs: game.config.points.map(p=>({left:p.label, right:'Landmark: '+p.label}))}"
+        @finished="$emit('finished',$event)" />
+      <div v-else style="color:var(--muted);">Bu o'yin turi hali qo'llab-quvvatlanmaydi.</div>
+    </div>
+  `
+};
+
+/* ---------------------- Root App ---------------------- */
+const App = {
+  components: { QuizRunner, GameRunner },
+  setup(){
+    const session = reactive({ name: null });
+    const progress = reactive(freshProgress());
+    const view = ref('login');
+    const currentStageId = ref(null);
+    const stageTab = ref('learn');
+    const nameInput = ref('');
+    const glossaryQuestions = ref([]);
+    const openLessonId = ref(null);
+
+    onMounted(()=>{
+      const s = loadSession();
+      const p = loadProgress();
+      if(p) Object.assign(progress, p);
+      if(s && s.name){
+        session.name = s.name;
+        view.value = 'map';
+      } else {
+        view.value = 'login';
+      }
+    });
+
+    function persist(){ saveProgress(JSON.parse(JSON.stringify(progress))); }
+
+    function login(){
+      if(!nameInput.value.trim()) return;
+      session.name = nameInput.value.trim();
+      saveSession({ name: session.name, createdAt: new Date().toISOString() });
+      view.value = 'map';
+    }
+    function logout(){
+      clearSession();
+      session.name = null;
+      view.value = 'login';
+      nameInput.value = '';
+    }
+    function resetProgress(){
+      if(!confirm("Butun progressni o'chirmoqchimisiz? Bu qaytarib bo'lmaydi.")) return;
+      localStorage.removeItem(PROGRESS_KEY);
+      Object.assign(progress, freshProgress());
+    }
+
+    function stageProgress(stageId){
+      if(!progress.stages[stageId]) progress.stages[stageId] = emptyStageProgress();
+      return progress.stages[stageId];
+    }
+    function isUnlocked(order){
+      if(order === 1) return true;
+      const prevStage = STAGES.find(s=>s.order===order-1);
+      return !!(progress.stages[prevStage.id] && progress.stages[prevStage.id].completedAt);
+    }
+    function stagePercent(stage){
+      const sp = stageProgress(stage.id);
+      let total = stage.lessons.length + 2; // lessons + game + quiz
+      let done = sp.lessonsRead.length + (sp.gameCompleted?1:0) + (sp.quizPassed?1:0);
+      return Math.round((done/total)*100);
+    }
+    const overallPercent = computed(()=>{
+      const done = STAGES.filter(s=> progress.stages[s.id] && progress.stages[s.id].completedAt).length;
+      return Math.round((done/STAGES.length)*100);
+    });
+    const allCompleted = computed(()=> STAGES.every(s=> progress.stages[s.id] && progress.stages[s.id].completedAt));
+
+    function openStage(stage){
+      if(!isUnlocked(stage.order)) return;
+      currentStageId.value = stage.id;
+      stageTab.value = 'learn';
+      openLessonId.value = null;
+      view.value = 'stage';
+    }
+    function goMap(){ view.value = 'map'; currentStageId.value = null; }
+    const currentStage = computed(()=> STAGES.find(s=>s.id===currentStageId.value));
+
+    function toggleLesson(lessonId){
+      openLessonId.value = openLessonId.value===lessonId ? null : lessonId;
+      const sp = stageProgress(currentStageId.value);
+      if(!sp.lessonsRead.includes(lessonId)){
+        sp.lessonsRead.push(lessonId);
+        persist();
+      }
+    }
+
+    function checkStageCompletion(stageId){
+      const sp = stageProgress(stageId);
+      if(sp.gameCompleted && sp.quizPassed && !sp.completedAt){
+        sp.completedAt = new Date().toISOString();
+      }
+    }
+    function onGameFinished(score){
+      const sp = stageProgress(currentStageId.value);
+      sp.gameCompleted = true;
+      sp.gameBestScore = Math.max(sp.gameBestScore||0, score);
+      checkStageCompletion(currentStageId.value);
+      persist();
+    }
+    function onQuizFinished(score){
+      const sp = stageProgress(currentStageId.value);
+      sp.quizBestScore = Math.max(sp.quizBestScore||0, score);
+      if(score >= currentStage.value.quiz.passThreshold) sp.quizPassed = true;
+      checkStageCompletion(currentStageId.value);
+      persist();
+      if(allCompleted.value){
+        setTimeout(()=>{ view.value='certificate'; }, 600);
+      }
+    }
+
+    /* Glossary test */
+    const unlockedStageOrders = computed(()=>{
+      let orders = [1];
+      for(let o=2;o<=8;o++){ if(isUnlocked(o)) orders.push(o); }
+      return orders;
+    });
+    function buildGlossaryTest(){
+      const stageIds = STAGES.filter(s=>unlockedStageOrders.value.includes(s.order)).map(s=>s.id);
+      let pool = TERMS.filter(t=> stageIds.includes(t.stageId));
+      // weight toward previously-wrong terms
+      pool = pool.slice().sort((a,b)=>{
+        const sa = progress.glossary.termStats[a.term];
+        const sb = progress.glossary.termStats[b.term];
+        const ra = sa ? sa.correct/Math.max(sa.seen,1) : -1;
+        const rb = sb ? sb.correct/Math.max(sb.seen,1) : -1;
+        return ra - rb;
+      });
+      const chosen = pool.slice(0, Math.min(10, pool.length));
+      glossaryQuestions.value = chosen.map(t=>{
+        const distractors = pick(pool.filter(p=>p.term!==t.term), Math.min(3, pool.length-1)).map(p=>p.definition);
+        const options = shuffle([t.definition, ...distractors]);
+        return {
+          id: t.term,
+          question: `"${t.term}" atamasining to'g'ri ta'rifi qaysi?`,
+          type:'mcq',
+          options,
+          answerIndex: options.indexOf(t.definition)
+        };
+      });
+    }
+    function openGlossaryTest(){
+      buildGlossaryTest();
+      view.value = 'glossary';
+    }
+    function onGlossaryFinished(score){
+      glossaryQuestions.value.forEach(q=>{
+        const wasCorrect = true; // per-question detail not tracked individually here beyond overall score
+      });
+      progress.glossary.bestScorePercent = Math.max(progress.glossary.bestScorePercent||0, score);
+      persist();
+    }
+
+    return {
+      session, progress, view, nameInput, login, logout, resetProgress,
+      STAGES, stageProgress, isUnlocked, stagePercent, overallPercent, allCompleted,
+      openStage, goMap, currentStage, currentStageId, stageTab, openLessonId, toggleLesson,
+      onGameFinished, onQuizFinished, openGlossaryTest, glossaryQuestions, onGlossaryFinished
+    };
+  },
+  template: `
+    <div>
+      <div class="topbar" v-if="view!=='login'">
+        <div class="brand" @click="goMap">Moda Dizayni Akademiyasi<span>8 bosqichlik interaktiv kurs</span></div>
+        <div class="user-chip">
+          <span class="progress-pill">{{ overallPercent }}% tugallandi</span>
+          <b>{{ session.name }}</b>
+          <button class="btn-ghost btn-sm" @click="openGlossaryTest">Atamalar sinovi</button>
+          <button class="btn-ghost btn-sm" @click="logout">Chiqish</button>
+        </div>
+      </div>
+
+      <main>
+        <!-- LOGIN -->
+        <div v-if="view==='login'" class="center-screen">
+          <div class="card login-card">
+            <h1>Xush kelibsiz! 🌸</h1>
+            <p>Ismingizni kiriting, boshlaymiz</p>
+            <input type="text" v-model="nameInput" placeholder="Ismingiz" @keyup.enter="login" autofocus>
+            <button class="btn-primary btn-block" @click="login">Boshlash</button>
+          </div>
+        </div>
+
+        <!-- STAGE MAP -->
+        <div v-else-if="view==='map'">
+          <h2 class="page-title">Salom, {{ session.name }}!</h2>
+          <p class="subtitle">Quyidagi 8 bosqichdan birini tanlang.</p>
+          <div class="stage-grid">
+            <div v-for="stage in STAGES" :key="stage.id"
+                 class="stage-card"
+                 :class="{locked: !isUnlocked(stage.order), done: progress.stages[stage.id] && progress.stages[stage.id].completedAt}"
+                 @click="openStage(stage)">
+              <div class="lock-icon" v-if="!isUnlocked(stage.order)">🔒</div>
+              <div class="lock-icon" v-else-if="progress.stages[stage.id] && progress.stages[stage.id].completedAt">✅</div>
+              <div class="stage-num">{{ stage.order }}</div>
+              <div class="stage-title">{{ stage.title }}</div>
+              <div class="stage-desc">{{ stage.description }}</div>
+              <div class="mini-bar"><div class="mini-bar-fill" :style="{width: stagePercent(stage)+'%'}"></div></div>
+            </div>
+          </div>
+          <div style="text-align:center; margin-top:30px;">
+            <button class="btn-secondary" @click="resetProgress">Progressni tozalash</button>
+          </div>
+        </div>
+
+        <!-- STAGE DETAIL -->
+        <div v-else-if="view==='stage' && currentStage">
+          <div class="backbar"><button class="btn-ghost btn-sm" @click="goMap">← Bosqichlar xaritasi</button></div>
+          <h2 class="page-title">{{ currentStage.order }}-Bosqich: {{ currentStage.title }}</h2>
+          <p class="subtitle">{{ currentStage.description }}</p>
+          <div class="tabs">
+            <div class="tab" :class="{active: stageTab==='learn'}" @click="stageTab='learn'">📖 O'rganish</div>
+            <div class="tab" :class="{active: stageTab==='play'}" @click="stageTab='play'">🎮 O'yin</div>
+            <div class="tab" :class="{active: stageTab==='test'}" @click="stageTab='test'">📝 Test</div>
+          </div>
+
+          <div v-if="stageTab==='learn'">
+            <div v-for="lesson in currentStage.lessons" :key="lesson.id" class="lesson-item">
+              <div class="lesson-head" @click="toggleLesson(lesson.id)">
+                <div class="lesson-head-left">
+                  <div class="lesson-check" :class="{read: stageProgress(currentStage.id).lessonsRead.includes(lesson.id)}">
+                    <span v-if="stageProgress(currentStage.id).lessonsRead.includes(lesson.id)">✓</span>
+                  </div>
+                  <b>{{ lesson.title }}</b>
+                </div>
+                <span>{{ openLessonId===lesson.id ? '▲' : '▼' }}</span>
+              </div>
+              <div class="lesson-body" v-if="openLessonId===lesson.id">
+                <div class="lesson-image-placeholder">🖼️ Rasm: {{ lesson.image }}</div>
+                <p>{{ lesson.body }}</p>
+                <div class="exercise-box" v-if="lesson.exercise"><b>Amaliy mashq:</b> {{ lesson.exercise }}</div>
+                <div v-if="lesson.terms && lesson.terms.length">
+                  <div style="margin-top:12px; font-size:0.85rem; color:var(--muted);">Yangi atamalar:</div>
+                  <span class="term-chip" v-for="t in lesson.terms" :key="t.term" :title="t.definition">{{ t.term }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div v-else-if="stageTab==='play'">
+            <GameRunner :game="currentStage.game" @finished="onGameFinished" :key="currentStage.id" />
+          </div>
+
+          <div v-else-if="stageTab==='test'">
+            <QuizRunner :questions="currentStage.quiz.questions" :passThreshold="currentStage.quiz.passThreshold" @finished="onQuizFinished" :key="currentStage.id" />
+          </div>
+        </div>
+
+        <!-- GLOSSARY TEST -->
+        <div v-else-if="view==='glossary'">
+          <div class="backbar"><button class="btn-ghost btn-sm" @click="goMap">← Bosqichlar xaritasi</button></div>
+          <h2 class="page-title">Atamalar Sinovi</h2>
+          <p class="subtitle">Hozirgacha ochilgan bosqichlardagi barcha atamalar bo'yicha bilimingizni sinang.</p>
+          <QuizRunner v-if="glossaryQuestions.length" :questions="glossaryQuestions" :passThreshold="70" @finished="onGlossaryFinished" />
+          <p v-else>Hali yetarli atama mavjud emas.</p>
+        </div>
+
+        <!-- CERTIFICATE -->
+        <div v-else-if="view==='certificate'" class="center-screen">
+          <div class="certificate">
+            <div class="stamp">🏆</div>
+            <h1>Tabriklaymiz!</h1>
+            <p>Siz Moda Dizayni Akademiyasining barcha 8 bosqichini muvaffaqiyatli tugatdingiz.</p>
+            <div class="name">{{ session.name }}</div>
+            <p style="color:var(--muted);">Endi o'z g'oyalaringizni real dunyoga olib chiqish vaqti keldi!</p>
+            <button class="btn-primary" @click="goMap">Bosqichlarni qayta ko'rish</button>
+          </div>
+        </div>
+      </main>
+
+      <div class="footer-note" v-if="view!=='login'">Moda Dizayni Akademiyasi — barcha progress faqat shu brauzerda, localStorage'da saqlanadi.</div>
+    </div>
+  `
+};
+
+createApp(App).mount('#app');
+</script>
+</body>
+</html>

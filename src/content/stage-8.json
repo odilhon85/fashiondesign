@@ -1,0 +1,113 @@
+{
+  "id": "stage-8",
+  "order": 8,
+  "title": "Sanoat va Biznes Tushunchasi",
+  "description": "Brend qurish, licensing, narx darajalari va o'z mini-brend rejangizni tuzishni o'rganasiz.",
+  "sourceFile": "8-Bosqich_Sanoat_va_Biznes.md",
+  "heroImage": "/assets/images/stage-8/hero.jpg",
+  "lessons": [
+    {
+      "id": "s8-l1",
+      "title": "Designer'dan Brand'ga",
+      "image": "/assets/images/stage-8/designer-to-brand.jpg",
+      "body": "Eski model: dizayner — ijodiy san'atkor. Yangi model: dizayner nomi — brend, savdo ko'rsatkichlari bilan o'lchanadi. Zamonaviy muvaffaqiyat uchun brend qurish mahorati ham kerak.",
+      "exercise": "3 ta tanigan brendni sanab, ular 'dizayner' emas 'brend' sifatida ishlashini yozing.",
+      "terms": []
+    },
+    {
+      "id": "s8-l2",
+      "title": "Licensing (Litsenziyalash)",
+      "image": "/assets/images/stage-8/licensing-pros-cons.jpg",
+      "body": "Dizayner nomini boshqa kompaniyaga 'ijaraga berish'. Ijobiy: daromad va tanilish oshadi. Xavfli: sifat nazorati yo'qolib, haddan tashqari ko'p litsenziya brend obro'sini yo'qotishi mumkin.",
+      "exercise": "Licensing'ning bitta ijobiy va bitta xavfli tomonini o'z so'zingiz bilan tushuntiring.",
+      "terms": [
+        { "term": "Licensing", "definition": "Dizayner yoki brendning o'z nomini boshqa kompaniyaga foyda evaziga 'ijaraga berishi'." }
+      ]
+    },
+    {
+      "id": "s8-l3",
+      "title": "Narx darajalari (Market Tiers)",
+      "image": "/assets/images/stage-8/market-tiers.jpg",
+      "body": "Haute Couture → Designer/Luxury → Bridge → Contemporary → Mass Market/Fast Fashion. Har bir daraja boshqa mato, ishlab chiqarish va maqsadli mijozni talab qiladi.",
+      "exercise": "O'zingiz qaysi narx darajasida ishlashni xohlashingizni tanlang va sababini yozing.",
+      "terms": [
+        { "term": "Market Tier", "definition": "Fashion sanoatidagi narx-sifat qatlami (couture'dan fast fashion'gacha)." }
+      ]
+    },
+    {
+      "id": "s8-l4",
+      "title": "Fast Fashion inqilobi",
+      "image": "/assets/images/stage-8/fast-fashion-vs-traditional.jpg",
+      "body": "An'anaviy: yiliga 2 kolleksiya, oylab reja. Fast fashion: trendlarni bir necha haftada ommaviy sotuvga chiqaradi. Kichik brendlar tezlikda emas, sifat/hikoya orqali raqobatlashadi.",
+      "exercise": "Fast fashion bilan raqobatlasha olmaydigan, lekin kichik brend qila oladigan 2 narsani yozing.",
+      "terms": [
+        { "term": "Fast Fashion", "definition": "Trendlarni juda qisqa muddatda, arzon narxda ommaviy sotuvga chiqaruvchi ishlab chiqarish modeli." }
+      ]
+    },
+    {
+      "id": "s8-l5",
+      "title": "Narx qanday hisoblanadi",
+      "image": "/assets/images/stage-8/pricing-formula.jpg",
+      "body": "Tannarx (mato+tikuv+material) → Wholesale (Tannarx x2) → Retail (Wholesale x2). Misol: 50,000 so'm tannarx → 100,000 wholesale → 200,000 retail.",
+      "exercise": "O'z g'oyangizdagi bitta kiyim uchun taxminiy tannarxni hisoblab, wholesale va retail narxni toping.",
+      "terms": [
+        { "term": "Wholesale Price", "definition": "Ishlab chiqaruvchidan do'konga sotiladigan ulgurji narx, odatda tannarxning 2 barobari." },
+        { "term": "Retail Price", "definition": "Do'kondan mijozga sotiladigan yakuniy chakana narx." }
+      ]
+    },
+    {
+      "id": "s8-l6",
+      "title": "To'g'ridan-to'g'ri sotish",
+      "image": "/assets/images/stage-8/direct-to-consumer.jpg",
+      "body": "Ijtimoiy tarmoq orqali to'g'ridan-to'g'ri sotish — wholesale bosqichini chetlab o'tadi, ham mijozga arzonroq, ham dizaynerga foydaliroq bo'lishi mumkin.",
+      "exercise": "Qaysi platforma orqali o'z ishlaringizni ko'rsatishni xohlaysiz — sabab bilan yozing.",
+      "terms": [
+        { "term": "Direct-to-Consumer (D2C)", "definition": "Do'kon/wholesale orqali emas, to'g'ridan-to'g'ri mijozga sotish modeli." }
+      ]
+    },
+    {
+      "id": "s8-l7",
+      "title": "Brend hikoyasi",
+      "image": "/assets/images/stage-8/brand-story-questions.jpg",
+      "body": "Brend nima uchun mavjud, kimga xizmat qiladi, nimaga qarshi turadi, mijoz o'zini qanday his qilishi kerak — bu savollar butun brend uchun 'Design Story'ning kengaytmasi.",
+      "exercise": "4 ta savolga o'z brendingiz uchun javob yozing.",
+      "terms": []
+    },
+    {
+      "id": "s8-l8",
+      "title": "Mini Brend Rejasi — yakuniy loyiha",
+      "image": "/assets/images/stage-8/mini-brand-plan-template.jpg",
+      "body": "8 qadamli shablon: brend nomi, hikoya, target customer, market tier, farqlanish strategiyasi, mini-kolleksiya, narx hisobi, sotish kanali. Bu — real kichik brend boshlashning birinchi qadamlari.",
+      "exercise": "To'liq Mini Brend Rejasini to'ldiring — bu butun 8 bosqichlik sayohatning yakuniy loyihasi.",
+      "terms": []
+    }
+  ],
+  "quiz": {
+    "passThreshold": 70,
+    "questions": [
+      { "id": "s8-q1", "type": "mcq", "question": "Zamonaviy fashion sanoatida muvaffaqiyat asosan nima bilan o'lchanadi?", "options": ["Faqat ijodiy obro' bilan", "Savdo ko'rsatkichlari va brend tanilishi bilan", "Faqat qo'l mahorati bilan", "Faqat narx bilan"], "answerIndex": 1 },
+      { "id": "s8-q2", "type": "mcq", "question": "Licensing nima?", "options": ["Kiyim tikish texnikasi", "Brend nomini boshqa kompaniyaga 'ijaraga berish'", "Rang tanlash usuli", "Mato turi"], "answerIndex": 1 },
+      { "id": "s8-q3", "type": "true_false", "question": "Haddan tashqari ko'p litsenziyalash brend obro'siga hech qanday ta'sir qilmaydi.", "answer": false },
+      { "id": "s8-q4", "type": "mcq", "question": "Wholesale narx odatda qanday hisoblanadi?", "options": ["Tannarx x2", "Tannarx x10", "Tannarxdan past", "Tasodifiy raqam"], "answerIndex": 0 },
+      { "id": "s8-q5", "type": "mcq", "question": "Kichik brendlar fast fashion bilan asosan nima orqali raqobatlashadi?", "options": ["Tezlik va arzon narx orqali", "Sifat, hikoya va noyoblik orqali", "Faqat reklama orqali", "Raqobatlasha olmaydi"], "answerIndex": 1 },
+      { "id": "s8-q6", "type": "true_false", "question": "Direct-to-Consumer model wholesale bosqichini chetlab o'tadi.", "answer": true }
+    ]
+  },
+  "game": {
+    "type": "brand_simulator",
+    "title": "Mini Brend Quruvchi",
+    "instructions": "Bosqichma-bosqich o'z mini-brendingiz uchun qaror qabul qiling — yakunda tannarx/wholesale/retail narxlar avtomatik hisoblanadi.",
+    "config": {
+      "steps": [
+        { "key": "brandName", "prompt": "Brend nomini kiriting" },
+        { "key": "marketTier", "prompt": "Narx darajasini tanlang", "options": ["Contemporary", "Bridge", "Designer/Luxury"] },
+        { "key": "differentiation", "prompt": "Fast fashion'dan qanday farqlanasiz?", "options": ["Hunarmandchilik sifati", "Milliy naqshlar", "Barqarorlik (sustainability)"] },
+        { "key": "costOfGoods", "prompt": "Bitta mahsulot tannarxini kiriting (so'mda)", "inputType": "number" }
+      ],
+      "calculatedFields": {
+        "wholesale": "costOfGoods * 2",
+        "retail": "costOfGoods * 4"
+      }
+    }
+  }
+}
