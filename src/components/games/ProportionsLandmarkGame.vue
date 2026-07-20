@@ -111,13 +111,17 @@ function resetGame() {
 // Drag-and-drop handlers
 function onDragStart(event: MouseEvent, landmarkId: string) {
   if (!(event instanceof DragEvent)) return
-  event.dataTransfer.setData('text/plain', landmarkId)
+  const dt = event.dataTransfer
+  if (!dt) return
+  dt.setData('text/plain', landmarkId)
 }
 
 function onDrop(event: MouseEvent, unit: number) {
   const drag = event as DragEvent
   drag.preventDefault()
-  const landmarkId = drag.dataTransfer.getData('text/plain')
+  const dt = drag.dataTransfer
+  if (!dt) return
+  const landmarkId = dt.getData('text/plain')
   if (landmarkId) assignLandmarkToUnit(unit, landmarkId)
 }
 </script>

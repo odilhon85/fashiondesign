@@ -76,18 +76,18 @@ function checkAnswers() {
     const isCorrect = assignedOutfitId === c.bestOutfitId
     if (isCorrect) correctCount++
 
-    const outfit = outfits.find(o => o.id === assignedOutfitId)
-    const label = outfit ? outfit.label : 'Tanlanmagan'
+    const outfit = assignedOutfitId ? outfits.find(o => o.id === assignedOutfitId) : undefined
+    const label = outfit?.label ?? 'Tanlanmagan'
     let explanation = ''
 
     if (!assignedOutfitId) {
-      const best = outfits.find(o => o.id === c.bestOutfitId)!
-      explanation = `Hech qanday libos tanlanmagan. Eng mos variant: ${best.label}.`
-    } else if (isCorrect) {
+      const best = outfits.find(o => o.id === c.bestOutfitId)
+      explanation = `Hech qanday libos tanlanmagan. Eng mos variant: ${best?.label ?? 'Noma’lum'}.`
+    } else if (isCorrect && outfit) {
       explanation = outfit.explanationCorrect
     } else {
-      const best = outfits.find(o => o.id === c.bestOutfitId)!
-      explanation = `${outfit.explanationWrong} To‘g‘ri variant: ${best.label}.`
+      const best = outfits.find(o => o.id === c.bestOutfitId)
+      explanation = `${outfit?.explanationWrong ?? 'Tanlangan variant mos emas.'} To‘g‘ri variant: ${best?.label ?? 'Noma’lum'}.`
     }
 
     items.push({
@@ -114,13 +114,17 @@ function resetGame() {
 // Drag-and-drop handlers
 function onDragStart(event: MouseEvent, outfitId: string) {
   if (!(event instanceof DragEvent)) return
-  event.dataTransfer.setData('text/plain', outfitId)
+  const dt = event.dataTransfer
+  if (!dt) return
+  dt.setData('text/plain', outfitId)
 }
 
 function onDrop(event: MouseEvent, customerId: string) {
   const drag = event as DragEvent
   drag.preventDefault()
-  const outfitId = drag.dataTransfer.getData('text/plain')
+  const dt = drag.dataTransfer
+  if (!dt) return
+  const outfitId = dt.getData('text/plain')
   if (outfitId) assignOutfitToCustomer(customerId, outfitId)
 }
 </script>
