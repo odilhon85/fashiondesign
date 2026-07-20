@@ -86,21 +86,83 @@
     ]
   },
   "game": {
-    "type": "drag_build",
-    "title": "Croquis Quruvchi",
-    "instructions": "Tana qismlarini to'g'ri tartibda 9-bosh gridga joylashtiring.",
+    "type": "proportions_landmarks",
+    "title": "To‘g‘ri Proporsiya Qur",
+    "instructions": "Moda dizaynida ideal tana odatda 9 bosh balandligiga teng deb qabul qilinadi. Kompyuterda: nuqtani tortib chapdagi shkaladagi to‘g‘ri joyga tashlang. Telefonda: avval nuqtani bosing (tanlanadi), keyin chapdagi shkaladagi kerakli joyga bosing.",
     "config": {
-      "gridUnits": 9,
-      "pieces": [
-        { "id": "head", "label": "Bosh", "correctUnit": 1 },
-        { "id": "chest", "label": "Ko'krak chizig'i", "correctUnit": 2 },
-        { "id": "waist", "label": "Bel (eng tor)", "correctUnit": 3 },
-        { "id": "hip", "label": "Chanoq (eng keng)", "correctUnit": 4 },
-        { "id": "midthigh", "label": "O'rta son", "correctUnit": 5 },
-        { "id": "knee", "label": "Tizza", "correctUnit": 6 },
-        { "id": "calf", "label": "Boldir o'rtasi", "correctUnit": 7 },
-        { "id": "ankle", "label": "To'piq", "correctUnit": 8 },
-        { "id": "floor", "label": "Poyafzal tagi", "correctUnit": 9 }
+      "landmarks": [
+        {
+          "id": "head_top",
+          "label": "Boshning tepasi",
+          "icon": "🧢",
+          "correctUnit": 1,
+          "explanationCorrect": "To‘g‘ri. Boshning tepasi shkala boshida (1-bosh) joylashadi.",
+          "explanationWrong": "Boshning tepasi eng yuqori nuqtada bo‘lishi kerak."
+        },
+        {
+          "id": "chin",
+          "label": "Chana (bosh oxiri)",
+          "icon": "🗣️",
+          "correctUnit": 2,
+          "explanationCorrect": "To‘g‘ri. Chana taxminan 2-bosh balandligida joylashadi.",
+          "explanationWrong": "Chana boshdan keyin, ya’ni 2-bosh atrofida bo‘ladi."
+        },
+        {
+          "id": "chest",
+          "label": "Ko‘krak chizig'i",
+          "icon": "🎽",
+          "correctUnit": 3,
+          "explanationCorrect": "To‘g‘ri. Ko‘krak chizig'i odatda 3-bosh balandligida bo‘ladi.",
+          "explanationWrong": "Ko‘krak chizig'i bel va bosh orasida, ya’ni 3-bosh atrofida."
+        },
+        {
+          "id": "waist",
+          "label": "Bel (eng tor joy)",
+          "icon": "🧣",
+          "correctUnit": 4,
+          "explanationCorrect": "To‘g‘ri. Bel odatda 4-bosh balandligida bo‘ladi.",
+          "explanationWrong": "Bel ko‘krakdan pastda, taxminan 4-bosh atrofida joylashadi."
+        },
+        {
+          "id": "hips",
+          "label": "Chanoq (eng keng joy)",
+          "icon": "👖",
+          "correctUnit": 5,
+          "explanationCorrect": "To‘g‘ri. Chanoq bel pastida, taxminan 5-bosh balandligida.",
+          "explanationWrong": "Chanoq bel ostida, ya’ni 5-bosh atrofida bo‘ladi."
+        },
+        {
+          "id": "mid_thigh",
+          "label": "Sonning o‘rtasi",
+          "icon": "🦵",
+          "correctUnit": 6,
+          "explanationCorrect": "To‘g‘ri. Sonning o‘rtasi taxminan 6-bosh balandligida.",
+          "explanationWrong": "Sonning o‘rtasi chanoqdan pastda, ya’ni 6-bosh atrofida."
+        },
+        {
+          "id": "knees",
+          "label": "Tizza",
+          "icon": "🦿",
+          "correctUnit": 7,
+          "explanationCorrect": "To‘g‘ri. Tizzalar odatda 7-bosh balandligida joylashadi.",
+          "explanationWrong": "Tizzalar sonning pastida, ya’ni 7-bosh atrofida."
+        },
+        {
+          "id": "ankles",
+          "label": "Tovon (oyoq bilagi)",
+          "icon": "🦶",
+          "correctUnit": 8,
+          "explanationCorrect": "To‘g‘ri. Tovonlar taxminan 8-bosh balandligida.",
+          "explanationWrong": "Tovonlar tizzadan pastda, 8-bosh atrofida bo‘ladi."
+        },
+        {
+          "id": "feet",
+          "label": "Oyoq tagi (to‘piq)",
+          "icon": "👟",
+          "correctUnit": 9,
+          "explanationCorrect": "To‘g‘ri. Oyoq tagi shkalaning eng pastki nuqtasi — 9-bosh.",
+          "explanationWrong": "Oyoq tagi tana balandligining oxirida, ya’ni 9-boshda."
+        }
       ]
     }
   }

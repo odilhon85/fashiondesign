@@ -11,7 +11,7 @@ const emit = defineEmits<{
   finished: [score: number]
 }>()
 
-function shuffle(arr: any[]) {
+function shuffle<T>(arr: T[]): T[] {
   const a = arr.slice()
   for (let i = a.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1))
@@ -136,5 +136,11 @@ const done = computed(() => matched.value.size === pairs.length)
   50% { transform: translateX(4px) }
   75% { transform: translateX(-3px) }
   100% { transform: translateX(0) }
+}
+
+@media (max-width: 600px) {
+  .match-columns {
+    flex-direction: column;
+  }
 }
 </style>

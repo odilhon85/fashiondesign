@@ -8,6 +8,9 @@ import BrandSimulatorGame from './brand-simulator-game.vue'
 import DragBuildGame from './drag-build-game.vue'
 import RotatePuzzleGame from './rotate-puzzle-game.vue'
 import PointPlacementGame from './point-placement-game.vue'
+import StylistOutfitGame from './StylistOutfitGame.vue'
+import ProportionsLandmarkGame from './ProportionsLandmarkGame.vue'
+import ColorMasterGame from './ColorMasterGame.vue'
 
 const props = defineProps<{
   game: {
@@ -86,6 +89,27 @@ const gameType = computed(() => props.game?.type || '')
     <!-- Point Placement (landmark points) -->
     <PointPlacementGame
       v-else-if="gameType === 'point_placement'"
+      :config="game.config"
+      @finished="onFinished"
+    />
+
+    <!-- Proportions Landmarks Game (Stage 2) -->
+    <ProportionsLandmarkGame
+      v-else-if="gameType === 'proportions_landmarks'"
+      :config="game.config"
+      @finished="onFinished"
+    />
+
+    <!-- Color Master Game (Stage 3) -->
+    <ColorMasterGame
+      v-else-if="gameType === 'color_master'"
+      :config="game.config"
+      @finished="onFinished"
+    />
+
+    <!-- Stylist Outfit Game (Stage 1) -->
+    <StylistOutfitGame
+      v-else-if="gameType === 'stylist_outfit'"
       :config="game.config"
       @finished="onFinished"
     />

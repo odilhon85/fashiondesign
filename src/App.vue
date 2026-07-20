@@ -114,7 +114,10 @@ function toggleLesson(lessonId: string) {
 
 function onGameFinished(score: number) {
   if (!currentStageId.value) return
+  const stage = currentStage.value
+  const totalLessons = (stage?.lessons?.length ?? 0)
   progress.markGameCompleted(currentStageId.value, score)
+  progress.completeStageIfReady(currentStageId.value, totalLessons)
   if (allCompleted.value) {
     setTimeout(() => { view.value = 'certificate' }, 600)
   }

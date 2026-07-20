@@ -92,15 +92,69 @@
     ]
   },
   "game": {
-    "type": "matching",
-    "title": "Mijoz va Dizaynni Moslashtir",
-    "instructions": "Har bir mijoz profilini unga eng mos keladigan dizayn tavsifi bilan bog'lang.",
+    "type": "stylist_outfit",
+    "title": "Mijozga Libos Tanla",
+    "instructions": "Har bir mijoz uchun eng mos keladigan libos uslubini tanlang. Kompyuterda: libos kartochkasini tortib mijozga tashlang. Telefonda: avval libosni bosing, keyin mijoz kartasidagi maydonni bosing.",
     "config": {
-      "pairs": [
-        { "left": "22 yoshli faol talaba, arzon lekin sifatli kiyim izlaydi", "right": "Kundalik, qulay, trikotajdan tikilgan sport uslubidagi to'plam" },
-        { "left": "35 yoshli biznes-ayol, rasmiy uchrashuvlarga boradi", "right": "Struktura kostyum, neytral ranglar, minimal dizayn" },
-        { "left": "18 yoshli, kechki tadbirga liboс izlaydi", "right": "Yorqin rang, ipak yoki shifon, drape-li kechki libos" },
-        { "left": "45 yoshli, barqaror va sifatli kiyimga qiziqadi", "right": "Tabiiy matolar, uzoq xizmat qiluvchi klassik siluet" }
+      "customers": [
+        {
+          "id": "c1",
+          "name": "Amina, 22 yosh",
+          "meta": "Talaba · Kundalik kiyim",
+          "desc": "Faol talaba. Arzon, lekin sifatli va qulay kiyim izlaydi.",
+          "bestOutfitId": "o1"
+        },
+        {
+          "id": "c2",
+          "name": "Nilufar, 35 yosh",
+          "meta": "Biznes-ayol · Rasmiy uchrashuvlar",
+          "desc": "Ish joyida professional ko‘rinishi muhim. Oddiy va zamonaviy uslub.",
+          "bestOutfitId": "o2"
+        },
+        {
+          "id": "c3",
+          "name": "Dilnoza, 18 yosh",
+          "meta": "Kechki tadbir · Bayram",
+          "desc": "To‘yga boradi. Yorqin va e’tibor tortadigan libos xohlaydi.",
+          "bestOutfitId": "o3"
+        },
+        {
+          "id": "c4",
+          "name": "Farzona, 45 yosh",
+          "meta": "Barqarorlik · Uzoq muddatli sifat",
+          "desc": "Tabiiy matolar va uzoq xizmat qiluvchi klassik siluetga qiziqadi.",
+          "bestOutfitId": "o4"
+        }
+      ],
+      "outfits": [
+        {
+          "id": "o1",
+          "label": "Sport uslubidagi to‘plam",
+          "icon": "👟",
+          "explanationCorrect": "To‘g‘ri. Amina uchun qulay, harakatli va arzon sport uslub mos keladi.",
+          "explanationWrong": "Bu mijoz uchun juda sport uslubda yoki zaruriy emas."
+        },
+        {
+          "id": "o2",
+          "label": "Struktur kostyum (neytral ranglar)",
+          "icon": "🧥",
+          "explanationCorrect": "To‘g‘ri. Nilufar uchun professional va zamonaviy ko‘rinish.",
+          "explanationWrong": "Bu mijoz uchun juda rasmiy yoki mos emas."
+        },
+        {
+          "id": "o3",
+          "label": "Yorqin rangli kechki libos (ipak/shifon)",
+          "icon": "👗",
+          "explanationCorrect": "To‘g‘ri. Dilnoza uchun bayramiy va e’tibor tortadigan uslub.",
+          "explanationWrong": "Bu mijoz uchun juda kechki yoki rasmiy emas."
+        },
+        {
+          "id": "o4",
+          "label": "Tabiiy matodan klassik kiyim",
+          "icon": "🧵",
+          "explanationCorrect": "To‘g‘ri. Farzona uchun sifatli, barqaror va uzoq xizmat qiluvchi uslub.",
+          "explanationWrong": "Bu mijoz uchun bu darajadagi klassik uslub zarur emas."
+        }
       ]
     }
   }

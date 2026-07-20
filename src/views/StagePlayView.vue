@@ -27,7 +27,10 @@ function goBack() {
 }
 
 function onGameFinished(score: number) {
+  const s = contentStore.stages[stageId]
+  const totalLessons = (s?.lessons?.length ?? 0)
   progressStore.markGameCompleted(stageId, score)
+  progressStore.completeStageIfReady(stageId, totalLessons)
   router.push({ name: 'stage-test', params: { id: stageId } })
 }
 </script>

@@ -101,10 +101,10 @@ export const useProgressStore = defineStore('progress', {
       }
     },
 
-    // Call after quiz completion to finalize stage if all lessons are read.
+    // Call after quiz/game completion to finalize stage if all lessons are read.
     completeStageIfReady(stageId: string, totalLessons: number) {
       const sp = this.stages?.[stageId]
-      if (!sp || !sp.quizCompleted) return
+      if (!sp || !sp.quizCompleted || !sp.gameCompleted) return
       if (sp.lessonsRead.length >= totalLessons && !sp.completedAt) {
         sp.completedAt = Date.now()
         this.persist()
@@ -249,16 +249,18 @@ export const useProgressStore = defineStore('progress', {
       return true
     },
 
-    getStagePercent(stage: { id: string; lessons?: Array<any>; quiz?: any }): number {
+    getStagePercent(stage: { id: string; lessons?: Array<any>; quiz?: any; game?: any }): number {
       const sp = this.stages?.[stage.id]
       if (!sp || !sp.unlocked) return 0
 
-      const totalLessons = (stage.lessons?.length ?? 0) + (stage.quiz ? 1 : 0)
+      const hasGame = !!stage.game
+      const totalTasks = (stage.lessons?.length ?? 0) + (stage.quiz ? 1 : 0) + (hasGame ? 1 : 0)
       let done = 0
       done += sp.lessonsRead.length
       if (sp.quizCompleted) done += 1
+      if (hasGame && sp.gameCompleted) done += 1
 
-      return totalLessons > 0 ? Math.round((done / totalLessons) * 100) : 0
+      return totalTasks > 0 ? Math.round((done / totalTasks) * 100) : 0
     },
 
     reset() {

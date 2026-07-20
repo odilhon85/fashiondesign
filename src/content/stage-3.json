@@ -77,15 +77,70 @@
     ]
   },
   "game": {
-    "type": "perception_challenge",
-    "title": "Rang Illyuziyasi Sinovi",
-    "instructions": "Har bir savolda bir xil rangdagi ikki kvadrat turli fonda ko'rsatiladi — ular sizga bir xil ko'rinadimi yoki boshqacha?",
+    "type": "color_master",
+    "title": "Ranglar Ustasi",
+    "instructions": "Bu o‘yinda ikki qism bor: A) Ranglarni solishtirish (bir xilmi yoki farq qiladimi?) B) Har bir vaziyatga eng mos rang palitrani tanlang.",
     "config": {
-      "rounds": [
-        { "color": "#8a8a8a", "backgroundA": "#1a1a1a", "backgroundB": "#f2f2f2", "correctAnswer": "different_perception_same_color" },
-        { "color": "#b5651d", "backgroundA": "#2e1500", "backgroundB": "#ffe4c4", "correctAnswer": "different_perception_same_color" }
-      ],
-      "scoringNote": "To'g'ri javob: ikkalasi ham AYNAN bir xil rang, lekin fon ta'sirida boshqacha ko'rinadi."
+      "questions": [
+        {
+          "type": "perception",
+          "color": "#7a6bfa",
+          "bgA": "#020817",
+          "bgB": "#fde68a",
+          "question": "Bu ikki kvadratdagi ranglar bir xilmi yoki farq qiladimi?",
+          "options": ["Bir xil", "Farq qiladi"],
+          "correctIndex": 0,
+          "explanationCorrect": "To‘g‘ri! Ranglar bir xil — faqat fon ta’sirida boshqacha ko‘rinadi.",
+          "explanationWrong": "Bu ranglar aslida bir xil. Faqat fon rangi ko‘zni aldaydi."
+        },
+        {
+          "type": "perception",
+          "color": "#38bdf8",
+          "bgA": "#14532d",
+          "bgB": "#7c2d12",
+          "question": "Bu ikki kvadratdagi ranglar bir xilmi yoki farq qiladimi?",
+          "options": ["Bir xil", "Farq qiladi"],
+          "correctIndex": 0,
+          "explanationCorrect": "To‘g‘ri! Ranglar bir xil — fon kontrasti ko‘zni aldaydi.",
+          "explanationWrong": "Bu ranglar aslida bir xil. Turli fonlar tufayli farqli ko‘rinadi."
+        },
+        {
+          "type": "mood",
+          "scenario": "To‘y marosimi (rasmiy va yorqin)",
+          "palettes": [
+            ["#111827", "#1f2937", "#6b7280"],
+            ["#fde68a", "#ec4899", "#e5e7eb"],
+            ["#e5e7eb", "#d1d5db", "#9ca3af"]
+          ],
+          "correctIndex": 1,
+          "explanationCorrect": "To‘g‘ri! Yorqin va issiq ranglar to‘y kabi bayramiy tadbirlarga mos keladi.",
+          "explanationWrong": "Bu palitra juda qorong‘u yoki jiddiy. To‘y uchun yorqinroq va quvonchli ranglar tanlash kerak."
+        },
+        {
+          "type": "mood",
+          "scenario": "Ofis (professional va tinch)",
+          "palettes": [
+            ["#111827", "#6b7280", "#e5e7eb"],
+            ["#fde68a", "#ec4899", "#38bdf8"],
+            ["#020817", "#020817", "#020817"]
+          ],
+          "correctIndex": 0,
+          "explanationCorrect": "To‘g‘ri! Neytral va tinch ranglar professional muhitda qulay ko‘rinish beradi.",
+          "explanationWrong": "Bu palitra juda jiddiy yoki ortiqcha yorqin. Ofis uchun o‘rtacha, tinch ranglar mosroq."
+        },
+        {
+          "type": "mood",
+          "scenario": "Sport (faollik va energiya)",
+          "palettes": [
+            ["#111827", "#020817", "#111827"],
+            ["#e5e7eb", "#9ca3af", "#d1d5db"],
+            ["#facc15", "#ef4444", "#111827"]
+          ],
+          "correctIndex": 2,
+          "explanationCorrect": "To‘g‘ri! Yorqin va kontrast ranglar harakatli, sport uslubiga mos keladi.",
+          "explanationWrong": "Bu palitra juda tinch yoki qorong‘u. Sport uchun energiyali, yorqin ranglar tanlash kerak."
+        }
+      ]
     }
   }
 }
