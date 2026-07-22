@@ -83,19 +83,19 @@
   },
   "game": {
     "type": "point_placement",
-    "title": "Landmark Nuqtalarini Belgila",
-    "instructions": "Statik dress-form rasmida 7 ta landmark nuqtani to'g'ri joyga bosing.",
+    "title": "Draping Xaritasi — Landmark Nuqtalarini Belgila",
+    "instructions": "Old ko'rinishdagi dress-form ustida asosiy landmark nuqtalarni to'g'ri joyga bosing. Yordamchi chiziqlardan foydalaning.",
     "config": {
       "points": [
-        { "id": "cf", "label": "Center Front" },
-        { "id": "cb", "label": "Center Back" },
-        { "id": "bust", "label": "Bust Line" },
-        { "id": "waist", "label": "Waistline" },
-        { "id": "hip", "label": "Hip Line" },
-        { "id": "shoulder", "label": "Shoulder Line" },
-        { "id": "armhole", "label": "Armhole" }
+        { "id": "center_front", "label": "Center Front (CF)" },
+        { "id": "neck_point", "label": "Neck Point (Bo'yin nuqtasi)" },
+        { "id": "shoulder_end", "label": "Shoulder End (Yelka uchi)" },
+        { "id": "bust_point", "label": "Bust Point (BP)" },
+        { "id": "waistline", "label": "Waistline (Bel chizig'i)" },
+        { "id": "hip_line", "label": "Hip Line (Son chizig'i)" },
+        { "id": "armhole_depth", "label": "Armhole Depth (Qo'l chuqurligi)" }
       ],
-      "toleranceRadiusPx": 25
+      "toleranceRadiusPx": 30
     }
   }
 }

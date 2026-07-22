@@ -89,14 +89,11 @@
     ]
   },
   "game": {
-    "type": "tile_matching",
-    "title": "Repeat Naqsh Boshqotirmasi",
-    "instructions": "Motif kartochkalarini gridga sudrab, half-drop repeat tartibida to'g'ri joylashtiring — chekkalar 'mos kelganda' yashil rangga aylanadi.",
+    "type": "repeat_builder",
+    "title": "Repeat Quruvchi: Naqsh va Repeat Turlari",
+    "instructions": "Motiflarni pastdagi palitradan sudrab tashlang yoki bosing, so‘ng katakni bosing. Har bir repeat turi uchun alohida katak berilgan:",
     "config": {
-      "gridCols": 4,
-      "gridRows": 4,
-      "repeatType": "half_drop",
-      "motifId": "user_or_default_motif"
+      "modes": ["straight", "half-drop", "mirror"]
     }
   }
 }

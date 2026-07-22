@@ -11,6 +11,8 @@ import PointPlacementGame from './point-placement-game.vue'
 import StylistOutfitGame from './StylistOutfitGame.vue'
 import ProportionsLandmarkGame from './ProportionsLandmarkGame.vue'
 import ColorMasterGame from './ColorMasterGame.vue'
+import SlashSpreadGame from './SlashSpreadGame.vue'
+import RepeatBuilderGame from './RepeatBuilderGame.vue'
 
 const props = defineProps<{
   game: {
@@ -107,9 +109,23 @@ const gameType = computed(() => props.game?.type || '')
       @finished="onFinished"
     />
 
+    <!-- Slash Spread Game (Stage 6) -->
+    <SlashSpreadGame
+      v-else-if="gameType === 'slash_spread'"
+      :config="game.config"
+      @finished="onFinished"
+    />
+
     <!-- Stylist Outfit Game (Stage 1) -->
     <StylistOutfitGame
       v-else-if="gameType === 'stylist_outfit'"
+      :config="game.config"
+      @finished="onFinished"
+    />
+
+    <!-- Repeat Builder Game (Stage 7) -->
+    <RepeatBuilderGame
+      v-else-if="gameType === 'repeat_builder'"
       :config="game.config"
       @finished="onFinished"
     />

@@ -85,13 +85,9 @@
     ]
   },
   "game": {
-    "type": "interactive_diagram",
-    "title": "Slash-and-Spread Simulyatori",
-    "instructions": "Chizilgan slash chiziqlarini bosing, so'ng ularni sudrab 'yoying' — natijada shakl qanday o'zgarishini kuzating.",
-    "config": {
-      "baseShape": "bodice_panel",
-      "slashLines": 4,
-      "maxSpreadCm": 5
-    }
+    "type": "slash_spread",
+    "title": "Slash & Spread Laboratoriyasi",
+    "instructions": "Har bir slash chiziq uchun slider orqali ochilish miqdorini sozlang va maqsadli A-line siluetga yaqinlashtiring.",
+    "config": {}
   }
 }

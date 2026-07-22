@@ -1,0 +1,402 @@
+<script setup lang="ts">
+import { ref, computed } from 'vue'
+
+const props = defineProps<{
+  config?: Record<string, unknown>
+}>()
+
+const emit = defineEmits<{
+  finished: [score: number]
+}>()
+
+// Core state (mirrors stage-8-brand.html logic)
+const currentStep = ref(0)
+const score = ref(0)
+const maxScore = 100
+
+const brandName = ref('')
+const segment = ref('') // 'economy' | 'mid' | 'premium'
+const cost = ref(0)
+const wholesalePrice = ref(0)
+const retailPrice = ref(0)
+const answers = ref<Record<string, string>>({})
+
+// UI helpers
+const showWarning = ref(false)
+const warningMessage = ref('')
+
+function flashWarning(msg: string) {
+  warningMessage.value = msg
+  showWarning.value = true
+  setTimeout(() => {
+    showWarning.value = false
+  }, 1500)
+}
+
+// Segment-based pricing (from HTML prototype)
+const segmentPricing: Record<string, { cost: number; wholesalePrice: number; retailPrice: number }> = {
+  economy: { cost: 250_000, wholesalePrice: 400_000, retailPrice: 600_000 },
+  mid: { cost: 500_000, wholesalePrice: 900_000, retailPrice: 1_300_000 },
+  premium: { cost: 900_000, wholesalePrice: 1_600_000, retailPrice: 2_400_000 }
+}
+
+function applySegment(segmentKey: string) {
+  const p = segmentPricing[segmentKey]
+  if (!p) return
+  cost.value = p.cost
+  wholesalePrice.value = p.wholesalePrice
+  retailPrice.value = p.retailPrice
+}
+
+// Scenario definitions (from HTML prototype)
+const scenarios = [
+  {
+    key: 'scenario1',
+    title: 'Vaziyat 1 — Xarajatlar oshdi',
+    prompt: "Agar xarajatlar 20% ga oshsa, narxlarni qanday o‘zgartirasiz?",
+    options: [
+      { value: 'raise_prices', label: 'Narxlarni shunga mos ravishda koʻtaraman.' },
+      { value: 'keep_prices_reduce_quality', label: 'Narxni oʻzgartirmay, material sifatini pasaytiraman.' },
+      { value: 'absorb_costs', label: 'Narxlarni oshirmasdan, foydani kamaytirib chidab turaman.' }
+    ]
+  },
+  {
+    key: 'scenario2',
+    title: 'Vaziyat 2 — Fast fashion raqobatchisi',
+    prompt: "Arzon va tez moda brendi sizning dizaynlaringizga o‘xshash kolleksiya chiqardi. Siz nima qilasiz?",
+    options: [
+      { value: 'price_war', label: 'Narxlarni tushirib, raqobatlashaman.' },
+      { value: 'differentiate_design', label: "Dizayn va sifat orqali ajralib turishga harakat qilaman." },
+      { value: 'ignore', label: "E’tibor bermayman; mijozlar sifatlarga qaraydi." }
+    ]
+  },
+  {
+    key: 'scenario3',
+    title: 'Vaziyat 3 — Marketing va reklama',
+    prompt: "Marketing byudjetingiz cheklangan. Qanday strategiya tanlaysiz?",
+    options: [
+      { value: 'heavy_ads', label: 'Katta reklamaga katta investitsiya qilaman.' },
+      { value: 'influencer_collab', label: 'Influencerlar va hamkorlikka e’tibor beraman.' },
+      { value: 'minimal_marketing', label: "Minimal reklama; organik o‘sishga tayanaman." }
+    ]
+  },
+  {
+    key: 'scenario4',
+    title: 'Vaziyat 4 — Sifat muammosi',
+    prompt: "Mijozlar bir nechta mahsulotda sifat kamchiligini bildirgan. Nima qilasiz?",
+    options: [
+      { value: 'full_recall_replace', label: "To‘liq almashtirish va ochiq izoh beraman." },
+      { value: 'partial_discount', label: "Faqat og‘ir holatlarda chegirma beraman." },
+      { value: 'ignore_issue', label: "Kichik muammo deb hisoblab, e’tiborsiz qoldiraman." }
+    ]
+  },
+  {
+    key: 'scenario5',
+    title: 'Vaziyat 5 — Katta buyurtma (retailer)',
+    prompt: "Yirik do‘kon sizdan katta hajmda buyurtma beradi, lekin narxni pastroq so‘raydi.",
+    options: [
+      { value: 'accept_full_price', label: "To‘liq narxda qolaman; shartlarni muhokama qilaman." },
+      { value: 'accept_with_discount', label: "Katta hajm uchun chegirma bilan rozilik beraman." },
+      { value: 'reject', label: "Brend imidjini saqlash uchun rad etaman." }
+    ]
+  }
+]
+
+// Scoring rules (from HTML prototype)
+function applyScenarioEffect(key: string, choice: string) {
+  switch (key) {
+    case 'scenario1': {
+      if (choice === 'raise_prices') score.value += 5
+      else if (choice === 'keep_prices_reduce_quality') score.value += 3
+      else if (choice === 'absorb_costs') score.value += 7
+      break
+    }
+    case 'scenario2': {
+      if (choice === 'price_war') {
+        score.value += 4
+        cost.value += 50_000
+      } else if (choice === 'differentiate_design') {
+        score.value += 8
+      } else if (choice === 'ignore') {
+        score.value += 2
+      }
+      break
+    }
+    case 'scenario3': {
+      if (choice === 'heavy_ads') {
+        score.value += 6
+        cost.value += 100_000
+      } else if (choice === 'influencer_collab') {
+        score.value += 7
+      } else if (choice === 'minimal_marketing') {
+        score.value += 3
+      }
+      break
+    }
+    case 'scenario4': {
+      if (choice === 'full_recall_replace') {
+        score.value += 9
+        cost.value += 150_000
+      } else if (choice === 'partial_discount') {
+        score.value += 5
+      } else if (choice === 'ignore_issue') {
+        score.value += 2
+      }
+      break
+    }
+    case 'scenario5': {
+      if (choice === 'accept_full_price') score.value += 8
+      else if (choice === 'accept_with_discount') score.value += 6
+      else if (choice === 'reject') score.value += 4
+      break
+    }
+  }
+}
+
+// Step navigation
+function startGame() {
+  currentStep.value = 1 // name input
+}
+
+function goToNameConfirm() {
+  const trimmed = brandName.value.trim()
+  if (!trimmed) {
+    flashWarning("Brend nomini kiritish shart.")
+    return
+  }
+  brandName.value = trimmed
+  currentStep.value = 2 // segment selection
+}
+
+function goToPricing() {
+  if (!segment.value) {
+    flashWarning("Nishon auditoriyani tanlang.")
+    return
+  }
+  applySegment(segment.value)
+  score.value += 5 // for making a clear choice
+  currentStep.value = 3 // pricing info
+}
+
+function goToScenarios() {
+  currentStep.value = 4 // start scenarios
+}
+
+// Scenario handling
+const scenarioIndex = computed(() => {
+  if (currentStep.value < 4) return -1
+  const idx = currentStep.value - 4
+  return idx >= scenarios.length ? -1 : idx
+})
+
+function isScenariosFinished() {
+  return scenarioIndex.value === -1 && Object.keys(answers.value).length >= scenarios.length
+}
+
+function handleScenarioChoice(optionValue: string) {
+  const sIdx = scenarioIndex.value
+  if (sIdx < 0 || sIdx >= scenarios.length) return
+  const scenario = scenarios[sIdx]
+  answers.value[scenario.key] = optionValue
+  applyScenarioEffect(scenario.key, optionValue)
+
+  // Move to next step or finish
+  if (sIdx + 1 < scenarios.length) {
+    currentStep.value++
+  } else {
+    // All scenarios done → show results
+    currentStep.value = 99
+  }
+}
+
+function finishGame() {
+  const finalScore = Math.min(score.value, maxScore)
+  emit('finished', finalScore)
+}
+
+// Expose for potential external control (if needed later)
+defineExpose({ score })
+</script>
+
+<style scoped>
+.brand-sim {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: #e5e7eb;
+}
+
+/* Header */
+.brand-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.brand-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #e5e7eb;
+}
+
+.brand-subtitle {
+  font-size: 11px;
+  color: #9ca3af;
+  margin-top: 2px;
+}
+
+.score-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(75, 85, 99, 0.9);
+  font-size: 11px;
+  color: #e5e7eb;
+}
+
+/* Progress */
+.progress-bar {
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.9);
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(to right, #6366f1, #22c55e);
+  transition: width 0.3s ease;
+}
+
+/* Card */
+.brand-card {
+  padding: 14px;
+  border-radius: 10px;
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(75, 85, 99, 0.9);
+}
+
+.brand-card h2 {
+  margin: 0 0 6px;
+  font-size: 14px;
+  color: #e5e7eb;
+}
+
+.brand-card p {
+  margin: 0 0 8px;
+  font-size: 11px;
+  color: #9ca3af;
+}
+
+/* Inputs */
+.field-label {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 11px;
+  color: #e5e7eb;
+}
+
+.brand-input {
+  width: 100%;
+  padding: 8px 9px;
+  border-radius: 6px;
+  border: 1px solid rgba(75, 85, 99, 0.9);
+  background: #020817;
+  color: #e5e7eb;
+  font-size: 11px;
+  outline: none;
+}
+
+.brand-input:focus {
+  border-color: #6366f1;
+}
+
+/* Radio group */
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.radio-option {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 8px;
+  border-radius: 6px;
+  border: 1px solid rgba(75, 85, 99, 0.9);
+  background: #020817;
+  font-size: 11px;
+  color: #e5e7eb;
+  cursor: pointer;
+}
+
+.radio-option input[type='radio'] {
+  accent-color: #6366f1;
+}
+
+/* Buttons */
+.btn-primary {
+  margin-top: 8px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: none;
+  background: linear-gradient(to right, #6366f1, #22c55e);
+  color: #020817;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  opacity: 0.95;
+}
+
+/* Scenario options */
+.scenario-options {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.option-btn {
+  padding: 8px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(75, 85, 99, 0.9);
+  background: #020817;
+  color: #e5e7eb;
+  font-size: 11px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.option-btn:hover {
+  border-color: #6366f1;
+}
+
+/* Warning toast */
+.warning-toast {
+  margin-top: 8px;
+  padding: 6px 8px;
+  border-radius: 999px;
+  background: rgba(239, 68, 68, 0.15);
+  color: #fca5a5;
+  font-size: 10px;
+}
+
+/* Results */
+.results-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+}
+</style>
