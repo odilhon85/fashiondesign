@@ -82,12 +82,10 @@ function buildPalette() {
     tile.addEventListener('click', () => {
       if (selectedMotif === id) {
         selectedMotif = null
-        tile.classList.remove('motif-tile-selected')
       } else {
-        document.querySelectorAll('.motif-tile.motif-tile-selected').forEach(t => t.classList.remove('motif-tile-selected'))
         selectedMotif = id
-        tile.classList.add('motif-tile-selected')
       }
+      refreshSelectedVisuals()
     })
 
     palette.appendChild(tile)
@@ -115,8 +113,9 @@ function setupDragDrop() {
 
   // Drag start from palette
   tiles.forEach(tile => {
-    tile.addEventListener('dragstart', e => {
-      ;(e.dataTransfer as any).setData('text/plain', (tile as any).dataset.motifId)
+    tile.addEventListener('dragstart', (e: Event) => {
+      const dt = (e as unknown as DragEvent).dataTransfer
+      ;(dt as any).setData('text/plain', (tile as any).dataset.motifId)
     })
   })
 
@@ -163,11 +162,12 @@ function setupDragDrop() {
       ;(cell as HTMLElement).classList.remove('drag-over')
     })
 
-    cell.addEventListener('drop', e => {
+    cell.addEventListener('drop', (e: Event) => {
       e.preventDefault()
       ;(cell as HTMLElement).classList.remove('drag-over')
 
-      const motifId = (e.dataTransfer as any).getData('text/plain')
+      const dt = (e as unknown as DragEvent).dataTransfer
+      const motifId = (dt as any).getData('text/plain')
       if (!motifId) return
 
       const mode = (cell as any).dataset.mode
@@ -192,21 +192,35 @@ function setupModeMotifButtons() {
   document.querySelectorAll('.motif-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const id = (btn as any).dataset.motifId
-
       if (selectedMotif === id) {
         selectedMotif = null
-        // Deselect all motif-tile highlights.
-        document.querySelectorAll('.motif-tile.motif-tile-selected').forEach(t => t.classList.remove('motif-tile-selected'))
       } else {
         selectedMotif = id
-        // Highlight corresponding main palette tile if exists.
-        const mainTile = document.querySelector('.motif-tile[data-motif-id="' + id + '"]')
-        if (mainTile) {
-          document.querySelectorAll('.motif-tile.motif-tile-selected').forEach(t => t.classList.remove('motif-tile-selected'))
-          ;(mainTile as HTMLElement).classList.add('motif-tile-selected')
-        }
       }
+      refreshSelectedVisuals()
     })
+  })
+}
+
+function refreshSelectedVisuals() {
+  // Update palette tiles
+  document.querySelectorAll('.motif-tile').forEach(t => {
+    const tid = (t as any).dataset.motifId
+    if (tid === selectedMotif) {
+      t.classList.add('motif-tile-selected')
+    } else {
+      t.classList.remove('motif-tile-selected')
+    }
+  })
+
+  // Update per-mode motif buttons (A/B/C)
+  document.querySelectorAll('.motif-btn').forEach(b => {
+    const bid = (b as any).dataset.motifId
+    if (bid === selectedMotif) {
+      b.classList.add('motif-btn-selected')
+    } else {
+      b.classList.remove('motif-btn-selected')
+    }
   })
 }
 
@@ -656,8 +670,10 @@ function runMirrorCheck() {
 
 .motif-tile-selected {
   outline: 3px solid var(--accent);
-  box-shadow: 0 0 12px rgba(181, 101, 29, 0.45);
-  transform: scale(1.05);
+  box-shadow: 0 0 16px rgba(181, 101, 29, 0.7);
+  transform: scale(1.08);
+  border-color: var(--accent) !important;
+  background: radial-gradient(circle at top, #fff7ed, #ffedd5) !important;
 }
 
 .motif-tile {
@@ -763,6 +779,14 @@ button.btn-secondary {
 
 .motif-btn:active {
   transform: scale(0.95);
+}
+
+/* Selected motif button (mobile) */
+.motif-btn-selected {
+  border-color: var(--accent) !important;
+  background: radial-gradient(circle at top, #fff7ed, #ffedd5) !important;
+  box-shadow: 0 0 12px rgba(181, 101, 29, 0.6);
+  font-weight: 600;
 }
 
 /* Per-mode motif buttons (visible only on small screens) */
@@ -975,6 +999,23 @@ button.btn-secondary {
   width: 24px;
   height: 24px;
   display: block;
+}
+
+/* Selected motif tile (for dynamically created elements) */
+.repeat-builder-game .motif-tile.motif-tile-selected {
+  outline: 3px solid var(--accent, #b5651d);
+  box-shadow: 0 0 16px rgba(181, 101, 29, 0.7);
+  transform: scale(1.08);
+  border-color: var(--accent, #b5651d) !important;
+  background: radial-gradient(circle at top, #fff7ed, #ffedd5) !important;
+}
+
+/* Selected motif button (for dynamically created elements) */
+.repeat-builder-game .motif-btn.motif-btn-selected {
+  border-color: var(--accent, #b5651d) !important;
+  background: radial-gradient(circle at top, #fff7ed, #ffedd5) !important;
+  box-shadow: 0 0 12px rgba(181, 101, 29, 0.6);
+  font-weight: 600;
 }
 
 /* Placed motif inside grid cells (created via JS) */

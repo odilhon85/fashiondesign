@@ -22,7 +22,7 @@ function updateSkirtShape() {
   const b = sliderB.value
   const c = sliderC.value
 
-  const spreadFactor = (v) => v / 100 * 40
+  const spreadFactor = (v: number) => v / 100 * 40
   const sA = spreadFactor(a)
   const sB = spreadFactor(b)
   const sC = spreadFactor(c)
@@ -80,9 +80,9 @@ function updateSkirtShape() {
 
     const lines = mainSvg.querySelectorAll('line')
     if (lines.length >= 3) {
-      lines[0].setAttribute('x2', p.hemMidL.x)
-      lines[1].setAttribute('x2', p.hemCenter.x)
-      lines[2].setAttribute('x2', p.hemMidR.x)
+      lines[0].setAttribute('x2', String(p.hemMidL.x))
+      lines[1].setAttribute('x2', String(p.hemCenter.x))
+      lines[2].setAttribute('x2', String(p.hemMidR.x))
     }
   })
 }

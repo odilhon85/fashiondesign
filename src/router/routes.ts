@@ -9,23 +9,25 @@ const routes = [
     name: 'login',
     component: () => import('../views/LoginView.vue'),
   },
+  // Main stage view with tabs (default)
+  {
+    path: '/stage/:id',
+    name: 'stage',
+    component: () => import('../views/StageView.vue'),
+    props: true,
+  },
+  // Backward-compatible routes that open the same page with a specific tab via query
   {
     path: '/stage/:id/learn',
-    name: 'stage-learn',
-    component: () => import('../views/StageLearnView.vue'),
-    props: true,
+    redirect: (to: any) => ({ name: 'stage', params: to.params, query: { tab: 'learn' } }),
   },
   {
     path: '/stage/:id/play',
-    name: 'stage-play',
-    component: () => import('../views/StagePlayView.vue'),
-    props: true,
+    redirect: (to: any) => ({ name: 'stage', params: to.params, query: { tab: 'play' } }),
   },
   {
     path: '/stage/:id/test',
-    name: 'stage-test',
-    component: () => import('../views/StageTestView.vue'),
-    props: true,
+    redirect: (to: any) => ({ name: 'stage', params: to.params, query: { tab: 'test' } }),
   },
   {
     path: '/glossary',

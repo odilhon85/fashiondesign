@@ -1,95 +1,53 @@
 <template>
-  <div class="d-flex flex-column" style="min-height: 100vh; padding: 40px 20px;">
-    <v-container class="flex-grow-1">
-      <v-row>
-        <v-col cols="12" class="text-center mb-8">
-          <h1 class="text-h2 font-weight-bold mb-2 animate-fade-in">
-            Moda Dizayn Yo'riqnoma
-          </h1>
-          <p class="text-subtitle-1 text-medium-emphasis">
-            {{ session.name ? `Xush kelibsiz, ${session.name}!` : 'O\'rganishni boshlang' }}
-          </p>
-        </v-col>
-      </v-row>
+  <div class="stage-map-page">
+    <header class="map-header">
+      <h1 class="page-title">Moda Dizayn Yo'riqnoma</h1>
+      <p class="subtitle">
+        {{ session.name ? `Xush kelibsiz, ${session.name}!` : "O'rganishni boshlang" }}
+      </p>
+    </header>
 
-      <v-row>
-        <v-col
-          v-for="stage in stages"
-          :key="stage.id"
-          cols="12"
-          sm="6"
-          md="4"
-          lg="3"
-        >
-          <v-card
-            :class="[
-              'glass-card',
-              'pa-6',
-              'd-flex',
-              'flex-column',
-              'animate-scale-in',
-              { 'opacity-50': !isStageUnlocked(stage.order) }
-            ]"
-            :elevation="0"
-            @click="goToStage(stage.id)"
-            style="cursor: pointer; height: 100%;"
-          >
-            <img
-              v-if="stage.id === 'stage-1'"
-              src="/assets/images/stage-1/hero.jpg"
-              alt="Stage hero"
-              loading="lazy"
-              style="
-                width: 100%;
-                height: 120px;
-                object-fit: cover;
-                border-radius: 999px;
-                margin-bottom: 8px;
-                display: block;
-              "
-            />
+    <div class="stage-grid">
+      <div
+        v-for="stage in stages"
+        :key="stage.id"
+        :class="[
+          'stage-card',
+          { locked: !isStageUnlocked(stage.order) }
+        ]"
+        @click="goToStage(stage.id)"
+      >
+        <!-- Hero image -->
+        <img
+          v-if="stage.heroImage || stage.id === 'stage-1'"
+          class="stage-hero-img"
+          :src="stage.heroImage || '/assets/images/stage-1/hero.jpg'"
+          alt="Stage hero"
+          loading="lazy"
+        />
 
-            <img
-              v-else-if="stage.heroImage"
-              :src="stage.heroImage"
-              alt="Stage hero"
-              loading="lazy"
-              style="
-                width: 100%;
-                height: 120px;
-                object-fit: cover;
-                border-radius: 999px;
-                margin-bottom: 8px;
-                display: block;
-              "
-            />
-            <v-card-title class="text-h5 font-weight-bold pb-2">
-              {{ stage.title }}
-            </v-card-title>
-            <v-card-subtitle class="flex-grow-1">
-              {{ stage.description }}
-            </v-card-subtitle>
-            <v-card-actions class="justify-space-between">
-              <v-chip
-                :color="getStageStatusColor(stage)"
-                size="small"
-                variant="flat"
-              >
-                {{ getStageStatus(stage) }}
-              </v-chip>
-              <v-icon
-                v-if="isStageUnlocked(stage.order)"
-                icon="mdi-arrow-right"
-              />
-              <v-icon
-                v-else
-                icon="mdi-lock"
-              />
-            </v-card-actions>
-          </v-card>
-        </v-col>
-      </v-row>
-    </v-container>
+        <div class="stage-num">{{ stage.order }}</div>
+
+        <div class="stage-title">{{ stage.title }}</div>
+        <div class="stage-desc">{{ stage.description }}</div>
+
+        <!-- Status chip -->
+        <div class="status-row">
+          <span class="term-chip" :class="getStageStatusClass(stage)">
+            {{ getStageStatus(stage) }}
+          </span>
+          <span v-if="!isStageUnlocked(stage.order)" class="lock-icon">🔒</span>
+        </div>
+
+        <!-- Mini progress bar -->
+        <div class="mini-bar">
+          <div
+            class="mini-bar-fill"
+            :style="{ width: getMiniBarWidth(stage) + '%' }"
+          ></div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -111,35 +69,102 @@ onMounted(async () => {
 
 const stages = computed(() => content.getAllStages)
 
-function isStageUnlocked(order: number) {
-  if (order === 1) return true
-  const prevId = `stage-${order - 1}`
-  return progress.stages[prevId]?.completedAt != null
+function isStageUnlocked(order: number): boolean {
+  // Delegate to the store logic so it matches everywhere.
+  return progress.isStageUnlocked(order)
 }
 
-function getStageStatus(stage: { id: string, order: number }) {
+function getStageStatus(stage: { id: string; order: number }): string {
   if (progress.stages[stage.id]?.completedAt) return 'Tugatildi'
-  if (progress.stages[stage.id]?.quizCompleted && !progress.stages[stage.id]?.completedAt) return 'Test tugatildi'
-  if (progress.stages[stage.id]?.gameCompleted) return 'O\'ynalgan'
-  if (progress.stages[stage.id]?.lessonsRead.length > 0) return 'Boshlandi'
+  if (
+    progress.stages[stage.id]?.quizCompleted &&
+    !progress.stages[stage.id]?.completedAt
+  )
+    return 'Test tugatildi'
+  if (progress.stages[stage.id]?.gameCompleted) return "O'ynalgan"
+  if ((progress.stages[stage.id]?.lessonsRead?.length || 0) > 0)
+    return 'Boshlandi'
   return 'Yangi'
 }
 
-function getStageStatusColor(stage: { id: string }) {
-  if (progress.stages[stage.id]?.completedAt) return 'success'
-  if (progress.stages[stage.id]?.quizCompleted && !progress.stages[stage.id]?.completedAt) return 'info'
-  if (progress.stages[stage.id]?.gameCompleted) return 'warning'
-  return 'primary'
+function getStageStatusClass(stage: { id: string }): string {
+  const s = progress.stages[stage.id]
+  if (s?.completedAt) return 'status-done'
+  if (s?.quizCompleted && !s.completedAt) return 'status-quiz'
+  if (s?.gameCompleted) return 'status-game'
+  return ''
+}
+
+function getMiniBarWidth(stage: { id: string }): number {
+  const s = progress.stages[stage.id]
+  if (!s || !stage.id) return 0
+  // Very rough but enough for visual bar.
+  let parts = 3
+  let done = 0
+  if (s.lessonsRead?.length > 0) done++
+  if (s.gameCompleted) done++
+  if (s.quizCompleted) done++
+  return Math.round((done / parts) * 100)
 }
 
 function goToStage(stageId: string) {
-  router.push({ name: 'stage-learn', params: { id: stageId } })
+  const stage = stages.value.find(s => s.id === stageId)
+  if (!stage || !isStageUnlocked(stage.order)) return
+  router.push({ name: 'stage', params: { id: stageId } })
 }
 </script>
 
 <style scoped>
-.opacity-50 {
-  opacity: 0.5;
-  pointer-events: none;
+.stage-map-page {
+  min-height: 100vh;
+  padding: 40px 20px 60px;
+}
+
+.map-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.page-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+
+.subtitle {
+  color: var(--muted);
+  margin-top: 2px;
+  margin-bottom: 6px;
+  font-size: 0.95rem;
+}
+
+.status-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 6px;
+  margin-bottom: 4px;
+}
+
+.term-chip.status-done {
+  background: #eaf5ec;
+  color: var(--good);
+}
+
+.term-chip.status-quiz {
+  background: #e7f0ff;
+  color: #2b6cb0;
+}
+
+.term-chip.status-game {
+  background: #fff8e1;
+  color: #b5651d;
+}
+
+.lock-icon {
+  font-size: 1rem;
+  margin-left: auto;
 }
 </style>

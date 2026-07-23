@@ -95,8 +95,8 @@
   },
   "game": {
     "type": "brand_simulator",
-    "title": "Mini Brend Quruvchi",
-    "instructions": "Bosqichma-bosqich o'z mini-brendingiz uchun qaror qabul qiling — yakunda tannarx/wholesale/retail narxlar avtomatik hisoblanadi.",
+    "title": "",
+    "instructions": "",
     "config": {
       "steps": [
         { "key": "brandName", "prompt": "Brend nomini kiriting" },

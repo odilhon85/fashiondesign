@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { useSessionStore } from './stores/session'
 import { useContentStore } from './stores/content'
 import { useProgressStore } from './stores/progress'
-import QuizRunner from './components/quiz/QuizRunner.vue'
-import GameRunner from './components/games/GameRunner.vue'
+import ConfirmDialog from './components/ConfirmDialog.vue'
 
+const router = useRouter()
 const session = useSessionStore()
 const content = useContentStore()
 const progress = useProgressStore()
@@ -13,337 +14,310 @@ const progress = useProgressStore()
 onMounted(async () => {
   session.hydrate()
   progress.hydrate()
+
   if (session.isLoggedIn) {
-    view.value = 'map'
+    await content.loadAllStages()
   }
-  await content.loadAllStages()
-  await content.loadTerms()
 })
 
-const view = ref<'login'|'map'|'stage'|'glossary'|'certificate'>('login')
-const currentStageId = ref<string | null>(null)
-const stageTab = ref<'learn'|'play'|'test'>('learn')
-const openLessonId = ref<string | null>(null)
+const name = computed(() => session.name || 'Foydalanuvchi')
+
+const overallPercent = computed(() => {
+  return progress.overallPercent ?? 0
+})
+
 const mobileMenuOpen = ref(false)
+const showLogoutConfirm = ref(false)
 
-const nameInput = ref('')
-const lastUser = computed(() => session.getLastUser)
-const recentUsers = computed(() => session.getRecentUsers)
-
-function switchToUser(username: string) {
-  // First set the active user in session store.
-  session.loginOrCreate(username)
-  // Then reset and reload that user’s progress from localStorage.
-  progress.reset()
-  progress.hydrate()
-}
-
-function loginOrCreate() {
-  const n = (nameInput.value || '').trim()
-  if (!n) return
-  switchToUser(n)
-  view.value = 'map'
-}
-
-function continueAsLastUser() {
-  const user = lastUser.value
-  if (!user) return
-  switchToUser(user)
-  view.value = 'map'
-}
-
-function logout() {
-  session.logout()
-  // Clear in-memory progress so it doesn’t leak between users.
-  progress.reset()
-  view.value = 'login'
-  currentStageId.value = null
-  nameInput.value = ''
-}
-
-function resetProgress() {
-  if (!confirm("Butun progressni o'chirmoqchimisiz? Bu qaytarib bo'lmmaydi.")) return
-  const username = session.username || ''
-  if (username) {
-    localStorage.removeItem('fashion_academy_progress_' + username)
-  }
-  progress.reset()
-}
-
-function stageProgress(stageId: string) {
-  return progress.getStageProgress(stageId)
-}
-
-function isUnlocked(order: number) {
-  return progress.isStageUnlocked(order)
-}
-
-function stagePercent(stage: any) {
-  return progress.getStagePercent(stage)
-}
-
-function openStage(stage: any) {
-  if (!isUnlocked(stage.order)) return
-  currentStageId.value = stage.id
-  stageTab.value = 'learn'
-  openLessonId.value = null
-  view.value = 'stage'
-}
-
-function goMap() {
-  view.value = 'map'
-  currentStageId.value = null
-}
-
-const currentStage = computed(() => content.getStage(currentStageId.value || ''))
-
-function toggleLesson(lessonId: string) {
-  if (!currentStageId.value) return
-  openLessonId.value = openLessonId.value === lessonId ? null : lessonId
-  const stage = currentStage.value
-  if (stage && stage.lessons) {
-    const lesson = stage.lessons.find((l: any) => l.id === lessonId)
-    if (lesson?.terms) {
-      for (const t of lesson.terms as Array<{ term: string }>) {
-        progress.markTermSeen(t.term)
-      }
-    }
-  }
-  progress.markLessonRead(currentStageId.value, lessonId)
-}
-
-function onGameFinished(score: number) {
-  if (!currentStageId.value) return
-  const stage = currentStage.value
-  const totalLessons = (stage?.lessons?.length ?? 0)
-  progress.markGameCompleted(currentStageId.value, score)
-  progress.completeStageIfReady(currentStageId.value, totalLessons)
-  if (allCompleted.value) {
-    setTimeout(() => { view.value = 'certificate' }, 600)
-  }
-}
-
-function onQuizFinished(score: number) {
-  if (!currentStageId.value) return
-  const stage = currentStage.value
-  const totalLessons = (stage?.lessons?.length ?? 0)
-  progress.markQuizCompleted(currentStageId.value, score)
-  progress.completeStageIfReady(currentStageId.value, totalLessons)
-  if (allCompleted.value) {
-    setTimeout(() => { view.value = 'certificate' }, 600)
-  }
-}
-
-function openGlossaryTest() {
-  const allTerms = content.getAllTerms || []
-  glossaryQuestions.value = progress.buildGlossaryTest(allTerms)
-  view.value = 'glossary'
-}
-
-// Mobile menu helpers
 function onMobileGlossaryClick() {
+  router.push({ name: 'glossary' })
   mobileMenuOpen.value = false
-  openGlossaryTest()
+}
+
+async function performLogout() {
+  session.logout()
+  progress.clearAll()
+  await content.resetStages()
+  router.replace({ name: 'login' })
+  mobileMenuOpen.value = false
+  showLogoutConfirm.value = false
 }
 
 function onMobileLogoutClick() {
-  mobileMenuOpen.value = false
-  logout()
+  showLogoutConfirm.value = true
 }
 
-function onGlossaryFinished(score: number) {
-  progress.updateGlossaryScore(score)
+function onHeaderGlossaryClick() {
+  router.push({ name: 'glossary' })
 }
 
-const name = computed(() => session.name || '')
-const overallPercent = computed(() => progress.overallPercent)
-const allCompleted = computed(() => progress.allCompleted)
-const stages = computed(() => content.getAllStages)
+function onHeaderLogoutClick() {
+  showLogoutConfirm.value = true
+}
 
-const glossaryQuestions = ref<any[]>([])
+function isOn(routeName: string): boolean {
+  return router.currentRoute.value.name === routeName
+}
 </script>
 
 <template>
-  <div>
-    <div class="topbar" v-if="view!=='login'">
-      <div class="brand" @click="goMap">Moda Dizayni Akademiyasi<span>8 bosqichlik interaktiv kurs</span></div>
-
-      <!-- Desktop right side -->
-      <div class="user-chip desktop-only">
-        <span class="progress-pill">{{ overallPercent }}% tugallandi</span>
-        <b>{{ name }}</b>
-        <button class="btn-ghost btn-sm" @click="openGlossaryTest">Atamalar sinovi</button>
-        <button class="btn-ghost btn-sm" @click="logout">Chiqish</button>
+  <div class="app-root">
+    <!-- HEADER (always visible except on login) -->
+    <header v-if="!isOn('login')" class="top-bar glass">
+      <!-- Left: brand + subtitle -->
+      <div class="left">
+        <div class="brand">
+          <div class="brand-title">Moda Dizayni Akademiyasi</div>
+          <div class="brand-subtitle desktop-only">
+            Fashion Design — oson va qiziqarli yo'l
+          </div>
+        </div>
       </div>
 
-      <!-- Mobile menu button -->
-      <button class="mobile-menu-btn mobile-only" @click="mobileMenuOpen = !mobileMenuOpen">
-        ☰
-      </button>
+      <!-- Right: desktop actions + mobile hamburger -->
+      <div class="right">
+        <!-- Desktop items -->
+        <div class="desktop-actions desktop-only">
+          <div class="progress-pill">{{ overallPercent }}% tugallandi</div>
+          <button class="btn-ghost btn-sm" @click="onHeaderGlossaryClick">
+            Atamalar sinovi
+          </button>
+          <span class="username">{{ name }}</span>
+          <button class="btn-danger btn-sm" @click="onHeaderLogoutClick">
+            Chiqish
+          </button>
+        </div>
 
-      <!-- Mobile dropdown with overlay -->
-      <template v-if="mobileMenuOpen">
-        <div class="mobile-overlay mobile-only" @click="mobileMenuOpen=false"></div>
-        <div class="mobile-menu mobile-only">
+        <!-- Hamburger (mobile only, right side) -->
+        <button
+          class="hamburger mobile-only"
+          @click="mobileMenuOpen = !mobileMenuOpen"
+          aria-label="Menyu"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Mobile menu (slide-in) -->
+    <template v-if="mobileMenuOpen && !isOn('login')">
+      <div class="mobile-overlay mobile-only" @click="mobileMenuOpen=false"></div>
+      <aside class="mobile-menu mobile-only">
+        <div class="mm-header">
+          <div class="mm-title">Moda Dizayni Akademiyasi</div>
+          <div class="mm-subtitle">
+            Fashion Design — oson va qiziqarli yo'l
+          </div>
+        </div>
+
+        <div class="mm-stats">
           <span class="progress-pill">{{ overallPercent }}% tugallandi</span>
           <b>{{ name }}</b>
-          <button class="btn-ghost btn-sm full-width-btn" @click="onMobileGlossaryClick">Atamalar sinovi</button>
-          <button class="btn-ghost btn-sm full-width-btn" @click="onMobileLogoutClick">Chiqish</button>
         </div>
-      </template>
+
+        <button
+          class="btn-ghost btn-sm full-width-btn"
+          @click="onMobileGlossaryClick"
+        >
+          Atamalar sinovi
+        </button>
+        <button
+          class="btn-danger btn-sm full-width-btn"
+          @click="onMobileLogoutClick"
+        >
+          Chiqish
+        </button>
+      </aside>
+    </template>
+
+    <!-- LOGIN: full-screen, no extra padding -->
+    <div v-if="isOn('login')" class="login-fullscreen">
+      <router-view />
     </div>
 
-    <main>
-      <!-- LOGIN -->
-      <div v-if="view==='login'" class="center-screen">
-        <div class="card login-card">
-          <img
-            src="/assets/images/stage-1/hero.jpg"
-            alt="Test image"
-            style="width:100%; height:120px; object-fit:cover; border-radius:999px; margin-bottom:14px; display:block; background:#000;"
-          />
-          <h1>Xush kelibsiz! 🌸</h1>
-
-          <!-- Recent users list -->
-          <div v-if="recentUsers.length" style="margin-bottom:12px;">
-            <p style="font-size:0.9rem;">Shu brauzerda oldin ishlatilgan:</p>
-            <div style="display:flex; flex-wrap:wrap; gap:6px; margin-top:4px;">
-              <button
-                v-for="user in recentUsers"
-                :key="user"
-                class="btn-secondary btn-sm"
-                @click="switchToUser(user); view='map'"
-              >
-                {{ user }}
-              </button>
-            </div>
-          </div>
-
-          <!-- Divider -->
-          <div v-if="recentUsers.length" style="font-size:0.8rem; color:var(--muted); margin-bottom:10px; text-align:center;">
-            yoki boshqa foydalanuvchi sifatida kirish
-          </div>
-
-          <!-- Register / login as another user -->
-          <p>Ismingizni kiriting, boshlaymiz</p>
-          <input type="text" v-model="nameInput" placeholder="Ismingiz" @keyup.enter="loginOrCreate" autofocus>
-          <button class="btn-primary btn-block" @click="loginOrCreate">Boshlash</button>
-        </div>
-      </div>
-
-      <!-- STAGE MAP -->
-      <div v-else-if="view==='map'">
-        <h2 class="page-title">Salom, {{ name }}!</h2>
-        <p class="subtitle">Quyidagi 8 bosqichdan birini tanlang.</p>
-        <div class="stage-grid">
-          <div v-for="stage in stages" :key="stage.id"
-               class="stage-card"
-               :class="{locked: !isUnlocked(stage.order), done: progress.stages[stage.id] && progress.stages[stage.id].completedAt}"
-               @click="openStage(stage)">
-            <div class="lock-icon" v-if="!isUnlocked(stage.order)">🔒</div>
-            <div class="lock-icon" v-else-if="progress.stages[stage.id] && progress.stages[stage.id].completedAt">✅</div>
-
-            <!-- Hero image inside card -->
-            <img
-              v-if="stage.heroImage"
-              :src="stage.heroImage"
-              alt="Stage hero"
-              loading="lazy"
-              class="stage-hero-img"
-            />
-
-            <div class="stage-num">{{ stage.order }}</div>
-            <div class="stage-title">{{ stage.title }}</div>
-            <div class="stage-desc">{{ stage.description }}</div>
-            <div class="mini-bar"><div class="mini-bar-fill" :style="{width: stagePercent(stage)+'%'}"></div></div>
-          </div>
-        </div>
-        <div style="text-align:center; margin-top:30px;">
-          <button class="btn-secondary" @click="resetProgress">Progressni tozalash</button>
-        </div>
-      </div>
-
-      <!-- STAGE DETAIL -->
-      <div v-else-if="view==='stage' && currentStage">
-        <div class="backbar"><button class="btn-ghost btn-sm" @click="goMap">← Bosqichlar xaritasi</button></div>
-
-        <!-- Hero banner at top of stage -->
-        <img
-          v-if="currentStage.heroImage"
-          :src="currentStage.heroImage"
-          alt="Bosqich rasmi"
-          loading="lazy"
-          class="stage-hero-banner"
-        />
-
-        <h2 class="page-title">{{ currentStage.order }}-Bosqich: {{ currentStage.title }}</h2>
-        <p class="subtitle">{{ currentStage.description }}</p>
-        <div class="tabs">
-          <div class="tab" :class="{active: stageTab==='learn'}" @click="stageTab='learn'">📖 O'rganish</div>
-          <div class="tab" :class="{active: stageTab==='play'}" @click="stageTab='play'">🎮 O'yin</div>
-          <div class="tab" :class="{active: stageTab==='test'}" @click="stageTab='test'">📝 Test</div>
-        </div>
-
-        <div v-if="stageTab==='learn'">
-          <div v-for="lesson in currentStage.lessons" :key="lesson.id" class="lesson-item">
-            <div class="lesson-head" @click="toggleLesson(lesson.id)">
-              <div class="lesson-head-left">
-                <div class="lesson-check" :class="{read: stageProgress(currentStage.id).lessonsRead.includes(lesson.id)}">
-                  <span v-if="stageProgress(currentStage.id).lessonsRead.includes(lesson.id)">✓</span>
-                </div>
-                <b>{{ lesson.title }}</b>
-              </div>
-              <span>{{ openLessonId===lesson.id ? '▲' : '▼' }}</span>
-            </div>
-            <div class="lesson-body" v-if="openLessonId===lesson.id">
-              <figure v-if="lesson.image" class="lesson-figure">
-                <img :src="lesson.image" alt="Dars rasmi" loading="lazy" />
-              </figure>
-              <p>{{ lesson.body }}</p>
-              <div class="exercise-box" v-if="lesson.exercise"><b>Amaliy mashq:</b> {{ lesson.exercise }}</div>
-              <div v-if="lesson.terms && lesson.terms.length">
-                <div style="margin-top:12px; font-size:0.85rem; color:var(--muted);">Yangi atamalar:</div>
-                <span class="term-chip" v-for="t in lesson.terms" :key="t.term" :title="t.definition">{{ t.term }}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div v-else-if="stageTab==='play'">
-          <GameRunner :game="currentStage.game" @finished="onGameFinished" :key="currentStage.id" />
-        </div>
-
-        <div v-else-if="stageTab==='test'">
-          <QuizRunner :questions="currentStage.quiz.questions" :passThreshold="currentStage.quiz.passThreshold" @finished="onQuizFinished" :key="currentStage.id" />
-        </div>
-      </div>
-
-      <!-- GLOSSARY TEST -->
-      <div v-else-if="view==='glossary'">
-        <div class="backbar"><button class="btn-ghost btn-sm" @click="goMap">← Bosqichlar xaritasi</button></div>
-        <h2 class="page-title">Atamalar Sinovi</h2>
-        <p class="subtitle">Hozirgacha ochilgan bosqichlardagi barcha atamalar bo'yicha bilimingizni sinang.</p>
-        <QuizRunner v-if="glossaryQuestions.length" :questions="glossaryQuestions" :passThreshold="70" @finished="onGlossaryFinished" />
-        <p v-else>Hali yetarli atama mavjud emas.</p>
-      </div>
-
-      <!-- CERTIFICATE -->
-      <div v-else-if="view==='certificate'" class="center-screen">
-        <div class="certificate">
-          <div class="stamp">🏆</div>
-          <h1>Tabriklaymiz!</h1>
-          <p>Siz Moda Dizayni Akademiyasining barcha 8 bosqichini muvaffaqiyatli tugatdingiz.</p>
-          <div class="name">{{ name }}</div>
-          <p style="color:var(--muted);">Endi o'z g'oyalaringizni real dunyoga olib chiqish vaqti keldi!</p>
-          <button class="btn-primary" @click="goMap">Bosqichlarni qayta ko'rish</button>
-        </div>
-      </div>
+    <!-- PROTECTED PAGES: normal layout with header/footer/padding -->
+    <main v-else>
+      <router-view />
     </main>
 
-    <div class="footer-note" v-if="view!=='login'">Moda Dizayni Akademiyasi — har bir foydalanuvchining progressi shu brauzerda alohida saqlanadi (localStorage).</div>
+    <!-- FOOTER NOTE (visible on all pages except login) -->
+    <div class="footer-note" v-if="!isOn('login')">
+      Moda Dizayni Akademiyasi — har bir foydalanuvchining progressi shu brauzerda alohida saqlanadi (localStorage).
+    </div>
+
+    <!-- Logout confirmation dialog -->
+    <ConfirmDialog
+      :show="showLogoutConfirm"
+      title="Chiqishni tasdiqlash"
+      message="Rostdan ham akkauntdan chiqmoqchimisiz? Barcha progress shu brauzerda saqlanadi, lekin yangi kirishda tanlangan foydalanuvchi nomi bo‘yicha davom etadi."
+      confirm-text="Ha, chiqish"
+      cancel-text="Yo‘q, qolish"
+      variant="danger"
+      @confirm="performLogout"
+      @cancel="showLogoutConfirm = false"
+    />
   </div>
 </template>
 
-<style>
-@import './glassmorphism.css';
+<style scoped>
+/* Top bar layout */
+.top-bar {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  gap: 12px;
+
+  /* Subtle background + shadow so it stands out */
+  background: radial-gradient(circle at top, #ffffff, #f3f4ff);
+  box-shadow: 0 4px 18px rgba(15, 15, 25, 0.16);
+}
+
+.left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.brand {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.brand-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--accent);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.brand-subtitle {
+  font-size: 0.72rem;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Right side container */
+.right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  min-width: 0;
+}
+
+.desktop-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.username {
+  font-size: 0.85rem;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+/* Hamburger button (right side on mobile) */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.hamburger span {
+  display: block;
+  height: 2px;
+  background-color: var(--ink);
+  border-radius: 999px;
+}
+
+/* Mobile overlay */
+.mobile-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 15, 15, 0.35);
+  z-index: 40;
+}
+
+/* Mobile slide-in menu */
+.mobile-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: min(260px, 85vw);
+  padding: 18px 14px 18px 14px;
+  background: radial-gradient(circle at top, #ffffff, #f3f4ff);
+  box-shadow: 10px 0 40px rgba(15, 15, 25, 0.35);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  z-index: 50;
+  overflow-y: auto;
+}
+
+.mm-header {
+  margin-bottom: 2px;
+}
+
+.mm-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.mm-subtitle {
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+.mm-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.85rem;
+  color: var(--ink);
+}
+
+.full-width-btn {
+  width: 100%;
+  text-align: left;
+  margin-top: 2px;
+}
+
+/* Responsive rules */
+@media (max-width: 768px) {
+  .desktop-only {
+    display: none !important;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+
+  .brand-title {
+    font-size: 0.9rem;
+  }
+}
 </style>

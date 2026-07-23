@@ -118,7 +118,7 @@ function checkAnswers() {
     feedbackItems.push({
       ok: p.correct,
       text:
-        lm.label + ": " +
+        (lm?.label || p.id) + ": " +
           (p.correct ? "To'g'ri joylashtirildi" : "Noto'g'ri joylashtirildi")
     })
   }
@@ -128,7 +128,7 @@ function checkAnswers() {
     const lm = landmarkTargets[i]
     feedbackItems.push({
       ok: false,
-      text: lm.label + ": Belgilanmagan"
+      text: (lm?.label || `#${i+1}`) + ": Belgilanmagan"
     })
   }
 
@@ -174,7 +174,7 @@ function getFeedbackItems(): Array<{ ok: boolean; text: string }> {
     items.push({
       ok: p.correct,
       text:
-        lm.label + ": " +
+        (lm?.label || p.id) + ": " +
           (p.correct ? "To'g'ri joylashtirildi" : "Noto'g'ri joylashtirildi")
     })
   }
@@ -183,7 +183,7 @@ function getFeedbackItems(): Array<{ ok: boolean; text: string }> {
     const lm = landmarkTargets[i]
     items.push({
       ok: false,
-      text: lm.label + ": Belgilanmagan"
+      text: (lm?.label || `#${i+1}`) + ": Belgilanmagan"
     })
   }
 

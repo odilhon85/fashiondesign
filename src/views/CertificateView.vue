@@ -1,34 +1,32 @@
 <template>
-  <div class="d-flex flex-column align-center justify-center" style="min-height: 100vh; padding: 20px;">
-    <v-card class="glass-card pa-12 text-center" max-width="600">
-      <v-icon icon="mdi-certificate" size="96" color="primary" class="mb-6 animate-float" />
-      
-      <h1 class="text-h2 font-weight-bold mb-4">
-        Tabriklaymiz!
-      </h1>
-      
-      <p class="text-h5 mb-6">
-        Siz {{ session.name }} — Fashion Dizayn kursini muvaffaqiyatli tugatdingiz!
+  <div class="certificate-page">
+    <div class="certificate">
+      <div class="stamp">🎓</div>
+
+      <h1>Tabriklaymiz!</h1>
+
+      <p class="name">{{ session.name || 'Foydalanuvchi' }}</p>
+
+      <p style="color:var(--muted); margin-bottom: 16px;">
+        Siz Fashion Dizayn kursini muvaffaqiyatli tugatdingiz!
       </p>
-      
-      <v-divider class="my-6" />
-      
-      <div class="d-flex justify-center gap-8 mb-6">
+
+      <div class="stats-row">
         <div>
-          <p class="text-h4 font-weight-bold">{{ progress.overallPercent }}%</p>
-          <p class="text-body-1">Umumiy progress</p>
+          <div class="stat-value">{{ progress.overallPercent }}%</div>
+          <div class="stat-label">Umumiy progress</div>
         </div>
-        <v-divider vertical />
+        <div style="width:1px; background:var(--line); margin:0 12px;"></div>
         <div>
-          <p class="text-h4 font-weight-bold">{{ completedStages }}/8</p>
-          <p class="text-body-1">Tugatilgan bosqichlar</p>
+          <div class="stat-value">{{ completedStages }}/8</div>
+          <div class="stat-label">Tugatilgan bosqichlar</div>
         </div>
       </div>
-      
-      <v-btn color="primary" size="large" @click="goToMap">
+
+      <button class="btn-primary" style="margin-top:16px;" @click="goToMap">
         Bosqich xaritasiga qaytish
-      </v-btn>
-    </v-card>
+      </button>
+    </div>
   </div>
 </template>
 
@@ -50,3 +48,33 @@ function goToMap() {
   router.push({ name: 'stage-map' })
 }
 </script>
+
+<style scoped>
+.certificate-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+}
+
+.stats-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.stat-value {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.stat-label {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+</style>

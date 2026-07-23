@@ -1,56 +1,49 @@
 <template>
-  <div class="d-flex flex-column" style="min-height: 100vh; padding: 20px;">
-    <v-container class="flex-grow-1">
-      <v-btn
-        icon="mdi-arrow-left"
-        variant="text"
-        @click="goBack"
-        class="mb-4"
-      />
-      
-      <h1 class="text-h3 font-weight-bold mb-6 animate-fade-in">
-        Glossariy
-      </h1>
-      
-      <v-text-field
-        v-model="searchQuery"
-        label="Qidirish"
-        prepend-inner-icon="mdi-magnify"
-        variant="outlined"
-        rounded="lg"
-        class="mb-4"
-      />
-      
-      <v-select
-        v-model="selectedStage"
-        :items="stageOptions"
-        label="Bosqich bo'yicha filter"
-        variant="outlined"
-        rounded="lg"
-        clearable
-        class="mb-4"
-      />
-      
-      <v-card class="glass-card pa-4">
-        <v-list>
-          <v-list-item
-            v-for="term in filteredTerms"
-            :key="term.term"
-            class="mb-2"
-          >
-            <v-list-item-title class="font-weight-bold">
-              {{ term.term }}
-            </v-list-item-title>
-            <v-list-item-subtitle>
-              {{ term.definition }}
-            </v-list-item-subtitle>
-            <v-list-item-subtitle class="text-primary mt-1">
-              {{ term.stageTitle }}
-            </v-list-item-subtitle>
-          </v-list-item>
-        </v-list>
-      </v-card>
-    </v-container>
+  <div class="glossary-page">
+    <!-- Back button -->
+    <button class="btn-ghost btn-sm backbar" @click="goBack">
+      ← Orqaga
+    </button>
+
+    <h1 class="page-title">Glossariy</h1>
+
+    <!-- Search input -->
+    <input
+      v-model="searchQuery"
+      type="text"
+      placeholder="Qidirish..."
+      style="margin-bottom: 12px;"
+    />
+
+    <!-- Stage filter select -->
+    <select
+      v-model="selectedStage"
+      class="stage-filter-select"
+    >
+      <option value="">Barcha bosqichlar</option>
+      <option
+        v-for="opt in stageOptions"
+        :key="opt.value"
+        :value="opt.value"
+      >
+        {{ opt.title }}
+      </option>
+    </select>
+
+    <!-- Terms list -->
+    <div class="glossary-list">
+      <div
+        v-for="term in filteredTerms"
+        :key="term.term"
+        class="glossary-term-card"
+      >
+        <b>{{ term.term }}</b>
+        <span>{{ term.definition }}</span>
+        <div style="margin-top:4px; font-size:0.78rem; color:var(--accent);">
+          {{ term.stageTitle }}
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -76,8 +69,9 @@ const stageOptions = computed(() => {
 
 const filteredTerms = computed(() => {
   return contentStore.terms.filter((term: { term: string; definition: string; stageTitle: string }) => {
-    const matchesSearch = term.term.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-                         term.definition.toLowerCase().includes(searchQuery.value.toLowerCase())
+    const matchesSearch =
+      term.term.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+      term.definition.toLowerCase().includes(searchQuery.value.toLowerCase())
     const matchesStage = !selectedStage.value || term.stageTitle === selectedStage.value
     return matchesSearch && matchesStage
   })
@@ -87,3 +81,37 @@ function goBack() {
   router.push({ name: 'stage-map' })
 }
 </script>
+
+<style scoped>
+.glossary-page {
+  min-height: 100vh;
+  padding: 20px 16px 40px;
+}
+
+.page-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+
+.backbar {
+  margin-bottom: 16px;
+}
+
+.stage-filter-select {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1.5px solid var(--line);
+  font-size: 0.95rem;
+  margin-bottom: 14px;
+  background: #fff;
+  color: var(--ink);
+}
+
+.stage-filter-select:focus {
+  outline: 2px solid var(--accent-soft);
+  border-color: var(--accent);
+}
+</style>

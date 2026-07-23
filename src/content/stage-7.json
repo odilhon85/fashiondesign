@@ -90,8 +90,8 @@
   },
   "game": {
     "type": "repeat_builder",
-    "title": "Repeat Quruvchi: Naqsh va Repeat Turlari",
-    "instructions": "Motiflarni pastdagi palitradan sudrab tashlang yoki bosing, so‘ng katakni bosing. Har bir repeat turi uchun alohida katak berilgan:",
+    "title": "",
+    "instructions": "",
     "config": {
       "modes": ["straight", "half-drop", "mirror"]
     }

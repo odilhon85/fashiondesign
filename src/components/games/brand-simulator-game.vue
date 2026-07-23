@@ -63,13 +63,13 @@ const answers = ref<Record<string, string>>({})
 
 // Scoring
 const maxScore = 100
-let scoreValue = 0
+const scoreValue = ref(0)
 
 function addScore(delta: number) {
-  scoreValue = Math.min(maxScore, Math.max(0, scoreValue + delta))
+  scoreValue.value = Math.min(maxScore, Math.max(0, scoreValue.value + delta))
 }
 
-const score = computed(() => scoreValue)
+const score = computed(() => scoreValue.value)
 
 // Step helpers
 function goToSegment() {
@@ -157,8 +157,19 @@ function handleScenarioChoice(optionValue: string) {
   }
 }
 
+function restartGame() {
+  currentStep.value = 0
+  brandName.value = ''
+  segment.value = 'mid'
+  priceLevel.value = 'medium'
+  marketingStrategy.value = 'balanced_marketing'
+  answers.value = {}
+  scoreValue.value = 0
+}
+
 function notifyComplete() {
-  props.onComplete?.(scoreValue)
+  props.onComplete?.(scoreValue.value)
+  restartGame()
 }
 </script>
 
@@ -331,7 +342,7 @@ function notifyComplete() {
 .brand-title {
   font-size: 16px;
   font-weight: 600;
-  color: #e5e7eb;
+  color: #0f0f0f;
 }
 
 .score-pill {

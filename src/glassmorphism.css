@@ -33,10 +33,29 @@
   }
   .user-chip b{color:var(--ink);}
 
-  /* Mobile menu base (hidden on desktop) */
-  .mobile-only{
-    display:none;
+  /* Desktop / mobile utility */
+  .desktop-only {
+    display: flex !important;
   }
+
+  /* Mobile elements hidden by default (shown via media query) */
+  .mobile-only {
+    display: none !important;
+  }
+
+  /* Top bar base layout */
+  .top-bar {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    gap: 12px;
+  }
+
+  /* Progress pill */
   .progress-pill{
     background:var(--accent-soft); color:var(--accent); border-radius:20px;
     padding:4px 12px; font-size:0.8rem; font-weight:600;
@@ -291,10 +310,10 @@
   .certificate .name{font-size:1.9rem; font-weight:800; margin:14px 0; color:var(--ink);}
   .certificate .stamp{font-size:2.4rem; margin:10px 0;}
 
-  @media (max-width:650px){
+  @media (max-width:768px){
     main{padding:16px 10px 50px;}
 
-    /* Hide desktop right side, show mobile elements */
+    /* Hide desktop-only elements, show mobile-only */
     .desktop-only{
       display:none !important;
     }
@@ -302,8 +321,8 @@
       display:flex !important;
     }
 
-    /* Topbar: brand left, hamburger right on same row */
-    .topbar{
+    /* Top bar: brand left, hamburger right on same row */
+    .top-bar{
       flex-direction:row;
       align-items:center;
       justify-content:space-between;
@@ -312,25 +331,25 @@
     }
 
     /* Left title smaller, hide subtitle */
-    .brand{
-      font-size:1.05rem;
+    .brand-title{
+      font-size:0.9rem !important;
     }
-    .brand span{
-      display:none;
+    .brand-subtitle{
+      display:none !important;
     }
 
-    /* Hamburger button */
-    .mobile-menu-btn{
-      width:36px;
-      height:36px;
-      border-radius:9px;
-      border:1.5px solid var(--line);
-      background:#fff;
-      font-size:1.2rem;
-      display:flex;
-      align-items:center;
+    /* Hamburger button visible on mobile */
+    .hamburger{
+      display:flex !important;
+      flex-direction:column;
       justify-content:center;
+      gap:4px;
+      width:26px;
+      height:26px;
       padding:0;
+      border:none;
+      background:transparent;
+      cursor:pointer;
     }
 
     /* Mobile overlay */
@@ -338,35 +357,36 @@
       position:fixed;
       inset:0;
       background:rgba(15,23,42,0.18);
-      z-index:150;
+      z-index:40;
     }
 
-    /* Mobile dropdown menu (above overlay) */
+    /* Mobile slide-in menu from left */
     .mobile-menu{
       position:fixed;
-      top:60px;
-      right:14px;
-      background:var(--paper);
-      border-radius:12px;
-      padding:10px 12px;
-      gap:8px;
+      top:0;
+      left:0;
+      bottom:0;
+      width:min(260px, 85vw);
+      padding:18px 14px 18px 14px;
+      background:radial-gradient(circle at top, #ffffff, #f3f4ff);
+      box-shadow:10px 0 40px rgba(15,15,25,0.35);
+      display:flex !important;
       flex-direction:column;
-      align-items:flex-start;
-      font-size:0.85rem;
-      color:var(--muted);
-      box-shadow:0 6px 18px rgba(43,36,32,0.25);
-      border:1px solid var(--line);
-      z-index:160;
-      min-width:190px;
+      gap:14px;
+      z-index:50;
+      overflow-y:auto;
     }
+
     .mobile-menu b{
       color:var(--ink);
       margin-top:2px;
     }
+
     .mobile-menu .progress-pill{
       font-size:0.76rem;
       padding:3px 10px;
     }
+
     .mobile-menu .full-width-btn{
       width:100%;
       text-align:left;
@@ -420,4 +440,17 @@
     max-width: 100%;
     border-radius: 10px;
   }
+}
+
+
+/* LOGIN FULLSCREEN: no extra padding, centered card */
+.login-fullscreen{
+  position:fixed;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--bg);
+  z-index:999;
+  padding:16px;
 }

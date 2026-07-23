@@ -36,31 +36,66 @@ function onGameFinished(score: number) {
 </script>
 
 <template>
-  <div class="d-flex flex-column" style="min-height: 100vh; padding: 20px;">
-    <v-container class="flex-grow-1">
-      <v-btn icon="mdi-arrow-left" variant="text" @click="goBack" class="mb-4" />
+  <div class="play-page">
+    <!-- Back button -->
+    <button class="btn-ghost btn-sm backbar" @click="goBack">
+      ← Orqaga
+    </button>
 
-      <div v-if="loading" class="d-flex justify-center align-center" style="min-height: 400px;">
-        <v-progress-circular indeterminate color="primary" size="64" />
-      </div>
+    <!-- Loading state -->
+    <div v-if="loading" class="center-screen">
+      <div class="spinner"></div>
+    </div>
 
-      <div v-else>
-        <h1 class="text-h3 font-weight-bold mb-2 animate-fade-in">
-          {{ stage?.title }} - O'yin
-        </h1>
-        <p class="subtitle mb-6">{{ stage?.description }}</p>
+    <!-- Game content -->
+    <div v-else>
+      <h1 class="page-title">{{ stage?.title }} - O'yin</h1>
+      <p class="subtitle mb-6">{{ stage?.description }}</p>
 
-        <GameRunner
-          v-if="stage"
-          :game="stage.game"
-          @finished="onGameFinished"
-          :key="stage.id"
-        />
-      </div>
-    </v-container>
+      <GameRunner
+        v-if="stage"
+        :game="stage.game"
+        @finished="onGameFinished"
+        :key="stage.id"
+      />
+    </div>
   </div>
 </template>
 
 <style scoped>
-@import '@/glassmorphism.css';
+.play-page {
+  min-height: 100vh;
+  padding: 20px 16px 40px;
+}
+
+.page-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+
+.subtitle.mb-6 {
+  color: var(--muted);
+  margin-top: 2px;
+  margin-bottom: 18px;
+  font-size: 0.95rem;
+}
+
+.backbar {
+  margin-bottom: 16px;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 4px solid var(--line);
+  border-top-color: var(--accent);
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
 </style>

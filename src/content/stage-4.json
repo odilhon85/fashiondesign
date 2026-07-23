@@ -91,8 +91,8 @@
   },
   "game": {
     "type": "rotate_puzzle",
-    "title": "Dart Pivot Puzzle",
-    "instructions": "Yon tomondagi dartni yeliadan yopib, uni yelka nuqtasiga 'ko'chiring' — bodice shakli o'zgarmasligini kuzating.",
+    "title": "",
+    "instructions": "",
     "config": {
       "startDartPosition": "side",
       "targetDartPosition": "shoulder",

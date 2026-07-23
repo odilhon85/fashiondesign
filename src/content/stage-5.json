@@ -83,8 +83,8 @@
   },
   "game": {
     "type": "point_placement",
-    "title": "Draping Xaritasi — Landmark Nuqtalarini Belgila",
-    "instructions": "Old ko'rinishdagi dress-form ustida asosiy landmark nuqtalarni to'g'ri joyga bosing. Yordamchi chiziqlardan foydalaning.",
+    "title": "",
+    "instructions": "",
     "config": {
       "points": [
         { "id": "center_front", "label": "Center Front (CF)" },

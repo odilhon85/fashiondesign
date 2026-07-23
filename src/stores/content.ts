@@ -94,5 +94,11 @@ export const useContentStore = defineStore('content', {
         console.error('Failed to load terms:', error)
       }
     },
+
+    // Used by App.vue on logout.
+    resetStages() {
+      this.stages = {}
+      this.terms = []
+    },
   },
 })

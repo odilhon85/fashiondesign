@@ -34,21 +34,17 @@ export const useProgressStore = defineStore('progress', {
 
   getters: {
     overallPercent: (state) => {
-      const allStages = state.stages ? Object.values(state.stages) : []
-      if (!allStages.length) return 0
+      const allStageIds = ['stage-1', 'stage-2', 'stage-3', 'stage-4', 'stage-5', 'stage-6', 'stage-7', 'stage-8']
+      let completedCount = 0
 
-      let totalTasks = 0
-      let doneTasks = 0
-
-      for (const sp of allStages) {
-        // lessonsRead + quizCompleted + gameCompleted as tasks.
-        totalTasks += sp.lessonsRead.length + 1 + 1
-        doneTasks += sp.lessonsRead.length
-        if (sp.quizCompleted) doneTasks++
-        if (sp.gameCompleted) doneTasks++
+      for (const id of allStageIds) {
+        const sp = state.stages?.[id]
+        if (sp && sp.completedAt) {
+          completedCount++
+        }
       }
 
-      return totalTasks > 0 ? Math.round((doneTasks / totalTasks) * 100) : 0
+      return Math.round((completedCount / allStageIds.length) * 100)
     },
 
     allCompleted: (state) => {
@@ -242,9 +238,9 @@ export const useProgressStore = defineStore('progress', {
       this.ensureStage(currId)
 
       const prev = this.stages?.[prevId]
-      if (!prev || !prev.unlocked) return false
+      if (!prev || !prev.completedAt) return false
 
-      // Unlock current if previous is unlocked.
+      // Unlock current only when previous stage is fully completed.
       this.unlockStage(currId)
       return true
     },
@@ -268,6 +264,11 @@ export const useProgressStore = defineStore('progress', {
       // Persist is called explicitly where needed (e.g., unlockStage, markLessonRead).
       this.stages = {}
       this.glossary = { termStats: {}, bestScorePercent: null }
+    },
+
+    // Alias used by App.vue on logout.
+    clearAll() {
+      this.reset()
     },
 
     persist() {
